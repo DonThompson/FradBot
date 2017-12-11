@@ -4,23 +4,19 @@
 using namespace sc2;
 #include "bot.h"
 
-int main(int argc, char* argv[])
+void ParseGameSettings(int argc, char* argv[], sc2::Race &playerRace, sc2::Race &opponentRace, sc2::Difficulty &opponentDifficulty, int32_t &gameMode, std::string &mapPath)
 {
-	//
-	// Settings here
-	//
-
-	//Configurable settings.  Default values
-	sc2::Race opponentRace = sc2::Random;
-	sc2::Difficulty opponentDifficulty = sc2::Medium;
+	//Default values
+	opponentRace = sc2::Random;
+	opponentDifficulty = sc2::Medium;
 	//0 = Super fast AI gameplay
 	//1 = Regular speed, use 'SetRealtime' feature
 	//2 = Regular speed, use 'SleepFor' feature
-	int32_t gameMode = 0;
-	std::string mapPath = sc2::kMapBelShirVestigeLE;
+	gameMode = 0;
+	mapPath = "Ladder2017Season1\\BelShirVestigeLE.SC2Map";
 
 	//Currently unchangeable
-	sc2::Race playerRace = sc2::Terran;
+	playerRace = sc2::Terran;
 
 	//Parse command line to change any of the settings.  If no settings, go with default
 	for (int i = 0; i < argc; i++) {
@@ -29,22 +25,22 @@ int main(int argc, char* argv[])
 		if (sArg == "-ot") {
 			opponentRace = sc2::Terran;
 		}
-		else if(sArg == "-oz") {
+		else if (sArg == "-oz") {
 			opponentRace = sc2::Zerg;
 		}
-		else if(sArg == "-op") {
+		else if (sArg == "-op") {
 			opponentRace = sc2::Protoss;
 		}
 		else if (sArg == "-or") {
 			opponentRace = sc2::Random;
 		}
-		else if(sArg == "-s0") {
+		else if (sArg == "-s0") {
 			gameMode = 0;
 		}
-		else if(sArg == "-s1") {
+		else if (sArg == "-s1") {
 			gameMode = 1;
 		}
-		else if(sArg == "-s2") {
+		else if (sArg == "-s2") {
 			gameMode = 2;
 		}
 		else if (sArg == "-dVE") {
@@ -71,10 +67,30 @@ int main(int argc, char* argv[])
 		else if (sArg == "-dI") {
 			opponentDifficulty = sc2::CheatInsane;
 		}
-		//TODO: Map
+		else if (sArg == "-m") {
+			if (argc > i + 1) {
+				std::string sMap(argv[i + 1]);
+				mapPath = sMap;
+			}
+			else {
+				//no map provided, not enough arguments.  Just ignore it.
+			}
+		}
 	}
+}
 
 
+int main(int argc, char* argv[])
+{
+	//Configurable settings
+	sc2::Race playerRace;
+	sc2::Race opponentRace;
+	sc2::Difficulty opponentDifficulty;
+	int32_t gameMode;
+	std::string mapPath;
+
+	//Parse command line to change any of the settings.  If no settings, go with default
+	ParseGameSettings(argc, argv, playerRace, opponentRace, opponentDifficulty, gameMode, mapPath);
 
 	//
 	// Core app functionality

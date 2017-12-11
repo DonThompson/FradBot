@@ -48,7 +48,11 @@ The bot will currently always play as Terran.  There are a several command line 
 * -dI Insane (cheat mode)
 
 **Map**
-TODO:  Map not yet configurable
+* -m "RelativePath\File.SC2Map"
+
+Maps can be provided as a full path ("D:\games\Blizzard\StarCraft II\Maps\Ladder2017Season1\PaladinoTerminalLE.SC2Map") or as a relative path inside the starcraft 2 install directory maps folder ("Ladder2017Season1\BelShirVestigeLE.SC2Map").  In all cases, the map must include the file extension.
+Default map if not selected is Ladder2017Season1\BelShirVestigeLE.SC2Map.  You must get these files from the Blizzard API map download below.
+Instructions for installing maps here:  https://github.com/Blizzard/s2client-proto#downloads
 
 When ready, simply execute the compiled application with the appropriate command line parameters.
 
