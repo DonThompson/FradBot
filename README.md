@@ -4,6 +4,8 @@ Beginner (SCV Level) Starcraft2 API
 # Setup
 
 ## Get the precompiled Starcraft2 API from Blizzard's Github page
+* Note:  The latest zip tested with this bot is included in the /reference/ folder.
+
 See "Precompiled Libs" near the end.  Unzip the include & lib folders here.
 https://github.com/Blizzard/s2client-api#coding-standard
 
@@ -22,6 +24,7 @@ main() has a few parameters you can configure when executing.
 
 * CreateParticipant -- Sets the race of your bot.  Bot is currently very hardcoded to play as Terran.  Other races are unlikely to function.
 * CreateComputer -- Sets the race of your opponent and its difficulty.
+* StartGame -- Sets the map to use for this game.
 * StartGame -- Sets the map to use for this game.
 
 When ready, simply execute the compiled application.
