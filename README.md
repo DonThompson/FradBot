@@ -25,14 +25,32 @@ Project Settings -> Linker -> General - Additional Library Directories should po
 
 # Running the bot
 
-main() has a few parameters you can configure when executing.
+The bot will currently always play as Terran.  There are a several command line parameters you can use when launching the bot.  Note all commands are case sensitive.
+**Opponent Race**
+* -or Random (default value)
+* -ot Terran
+* -oz Zerg
+* -op Protoss
 
-* CreateParticipant -- Sets the race of your bot.  Bot is currently very hardcoded to play as Terran.  Other races are unlikely to function.
-* CreateComputer -- Sets the race of your opponent and its difficulty.
-* StartGame -- Sets the map to use for this game.
-* StartGame -- Sets the map to use for this game.
+**Game Speed**
+* -s0 Super fast AI game speed.  (default value)
+* -s1 Realtime game speed option 1.
+* -s2 Realtime game speed option 2.  See code for the small differences in option 1 and option 2.  Also read:  https://github.com/Blizzard/s2client-api/issues/179
 
-When ready, simply execute the compiled application.
+**Opponent Difficulty**
+* -dVE Very Easy
+* -dE Easy
+* -dM Medium (default value)
+* -dMH Medium Hard
+* -dH Hard
+* -dHVH Hard Very Hard
+* -dVH Very Hard
+* -dI Insane (cheat mode)
+
+**Map**
+TODO:  Map not yet configurable
+
+When ready, simply execute the compiled application with the appropriate command line parameters.
 
 
 # Special project notes
