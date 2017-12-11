@@ -1,6 +1,12 @@
 # sc2api-scv
 Beginner (SCV Level) Starcraft2 API
 
+Current state:  Defeats all medium AI better than 80% of the time.
+
+Major known issues:
+* Multi-actions on a step.  If a barracks needs built, it will often build as many as it can.  Same with refineries and any other building.
+* Supply can't keep up.  Regularly supply blocked.
+
 # Setup
 
 ## Get the precompiled Starcraft2 API from Blizzard's Github page
@@ -16,7 +22,6 @@ Sibling to that, create your folder for this project -- 'sc1api-scv'
 Project Settings -> C++ -> General - Additional Include Directories should point to ../sc2api-precompiled/include  (or wherever you load these files)
 Project Settings -> Linker -> General - Additional Library Directories should point to ../sc2api-precompiled/lib  (or wherever you load these files)
 
-NOTE:  pdb files are not included with precompiled libs, you will get a pile of warnings compiling in debug mode.
 
 # Running the bot
 
@@ -28,3 +33,7 @@ main() has a few parameters you can configure when executing.
 * StartGame -- Sets the map to use for this game.
 
 When ready, simply execute the compiled application.
+
+
+# Special project notes
+NOTE:  pdb files are not included with precompiled libs, you will get a pile of warnings compiling in debug mode.  I disabled all 4099 warnings in Project Settings -> Linker -> Command Line -> Additional Options

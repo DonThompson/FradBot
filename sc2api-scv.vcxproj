@@ -95,6 +95,8 @@
       <AdditionalLibraryDirectories>../sc2api-precompiled/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>civetweb.lib;libprotobufd.lib;sc2apid.lib;sc2libd.lib;sc2protocold.lib;sc2rendererd.lib;sc2utilsd.lib;SDL2.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;dinput8.lib;kernel32.lib;winspool.lib;shell32.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
+      <AdditionalOptions> /ignore:4099
+ %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,7 +131,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bot.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="managers\ArmyManager.cpp" />
+    <ClCompile Include="managers\EconManager.cpp" />
+    <ClCompile Include="managers\ManagerBase.cpp" />
+    <ClCompile Include="managers\SupplyManager.cpp" />
+    <ClCompile Include="utils\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bot.h" />
+    <ClInclude Include="managers\ArmyManager.h" />
+    <ClInclude Include="managers\EconManager.h" />
+    <ClInclude Include="managers\ManagerBase.h" />
+    <ClInclude Include="managers\SupplyManager.h" />
+    <ClInclude Include="utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
