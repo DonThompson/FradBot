@@ -32,24 +32,6 @@ const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)
 	return nullptr;
 }
 
-bool Utils::TryBuildStructure(const ObservationInterface* observation, ActionInterface* actions, ABILITY_ID ability_type_for_structure, UNIT_TYPEID unit_type /*= UNIT_TYPEID::TERRAN_SCV*/)
-{
-	//Get a builder to work with
-	const Unit* unit_to_build = Utils::GetRandomHarvester(observation);
-	if (unit_to_build == nullptr) {
-		return false;
-	}
-
-	//Find a random place to build
-	float rx = GetRandomScalar();
-	float ry = GetRandomScalar();
-
-	//Issue the action to the unit via the command menu to build and where
-	actions->UnitCommand(unit_to_build, ability_type_for_structure, Point2D(unit_to_build->pos.x + rx * 15.0f, unit_to_build->pos.y + ry * 15.0f));
-
-	return true;
-}
-
 int32_t Utils::CountOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID)
 {
 	return (int32_t)observation->GetUnits(Unit::Alliance::Self, IsUnit(unitTypeID)).size();

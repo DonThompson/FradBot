@@ -48,7 +48,8 @@ bool ArmyManager::BarracksNeeded()
 
 bool ArmyManager::TryBuildBarracks()
 {
-	return Utils::TryBuildStructure(Observation(), Actions(), ABILITY_ID::BUILD_BARRACKS);
+	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_BARRACKS);
+	return true;
 }
 
 void ArmyManager::TryAttackInGroups()

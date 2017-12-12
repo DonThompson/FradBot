@@ -7,6 +7,8 @@ using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
 
+class Bot;
+
 //States of a build
 enum BuildingState  {
 	eQueued = 0,
@@ -25,10 +27,12 @@ enum BuildingState  {
 class BuildingManager : public ManagerBase
 {
 public:
-	BuildingManager();
+	BuildingManager(Bot & b);
 	~BuildingManager();
 
-	int64_t BuildStructure(const ObservationInterface* observation, ActionInterface* actions, ABILITY_ID ability_type_for_structure, UNIT_TYPEID unit_type = UNIT_TYPEID::TERRAN_SCV);
+	int64_t BuildStructure(ABILITY_ID ability_type_for_structure);
+
+	virtual void OnStep();
 
 private:
 	int64_t nextBuildingId;
