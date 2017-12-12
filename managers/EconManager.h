@@ -7,12 +7,14 @@ using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
 
+class Bot;
+
 class EconManager : public ManagerBase {
 private:
 	clock_t lastBalanceClock;
 
 public:
-	EconManager();
+	EconManager(Bot & b);
 	~EconManager();
 	virtual void OnStep();
 	virtual void OnUnitIdle(const Unit* unit);

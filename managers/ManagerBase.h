@@ -4,13 +4,13 @@
 #include <sc2api/sc2_api.h>
 using namespace sc2;
 
+class Bot;
+
 class ManagerBase
 {
 public:
 	//Base constructor
-	ManagerBase();
-	//Initialize the manager.  Generally assumed that most managers will use this implementation.
-	void ManagerBase::Initialize(Agent* b);
+	ManagerBase(Bot & bot);
 
 	//Required for all managers to implement, handles each step of the game.
 	virtual void OnStep() = 0;
@@ -27,7 +27,7 @@ public:
 
 protected:
 	//Our working bot
-	Agent* bot;
+	Bot& bot;
 
 	//Provide access to the bot agent's Observation interface
 	const ObservationInterface* ManagerBase::Observation();

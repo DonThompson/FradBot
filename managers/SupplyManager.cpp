@@ -1,6 +1,8 @@
 #include "SupplyManager.h"
+#include "../bot.h"
 
-SupplyManager::SupplyManager()
+SupplyManager::SupplyManager(Bot & b)
+	: ManagerBase(b)
 {
 }
 
