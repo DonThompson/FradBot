@@ -7,10 +7,12 @@ using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
 
+class Bot;
+
 class SupplyManager : public ManagerBase
 {
 public:
-	SupplyManager();
+	SupplyManager(Bot & b);
 	~SupplyManager();
 	virtual void OnStep();
 

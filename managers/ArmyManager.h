@@ -7,10 +7,11 @@ using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
 
+class Bot;
 
 class ArmyManager : public ManagerBase {
 public:
-	ArmyManager();
+	ArmyManager(Bot & b);
 	~ArmyManager();
 	virtual void OnStep();
 	bool BarracksNeeded();

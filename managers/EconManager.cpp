@@ -1,6 +1,8 @@
 #include "EconManager.h"
+#include "../bot.h"
 
-EconManager::EconManager()
+EconManager::EconManager(Bot & b)
+	: ManagerBase(b)
 {
 	lastBalanceClock = clock();
 }

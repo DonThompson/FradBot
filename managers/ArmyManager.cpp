@@ -1,6 +1,8 @@
 #include "ArmyManager.h"
+#include "../bot.h"
 
-ArmyManager::ArmyManager()
+ArmyManager::ArmyManager(Bot & b)
+	: ManagerBase(b)
 {
 }
 

@@ -21,6 +21,9 @@ private:
 	std::vector<ManagerBase*> managers;
 
 public:
+	Bot();
+	~Bot();
+
 	//////////////////////////////////////////////
 	//Everything in ClientEvents, with comments //
 	//////////////////////////////////////////////

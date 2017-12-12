@@ -1,5 +1,18 @@
 #include "bot.h"
 
+Bot::Bot()
+	: supplyManager(*this)
+	, econManager(*this)
+	, armyManager(*this)
+{
+
+}
+
+Bot::~Bot()
+{
+
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -7,10 +20,6 @@ void Bot::OnGameFullStart()
 void Bot::OnGameStart()
 {
 	std::cout << "hello, World!" << std::endl;
-
-	supplyManager.Initialize(this);
-	econManager.Initialize(this);
-	armyManager.Initialize(this);
 
 	//Order added is order they'll get notifications and steps
 	managers.push_back(&econManager);
