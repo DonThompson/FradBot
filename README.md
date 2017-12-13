@@ -6,6 +6,11 @@ Current state:  Defeats all medium AI better than 80% of the time.
 Major known issues:
 * Multi-actions on a step.  If a barracks needs built, it will often build as many as it can.  Same with refineries and any other building.
 * Supply can't keep up.  Regularly supply blocked.
+* Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.
+* With latest building manager, it no longer spams a ton of rax - so no longer can win =)
+
+Suggestions:
+* http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 
 # Setup
 

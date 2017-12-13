@@ -46,6 +46,7 @@ void Bot::OnGameStart()
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);
 	managers.push_back(&armyManager);
+	managers.push_back(&buildingManager);
 }
 
 void Bot::OnGameEnd()

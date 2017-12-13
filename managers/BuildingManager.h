@@ -6,23 +6,9 @@
 using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
+#include "../BuildQueueTask.h"
 
 class Bot;
-
-//States of a build
-enum BuildingState  {
-	eQueued = 0,
-	eFindingWorker,
-	eFindingPosition,
-	eIssuingBuild,
-	eWaitingOnBuildStart,
-	eConstructionInProgress,
-	eInterrupted,
-	eInterrupted_FindingNewWorker,
-	eInterrupted_Resuming,	//Jumps back to eConstructionInProgress
-	eCompleted
-};
-
 
 class BuildingManager : public ManagerBase
 {
@@ -36,7 +22,7 @@ public:
 
 private:
 	int64_t nextBuildingId;
-	std::map<int64_t, BuildingState> mapBuildingStates;
+	std::map<int64_t, BuildQueueTask> mapBuildingQueue;
 	int64_t UseNextIdentifier();
 
 };
