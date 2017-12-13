@@ -23,32 +23,35 @@ int64_t BuildingManager::UseNextIdentifier()
 void BuildingManager::OnStep()
 {
 	//Process the events in the queue
-	//for(std::pair<int64_t, BuildQueueTask> pair : mapBuildingQueue) {
-	for(auto it = mapBuildingQueue.cbegin(); it != mapBuildingQueue.cend();) {
-		BuildQueueTask task = it->second;
-		bool bUpdateTask = true;
+	std::vector<int64_t> tasksToRemove;
+	for(std::pair<int64_t, BuildQueueTask> pair : mapBuildingQueue) {
+		int64_t taskId = pair.first;
+		BuildQueueTask task = pair.second;
 		switch (task.GetBuildingState())
 		{
 		case BuildingState::eQueued:
-			//TODO:  Delete, unnecessary
-			//Move to finding a worker
-			task.SetBuildingState(BuildingState::eFindingWorker);
-			break;
-		case BuildingState::eFindingWorker:
 		{
+			//Pre:  Build task has been queued
+			//Post Success:  We found a unit that will perform the build task.
+			//Post Fail (repeat):  No suitable builder could be found.  Try again next step.
+
 			const Unit* builderUnit = Utils::GetRandomHarvester(Observation());
 			if (builderUnit == nullptr) {
 				//Can't find a worker.  Do nothing, we'll try again next step
 			}
 			else {
 				task.AssignBuilder(builderUnit);
+				//Move on to finding a position
+				task.SetBuildingState(BuildingState::eFindingPosition);
 			}
-			//Move on to finding a position
-			task.SetBuildingState(BuildingState::eFindingPosition);
 		}
 			break;
 		case BuildingState::eFindingPosition:
 		{
+			//Pre:  Builder assigned
+			//Post Success:  We have a position in which to build.  TODO:  This position may be invalid.
+			//Post Fail:  None at this time, always moves on to next step.
+
 			//Find a random place to build
 			float rx = sc2::GetRandomScalar();
 			float ry = sc2::GetRandomScalar();
@@ -59,9 +62,16 @@ void BuildingManager::OnStep()
 				//Issue build command
 				task.SetBuildingState(BuildingState::eIssuingBuild);
 			}
+			else {
+				//TODO:  What if we lose our builder?  Would this even be null, or just some invalid pointer?
+			}
 		}
 			break;
 		case BuildingState::eIssuingBuild:
+			//Pre:  Builder assigned and position known.
+			//Post Success:  Unit command issued to perform a build.  This may or may not succeed, we do not know what happens.
+			//Post Fail:  None at this time, always moves on to next step.
+
 			//Issue the action to the unit via the command menu to build and where
 			Actions()->UnitCommand(task.GetBuilder(), task.GetBuildingType(), task.GetBuildPoint());
 
@@ -70,42 +80,49 @@ void BuildingManager::OnStep()
 			break;
 		case BuildingState::eWaitingOnBuildStart:
 		{
-			//TODO - what's this lazy worker doing?  Not entirely sure how to get this.
-			const Unit* builder = task.GetBuilder();
-			//tried build_progress (always 1.0000).  tried orders (don't change after he starts).
+			//Pre:  Builder has been issued a command
+			//Post Success:  Builder got the command and actually started the building - it's visible on the map.
+			//Post Fail (repeat):  Builder has a non-gather order and we're waiting for him to travel to the location and start.
+			//Post Fail (cancel task):  Builder has no order at all.  The previous issue command did not work
+				//TODO:  Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.
 
-			//Only way to confirm the guy actually started building is to find a building linked to him?
-			
+			//Did the builder accept our unit command?  Look for an order that isn't harvesting.
+			const Unit* builder = task.GetBuilder();
+			bool bFound = false;
+			for (UnitOrder o : builder->orders) {
+				if (o.ability_id != ABILITY_ID::HARVEST_GATHER && o.ability_id != ABILITY_ID::HARVEST_RETURN) {
+					//TODO:  Breakpoint here a bit and see if there are any other cases we're missing?
+					bFound = true;
+				}
+			}
+			if (!bFound) {
+				//This builder failed to get our order.  Abort the whole thing and remove the task from our build queue.
+				tasksToRemove.push_back(taskId);
+				continue;	//skips map update with task
+			}
+						
+
+			//TODO:  Should we separate these?  "confirm order" vs "wait for build start"?  We're repeating that order loop a lot.
+			//Now we know the builder has the order.
+			//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
+			//	which one has a position that closely matches our suggested build position.  Note that positions are NOT identical.
+
+			//TODO:  This is looking for supply depots.  Need to fix for other types of buildings.  How is this working at all?
 			for (const Unit* buildingStarted : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_SUPPLYDEPOT)) {
 				if (buildingStarted->build_progress >= 0.9999f) {
-					//done
+					//Building is done, can't be what we're looking for.
 					continue;
 				}
 
 				if (buildingStarted->build_progress < 0.0001f) {
-					//not under construction
+					//Building is unstarted.  It might be ours, or it might be something else.  Wait until it's got a little bit of progress.
 					continue;
 				}
 
-				/********************************
-				*			TODO				*
-				*********************************
-				We issued a command to a worker to go build at a point.  It will take him some time to get there and begin
-				actually working.  How can we tell that he's started?
-				In digging through the CCBot code, he appears to do it by comparing positions.  He has a bit more detail on his
-				Unit & building class data, and seems to have a reasonable way to figure this out.
-				My data doesn't seem to work as well.  Here's an example:
-					task.GetBuildPoint()	{x=131.581100 y=25.1799183 }	sc2::Point2D
-					buildingStarted->pos	{x=109.000000 y=21.0000000 z=11.9882813 }	const sc2::Point3D
-				It is the same building - so why are they so far apart?
-
-				For lack of anything better at the moment, I've just guessed a distance of 10 is probably the same building.  I'm not
-				sure if that's right or not.
-				Need to find a better answer to all this.
-
-				THIRD? TODO:  I think this is confused by issues with supply.  It's spawning hundreds of requests to build a depot -- most of which fail and get abandoned.
-				All the size values I was comparing actually weren't the right connection.  Figure that out and come back.
-				*/
+				//This building is being constructed.  Let's see where, and if it's within appropriate distance to our suggested build point, 
+				//	it's very likely our building.
+				//TODO:  Be nice to confirm this in some other fashion or confirm the distances.  Is it possible for this distance to be less
+				//	then 1.0f and not be the same?  How can we test this?
 				const float maxBuildingDistance = 1.0f;
 
 				float distance = Distance2D(task.GetBuildPoint(), buildingStarted->pos);
@@ -117,6 +134,10 @@ void BuildingManager::OnStep()
 		}
 			break;
 		case BuildingState::eConstructionInProgress:
+			//Pre:  Building is started, we found it, and we know it's being built.
+			//Post Success:  The building finished, progress is complete.
+			//Post Fail (repeat):  The building progress is less than complete.
+			//TODO:  Detection for interrupted state.  Lose worker?  How to test this?
 			if (task.GetBuilding()->build_progress >= 0.999999f) {
 				//Building done!
 				task.SetBuildingState(BuildingState::eCompleted);
@@ -130,19 +151,19 @@ void BuildingManager::OnStep()
 		case BuildingState::eInterrupted_Resuming:	//Jumps back to eConstructionInProgress
 			break;
 		case BuildingState::eCompleted:
+			//Pre:  Building detected at 100% complete
+			//Post Success:  Building is completed, remove it from our queue.
 			//Done.  Clean it up, no need to monitor it in our queue any longer.
-
-			//TODO:  Crash every time on map iteration after removal.
-			//mapBuildingQueue.erase(it);
-			bUpdateTask = false;
+			tasksToRemove.push_back(taskId);
 			break;
 		}
 
-		if (bUpdateTask) {
-			mapBuildingQueue[it->first] = task;
-		}
+		mapBuildingQueue[taskId] = task;
+	}
 
-		it++;
+	//Cleanup any removed tasks
+	for (int64_t removeMe : tasksToRemove) {
+		mapBuildingQueue.erase(removeMe);
 	}
 }
 

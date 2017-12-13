@@ -3,7 +3,6 @@
 enum class BuildingState
 {
 	eQueued = 0,
-	eFindingWorker,
 	eFindingPosition,
 	eIssuingBuild,
 	eWaitingOnBuildStart,

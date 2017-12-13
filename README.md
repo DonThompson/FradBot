@@ -8,6 +8,7 @@ Major known issues:
 * Supply can't keep up.  Regularly supply blocked.
 * Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.
 * With latest building manager, it no longer spams a ton of rax - so no longer can win =)
+* Buildings are still being duplicated often.  Supply manager is sending in a request for 2-3 depots every time 1 is needed.  Same for barracks.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
