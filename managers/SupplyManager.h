@@ -24,6 +24,8 @@ private:
 	int32_t CountSupplyDepotsInProgress();
 	bool TryBuildSupplyDepot();
 
+	void SupplyManager::successTest(int64_t x);
+	void SupplyManager::failTest(int64_t y);
 };
 
 #endif //__SUPPLY_MANAGER_H

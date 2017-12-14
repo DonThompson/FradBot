@@ -1,6 +1,16 @@
 #include "SupplyManager.h"
 #include "../bot.h"
 
+void SupplyManager::successTest(int64_t x)
+{
+	std::cout << x;
+}
+
+void SupplyManager::failTest(int64_t y)
+{
+	std::cout << y;
+}
+
 SupplyManager::SupplyManager(Bot & b)
 	: ManagerBase(b)
 {
@@ -175,6 +185,10 @@ int32_t SupplyManager::CountSupplyDepotsInProgress()
 bool SupplyManager::TryBuildSupplyDepot()
 {
 	//try to build a depot - use a random scv
-	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_SUPPLYDEPOT);
+	//TODO:  Document this crazy bind syntax somewhere.  It's much simpler on a generic function, but 
+	//	we'll probably always be using class instance members.
+	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_SUPPLYDEPOT, 
+		std::bind(&SupplyManager::successTest, this, std::placeholders::_1), 
+		std::bind(&SupplyManager::failTest, this, std::placeholders::_1));
 	return true;
 }

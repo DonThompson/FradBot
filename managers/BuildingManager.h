@@ -19,9 +19,9 @@ class Bot;
 	Logging/status:  Output status of the queue every few seconds.
 
 	Progress:
-	- callback functions (done.  tested as null)
-	- test callbacks non-null
-	- fix the step to go backwards instead of aborting.  remove this failure callback.
+	[DONE] - callback functions (done.  tested as null)
+	[DONE] - test callbacks non-null
+	- fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
 	- put in some kind of counter - can't bounce around forever, it needs to eventually time out
 	- callback on that cancel
 	- test that case somehow
@@ -30,6 +30,7 @@ class Bot;
 	- document, document, document.
 	- refactor and cleanup
 	- this should put buildmanager in a good place going forward for a while
+	- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 */
 
 class BuildingManager : public ManagerBase
