@@ -174,9 +174,7 @@ int32_t SupplyManager::CountSupplyDepotsInProgress()
 
 bool SupplyManager::TryBuildSupplyDepot()
 {
-	const ObservationInterface* observation = Observation();
-
 	//try to build a depot - use a random scv
-	//std::cout << "Building supply depot...  Used:  " << observation->GetFoodUsed() << ".  Cap:  " << observation->GetFoodCap() << std::endl;
-	return Utils::TryBuildStructure(Observation(), Actions(), ABILITY_ID::BUILD_SUPPLYDEPOT);
+	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_SUPPLYDEPOT);
+	return true;
 }

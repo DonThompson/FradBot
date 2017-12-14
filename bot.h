@@ -9,6 +9,7 @@ using namespace sc2;
 #include "managers/SupplyManager.h"
 #include "managers/EconManager.h"
 #include "managers/ArmyManager.h"
+#include "managers/BuildingManager.h"
 #include "utils/Utils.h"
 
 
@@ -17,12 +18,23 @@ private:
 	SupplyManager supplyManager;
 	EconManager econManager;
 	ArmyManager armyManager;
+	BuildingManager buildingManager;
 
 	std::vector<ManagerBase*> managers;
 
 public:
 	Bot();
 	~Bot();
+
+	//////////////////////////////////////////////
+	//  Access to Manager Classes				//
+	//////////////////////////////////////////////
+	BuildingManager & Building();
+	const SupplyManager & Supply();
+	const ArmyManager & Army();
+	const EconManager & Econ();
+
+
 
 	//////////////////////////////////////////////
 	//Everything in ClientEvents, with comments //
