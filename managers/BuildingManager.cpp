@@ -13,12 +13,12 @@ BuildingManager::~BuildingManager()
 
 }
 
-int64_t BuildingManager::BuildStructure(ABILITY_ID structureAbilityId)
+int64_t BuildingManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
 	int64_t id = UseNextIdentifier();
 
 	//Queue the request
-	BuildQueueTask task(id, structureAbilityId);
+	BuildQueueTask task(id, structureAbilityId, callbackSuccess, callbackFailure);
 	mapBuildingQueue.insert(std::pair<int64_t, BuildQueueTask>(id, task));
 	return id;
 }
@@ -65,7 +65,7 @@ void BuildingManager::OnStep()
 		case BuildingState::eInterrupted_Resuming:	//Jumps back to eConstructionInProgress
 			break;
 		case BuildingState::eCompleted:
-			HandleCompleted(tasksToRemove, taskId);
+			HandleCompleted(task, tasksToRemove, taskId);
 			break;
 		}
 
@@ -144,6 +144,12 @@ void BuildingManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<i
 	}
 	if (!bFound) {
 		//This builder failed to get our order.  Abort the whole thing and remove the task from our build queue.
+
+		if (task.GetFailureCallback() != nullptr) {
+			//Call the success callback function provided
+			std::invoke(task.GetFailureCallback(), taskId);
+		}
+
 		tasksToRemove.push_back(taskId);
 		return;
 	}
@@ -202,8 +208,12 @@ void BuildingManager::HandleConstructionInProgress(BuildQueueTask &task)
 
 //Pre:  Building detected at 100% complete
 //Post Success:  Building is completed, remove it from our queue.
-void BuildingManager::HandleCompleted(std::vector<int64_t> &tasksToRemove, const int64_t taskId)
+void BuildingManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
 {
 	//Done.  Clean it up, no need to monitor it in our queue any longer.
+	if (task.GetSuccessCallback() != nullptr) {
+		//Call the success callback function provided
+		std::invoke(task.GetSuccessCallback(), taskId);
+	}
 	tasksToRemove.push_back(taskId);
 }

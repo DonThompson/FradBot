@@ -9,17 +9,21 @@ BuildQueueTask::BuildQueueTask()
 	, builderUnit(nullptr)
 	, buildingPoint()
 	, building(nullptr)
+	, callbackSuccess(nullptr)
+	, callbackFailure(nullptr)
 {
 }
 
 //Most common constructor, 
-BuildQueueTask::BuildQueueTask(int64_t _id, ABILITY_ID _structure)
+BuildQueueTask::BuildQueueTask(int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn)
 	: id(_id)
 	, state(BuildingState::eQueued)
 	, structureToBuild(_structure)
 	, builderUnit(nullptr)
 	, buildingPoint()
 	, building(nullptr)
+	, callbackSuccess(_successFn)
+	, callbackFailure(_failFn)
 {
 }
 
@@ -52,6 +56,16 @@ const Unit* BuildQueueTask::GetBuilding()
 	return building;
 }
 
+BuildQueueTaskCallbackFunction BuildQueueTask::GetSuccessCallback()
+{
+	return callbackSuccess;
+}
+
+BuildQueueTaskCallbackFunction BuildQueueTask::GetFailureCallback()
+{
+	return callbackFailure;
+}
+
 void BuildQueueTask::SetBuildingState(BuildingState newState)
 {
 	state = newState;
@@ -70,4 +84,14 @@ void BuildQueueTask::SetBuildPoint(Point2D _pt)
 void BuildQueueTask::SetBuilding(const Unit* _building)
 {
 	building = _building;
+}
+
+void BuildQueueTask::SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn)
+{
+	callbackSuccess = fn;
+}
+
+void BuildQueueTask::SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn)
+{
+	callbackFailure = fn;
 }
