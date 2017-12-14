@@ -3,15 +3,26 @@ Beginner (SCV Level) Starcraft2 API
 
 Current state:  Defeats all medium AI better than 80% of the time.
 
-Major known issues:
-* Multi-actions on a step.  If a barracks needs built, it will often build as many as it can.  Same with refineries and any other building.
+Supply manager issues:
 * Supply can't keep up.  Regularly supply blocked.
 * Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.
-* With latest building manager, it no longer spams a ton of rax - so no longer can win =)
-* Buildings are still being duplicated often.  Supply manager is sending in a request for 2-3 depots every time 1 is needed.  Same for barracks.
+* If a depot needs built, it will often build as many as it can.
+
+Econ manager issues:
+* If a refinery needs built, it will often build as many as it can.
+
+Army manager issues:
+* If a barracks needs built, it will often build as many as it can.
+
+Building manager issues:
+* Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.  [Current other managers seem to assume lots of commands don't happen.  need to fix them.]
+* Misc small issues labeled throughout the code.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
+
+
+
 
 # Setup
 

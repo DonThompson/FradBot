@@ -5,6 +5,7 @@ enum class BuildingState
 	eQueued = 0,
 	eFindingPosition,
 	eIssuingBuild,
+	eConfirmOrders,
 	eWaitingOnBuildStart,
 	eConstructionInProgress,
 	eInterrupted,

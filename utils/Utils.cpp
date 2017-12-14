@@ -37,6 +37,7 @@ int32_t Utils::CountOwnUnits(const ObservationInterface* observation, UNIT_TYPEI
 	return (int32_t)observation->GetUnits(Unit::Alliance::Self, IsUnit(unitTypeID)).size();
 }
 
+//TODO:  unitTypeID doesn't actually filter anything.  Seems to maybe filter by "is it a unit" true/false
 Units Utils::GetOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID)
 {
 	return observation->GetUnits(Unit::Alliance::Self, IsUnit(unitTypeID));

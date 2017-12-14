@@ -10,6 +10,15 @@ using namespace sc2;
 
 class Bot;
 
+/* Usage
+	BuildingManager currently will attempt to create your building, but will abort the task for any invalid build
+	attempts (not enough resources, invalid position, etc.).  If this happens, it will never re-attempt.  caller must do so.
+
+	TODO:  callback event on success
+	callback on fail
+	never lose a request
+*/
+
 class BuildingManager : public ManagerBase
 {
 public:
@@ -24,6 +33,16 @@ private:
 	int64_t nextBuildingId;
 	std::map<int64_t, BuildQueueTask> mapBuildingQueue;
 	int64_t UseNextIdentifier();
+
+
+	//Queue management functions
+	void HandledQueuedBuilding(BuildQueueTask &task);
+	void HandleFindingPosition(BuildQueueTask &task);
+	void HandleIssuingBuild(BuildQueueTask &task);
+	void HandleConfirmingOrders(BuildQueueTask &task, std::vector<int64_t> &tasksToRemove, const int64_t taskId);
+	void HandleWaitingOnBuildStart(BuildQueueTask &task);
+	void HandleConstructionInProgress(BuildQueueTask &task);
+	void HandleCompleted(std::vector<int64_t> &tasksToRemove, const int64_t taskId);
 
 };
 
