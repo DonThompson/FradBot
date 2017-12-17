@@ -22,8 +22,14 @@ const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)
 				return harvester;
 			}
 			else {
-				//Got something else useful going on, skip him
-				std::cout << "Skipping builder because he's busy with action " << order.ability_id << std::endl;
+				switch (static_cast<ABILITY_ID>(order.ability_id)) {
+				case ABILITY_ID::HARVEST_RETURN:		//Money in hand, we don't want to take this away!
+					break;
+				default:
+					//Something we haven't specifically documented.  Note it in output for now.
+					//TODO:  Long term this isn't useful I think.
+					std::cout << "Skipping builder because he's busy with action " << order.ability_id << std::endl;
+				}
 			}
 		}
 	}

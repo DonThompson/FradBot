@@ -21,11 +21,16 @@ private:
 	int32_t PredictSupplyDepotsNeeded();
 	int32_t CalculateSupplyCurrentlyBeingProduced();
 	int32_t GetUnitSupplyActivelyProducing(UnitOrder order);
-	int32_t CountSupplyDepotsInProgress();
-	bool TryBuildSupplyDepot();
+	void BuildSupplyDepot();
+
+	uint32_t depotsInProgress;
 
 	void SupplyManager::successTest(int64_t x);
 	void SupplyManager::failTest(int64_t y);
+
+private:
+	clock_t lastBalanceClock;
+
 };
 
 #endif //__SUPPLY_MANAGER_H

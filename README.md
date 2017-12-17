@@ -3,6 +3,9 @@ Beginner (SCV Level) Starcraft2 API
 
 Current state:  Defeats all medium AI better than 80% of the time.
 
+General:
+* Generalize the rebalance logic in econ/supply manager to some kind of event system.  Game time is probably preferred.
+
 Supply manager issues:
 * Supply can't keep up.  Regularly supply blocked.
 * Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.

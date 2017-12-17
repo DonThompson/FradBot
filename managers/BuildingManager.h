@@ -23,8 +23,8 @@ class Bot;
 	[DONE] - test callbacks non-null
 	[DONE] - fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
 	[DONE] - put in some kind of counter - can't bounce around forever, it needs to eventually time out
-	- callback on that cancel
-	- test that case somehow
+	[DONE]- callback on that cancel
+	[DONE]- test that case somehow
 	- go fix econ (refineries), supply (depots), and army (rax) managers to not spam so many commands and to implement callbacks
 	- logging work
 	- document, document, document.
