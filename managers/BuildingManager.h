@@ -22,7 +22,7 @@ class Bot;
 	[DONE] - callback functions (done.  tested as null)
 	[DONE] - test callbacks non-null
 	[DONE] - fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
-	- put in some kind of counter - can't bounce around forever, it needs to eventually time out
+	[DONE] - put in some kind of counter - can't bounce around forever, it needs to eventually time out
 	- callback on that cancel
 	- test that case somehow
 	- go fix econ (refineries), supply (depots), and army (rax) managers to not spam so many commands and to implement callbacks
@@ -32,6 +32,8 @@ class Bot;
 	- this should put buildmanager in a good place going forward for a while
 	- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
+	- TODO:  HandleConfirmingOrders complexity is getting really high.  HandleWaitingOnBuildStart isn't far behind.
+	- TODO:  HandleWaitingOnBuildStart -- In my test game, by loop ~4700 (first attack) I had 29 requests in the queue that were in this state, but none of the builders were actually trying to build any longer.  How'd we get here and how do we purge these reasonably?  Maybe the test for expiration should be outside of only HandleConfirmingOrders?
 */
 
 class BuildingManager : public ManagerBase

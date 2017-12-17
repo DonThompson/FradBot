@@ -11,9 +11,10 @@ class BuildQueueTask
 {
 public:
 	BuildQueueTask();
-	BuildQueueTask(int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn);
+	BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn);
 	~BuildQueueTask();
 
+	uint32_t GetStartingGameLoop();
 	BuildingState GetBuildingState();
 	const Unit* GetBuilder();
 	Point2D GetBuildPoint();
@@ -30,6 +31,7 @@ public:
 	void SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn);
 
 private:
+	uint32_t startingGameLoop;
 	int64_t id;
 	BuildingState state;
 	ABILITY_ID structureToBuild;

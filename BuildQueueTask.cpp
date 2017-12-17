@@ -1,22 +1,17 @@
 #include "BuildQueueTask.h"
 
 
-//Base constructor, builds a queue task with no values.
+//Base constructor, builds a queue task with no values.  Not recommended for use.
 BuildQueueTask::BuildQueueTask()
-	: id(0)
-	, state(BuildingState::eQueued)
-	, structureToBuild(ABILITY_ID::INVALID)
-	, builderUnit(nullptr)
-	, buildingPoint()
-	, building(nullptr)
-	, callbackSuccess(nullptr)
-	, callbackFailure(nullptr)
 {
+	//Just use the expected constructor with some predefined values
+	BuildQueueTask(0, 0, ABILITY_ID::INVALID, nullptr, nullptr);
 }
 
-//Most common constructor, 
-BuildQueueTask::BuildQueueTask(int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn)
-	: id(_id)
+//Common default constructor, use this one.
+BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn)
+	: startingGameLoop(_gameLoop)
+	, id(_id)
 	, state(BuildingState::eQueued)
 	, structureToBuild(_structure)
 	, builderUnit(nullptr)
@@ -29,6 +24,11 @@ BuildQueueTask::BuildQueueTask(int64_t _id, ABILITY_ID _structure, BuildQueueTas
 
 BuildQueueTask::~BuildQueueTask()
 {
+}
+
+uint32_t BuildQueueTask::GetStartingGameLoop()
+{
+	return startingGameLoop;
 }
 
 BuildingState BuildQueueTask::GetBuildingState()

@@ -18,7 +18,7 @@ int64_t BuildingManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueu
 	int64_t id = UseNextIdentifier();
 
 	//Queue the request
-	BuildQueueTask task(id, structureAbilityId, callbackSuccess, callbackFailure);
+	BuildQueueTask task(Observation()->GetGameLoop(), id, structureAbilityId, callbackSuccess, callbackFailure);
 	mapBuildingQueue.insert(std::pair<int64_t, BuildQueueTask>(id, task));
 	return id;
 }
@@ -143,22 +143,32 @@ void BuildingManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<i
 		}
 	}
 	if (!bFound) {
-		//NEW STATE:  Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
-		//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
-		task.AssignBuilder(nullptr);
-		//Requeue back like a new request
-		task.SetBuildingState(BuildingState::eQueued);
+		//Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
+		//	If this task has been in our queue too long, we'll abort it.
 
-		/*	PREVIOUS STATE:  Abort the build command altogether and let the caller figure out how to re-queue it.  Keeping this temporarily as a reference - 
-				TODO:  remove it before we merge the branch back.
-		//This builder failed to get our order.  Abort the whole thing and remove the task from our build queue.
-		if (task.GetFailureCallback() != nullptr) {
-			//Call the success callback function provided
-			std::invoke(task.GetFailureCallback(), taskId);
+		//TODO:  Where should this logic be?  Does it make sense inside BuildQueueTask?  That's a bit of a POCO class.
+		//TODO:  Here's some documentation to put ... somewhere.
+		//	https://github.com/Blizzard/s2client-api/issues/164
+		//	From parsing this, here's some rough ideas:  16 gameloops is used as a measurement of distance.  Presumably because this is about 1s in some speed (normal?)
+		//	The blizz dev also says faster is 22.4 gameloops/second.  So we'll take a nice round value and say "20 loops per second" roughly.  If we don't get a command
+		//	queued within 5 seconds, then kill it.
+		const uint32_t maxGameLoopsBeforeAbort = 20 * 5;
+		if (Observation()->GetGameLoop() - task.GetStartingGameLoop() > maxGameLoopsBeforeAbort) {
+			//This builder failed to get our order in a reasonable time.  Abort the whole thing and remove the task from our build queue.
+			if (task.GetFailureCallback() != nullptr) {
+				//Call the success callback function provided
+				std::invoke(task.GetFailureCallback(), taskId);
+			}
+
+			tasksToRemove.push_back(taskId);
 		}
-
-		tasksToRemove.push_back(taskId);
-		*/
+		else {
+			//NEW STATE:  Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
+			//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
+			task.AssignBuilder(nullptr);
+			//Requeue back like a new request
+			task.SetBuildingState(BuildingState::eQueued);
+		}
 	}
 	else {
 		//Otherwise, the builder does have a non-gathering order in their queue.  We'll assume that's ours.
