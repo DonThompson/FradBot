@@ -20,6 +20,7 @@ void SupplyManager::failTest(int64_t y)
 SupplyManager::SupplyManager(Bot & b)
 	: ManagerBase(b)
 	, depotsInProgress(0)
+	, lastBalanceClock(clock_t())
 {
 }
 
