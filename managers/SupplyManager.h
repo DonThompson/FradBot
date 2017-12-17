@@ -18,9 +18,9 @@ public:
 
 private:
 	bool SupplyDepotNeeded();
-	int32_t PredictSupplyDepotsNeeded();
-	int32_t CalculateSupplyCurrentlyBeingProduced();
-	int32_t GetUnitSupplyActivelyProducing(UnitOrder order);
+	uint32_t PredictSupplyDepotsNeeded();
+	uint32_t CalculateSupplyCurrentlyBeingProduced();
+	uint32_t GetUnitSupplyActivelyProducing(UnitOrder order);
 	void BuildSupplyDepot();
 
 	uint32_t depotsInProgress;

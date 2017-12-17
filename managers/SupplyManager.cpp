@@ -57,7 +57,7 @@ bool SupplyManager::SupplyDepotNeeded()
 	}
 
 	//Predict how many we need to be building.
-	int32_t numDepotNeeded = PredictSupplyDepotsNeeded();
+	uint32_t numDepotNeeded = PredictSupplyDepotsNeeded();
 
 	if (numDepotNeeded > depotsInProgress) {
 		return true;
@@ -70,16 +70,16 @@ bool SupplyManager::SupplyDepotNeeded()
 //	Implementation basically counts what we're currently building and assumes that once those all finish, we'll build more of the same.
 //	Also always builds a depot if we're > 90% current capacity.
 //TODO:  This is probably not a great long term option.
-int32_t SupplyManager::PredictSupplyDepotsNeeded()
+uint32_t SupplyManager::PredictSupplyDepotsNeeded()
 {
-	const int32_t supplyDepotFood = 8;
+	const uint32_t supplyDepotFood = 8;
 
 	const ObservationInterface* observation = Observation();
 	int32_t supplyUsed = observation->GetFoodUsed();
 	int32_t currentSupplyCap = observation->GetFoodCap();
 
 	//Total units currently being built.
-	int32_t supplyCurrentlyBeingProduced = CalculateSupplyCurrentlyBeingProduced();
+	uint32_t supplyCurrentlyBeingProduced = CalculateSupplyCurrentlyBeingProduced();
 
 	//Assumption:  Once the current units get built, we'll shortly want to be able to build at least that much more again.  If that is going to put us
 	//  at a supply disadvantage, then we'd better start a new depot.
@@ -91,10 +91,10 @@ int32_t SupplyManager::PredictSupplyDepotsNeeded()
 		return 0;
 	}
 
-	return (int32_t)ceil((double)extraNeeded / (double)supplyDepotFood);
+	return (uint32_t)ceil((double)extraNeeded / (double)supplyDepotFood);
 }
 
-int32_t SupplyManager::CalculateSupplyCurrentlyBeingProduced()
+uint32_t SupplyManager::CalculateSupplyCurrentlyBeingProduced()
 {
 	const ObservationInterface* observation = Observation();
 	ActionInterface* actions = Actions();
@@ -112,7 +112,7 @@ int32_t SupplyManager::CalculateSupplyCurrentlyBeingProduced()
 	return supplyBeingProduced;
 }
 
-int32_t SupplyManager::GetUnitSupplyActivelyProducing(UnitOrder order)
+uint32_t SupplyManager::GetUnitSupplyActivelyProducing(UnitOrder order)
 {
 	//NOTE:  I manually ripped these out of ABILITY_ID enum and manually entered the food cost by lookup.  Any way to calculate these?
 	switch ((sc2::ABILITY_ID)order.ability_id) {
