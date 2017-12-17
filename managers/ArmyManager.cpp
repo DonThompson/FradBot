@@ -59,7 +59,7 @@ bool ArmyManager::BarracksNeeded()
 
 void ArmyManager::BuildBarracks()
 {
-	int64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_BARRACKS,
+	uint64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_BARRACKS,
 		std::bind(&ArmyManager::OnBarracksSuccess, this, std::placeholders::_1),
 		std::bind(&ArmyManager::OnBarracksFailed, this, std::placeholders::_1));
 

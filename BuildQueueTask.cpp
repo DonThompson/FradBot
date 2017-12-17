@@ -12,7 +12,7 @@ BuildQueueTask::BuildQueueTask()
 BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn)
 	: startingGameLoop(_gameLoop)
 	, id(_id)
-	, state(BuildingState::eQueued)
+	, state(ConstructionTaskState::eQueued)
 	, structureToBuild(_structure)
 	, builderUnit(nullptr)
 	, buildingPoint()
@@ -23,16 +23,12 @@ BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _stru
 {
 }
 
-BuildQueueTask::~BuildQueueTask()
-{
-}
-
 uint32_t BuildQueueTask::GetStartingGameLoop()
 {
 	return startingGameLoop;
 }
 
-BuildingState BuildQueueTask::GetBuildingState()
+ConstructionTaskState BuildQueueTask::GetConstructionTaskState()
 {
 	return state;
 }
@@ -72,7 +68,7 @@ BuildQueueTaskCallbackFunction BuildQueueTask::GetFailureCallback()
 	return callbackFailure;
 }
 
-void BuildQueueTask::SetBuildingState(BuildingState newState)
+void BuildQueueTask::SetConstructionTaskState(ConstructionTaskState newState)
 {
 	state = newState;
 }
@@ -105,4 +101,20 @@ void BuildQueueTask::SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn)
 void BuildQueueTask::SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn)
 {
 	callbackFailure = fn;
+}
+
+bool BuildQueueTask::IsTaskLongRunning(uint32_t currentGameLoop)
+{
+	//TODO:  Where should this logic be?  Does it make sense inside BuildQueueTask?  That's a bit of a POCO class.
+	//TODO:  Here's some documentation to put ... somewhere.
+	//	https://github.com/Blizzard/s2client-api/issues/164
+	//	From parsing this, here's some rough ideas:  16 gameloops is used as a measurement of distance.  Presumably because this is about 1s in some speed (normal?)
+	//	The blizz dev also says faster is 22.4 gameloops/second.  So we'll take a nice round value and say "20 loops per second" roughly.  If we don't get a command
+	//	queued within 5 seconds, then kill it.
+	const uint32_t maxGameLoopsBeforeAbort = 20 * 5;
+	if (currentGameLoop - GetStartingGameLoop() > maxGameLoopsBeforeAbort) {
+		//This builder failed to get our order in a reasonable time.  Abort the whole thing and remove the task from our build queue.
+		return true;
+	}
+	return false;
 }

@@ -45,6 +45,9 @@
     <ClCompile Include="ConstructionManager.cpp">
       <Filter>BuildingConstruction</Filter>
     </ClCompile>
+    <ClCompile Include="ConstructionPlacement.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="managers\ManagerBase.h">
@@ -68,10 +71,13 @@
     <ClInclude Include="BuildQueueTask.h">
       <Filter>BuildingConstruction</Filter>
     </ClInclude>
-    <ClInclude Include="BuildingState.h">
+    <ClInclude Include="ConstructionManager.h">
       <Filter>BuildingConstruction</Filter>
     </ClInclude>
-    <ClInclude Include="ConstructionManager.h">
+    <ClInclude Include="ConstructionTaskState.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstructionPlacement.h">
       <Filter>BuildingConstruction</Filter>
     </ClInclude>
   </ItemGroup>

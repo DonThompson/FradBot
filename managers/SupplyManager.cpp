@@ -187,7 +187,7 @@ void SupplyManager::BuildSupplyDepot()
 	//TODO:  We probably should map queue tasks to completed/failed tasks.
 	//TODO:  Document this crazy bind syntax somewhere.  It's much simpler on a generic function, but 
 	//	we'll probably always be using class instance members.
-	int64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_SUPPLYDEPOT,
+	uint64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_SUPPLYDEPOT,
 		std::bind(&SupplyManager::successTest, this, std::placeholders::_1), 
 		std::bind(&SupplyManager::failTest, this, std::placeholders::_1));
 

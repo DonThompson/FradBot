@@ -29,6 +29,9 @@ class Bot;
 	- logging work
 	- document, document, document.
 	- refactor and cleanup
+		- HandleConfirmingOrders
+		- HandleWaitingOnBuildStart
+		- everything else looks reasonably good
 	- this should put buildmanager in a good place going forward for a while
 	[DONE]- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
@@ -40,27 +43,32 @@ class ConstructionManager : public ManagerBase
 {
 public:
 	ConstructionManager(Bot & b);
-	~ConstructionManager();
 
-	int64_t BuildStructure(ABILITY_ID ability_type_for_structure, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
+	//Use to request that the construction manager construct a building.  Callback functions optional.  The construction manager will find a worker and a position
+	//	for the building to be constructed.
+	//structureAbilityId - Structure to be constructed.
+	//callbackSuccess - Function to call back on success of the construction
+	//callbackFailure - Function to call back on failure of the construction.
+	uint64_t BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
 
+	//Called for each step of the game.  Not for public consumption.
 	virtual void OnStep();
 
 private:
-	int64_t nextBuildingId;
-	std::map<int64_t, BuildQueueTask> mapBuildingQueue;
-	int64_t UseNextIdentifier();
+	uint64_t nextBuildingId;
+	std::map<uint64_t, BuildQueueTask> mapBuildingQueue;
+	uint64_t UseNextIdentifier();
 
 
 	//Queue management functions
 	void HandledQueuedBuilding(BuildQueueTask &task);
 	void HandleFindingPosition(BuildQueueTask &task);
 	void HandleIssuingBuild(BuildQueueTask &task);
-	void HandleConfirmingOrders(BuildQueueTask &task, std::vector<int64_t> &tasksToRemove, const int64_t taskId);
+	void HandleConfirmingOrders(BuildQueueTask &task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId);
 	void HandleWaitingOnBuildStart(BuildQueueTask &task);
 	void HandleConstructionInProgress(BuildQueueTask &task);
-	void HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId);
+	void HandleCompleted(BuildQueueTask task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId);
 
+	const Unit* FindConstructionWorker();
 	const Unit* HandleFindingRefineryTarget(Point2D builderPos);
-
 };

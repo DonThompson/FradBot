@@ -17,9 +17,12 @@ Econ manager issues:
 Army manager issues:
 * If a barracks needs built, it will often build as many as it can.
 
-Building manager issues:
-* Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.  [Current other managers seem to assume lots of commands don't happen.  need to fix them.]
-* Misc small issues labeled throughout the code.
+Construction manager issues:
+* Loss of worker.  I've done no testing on this.  It's completely unhandled.
+* ConstructionTaskState::eInterrupted, ConstructionTaskState::eInterrupted_FindingNewWorker, ConstructionTaskState::eInterrupted_Resuming
+
+BuildingPlacement issues:
+* Random building placement is a stupid way to place buildings.  This needs improved greatly.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2

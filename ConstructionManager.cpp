@@ -1,5 +1,6 @@
 #include "ConstructionManager.h"
 #include "managers/EconManager.h"
+#include "ConstructionPlacement.h"
 
 ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)
@@ -8,63 +9,76 @@ ConstructionManager::ConstructionManager(Bot & b)
 
 }
 
-ConstructionManager::~ConstructionManager()
+uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
+	uint64_t id = UseNextIdentifier();
 
-}
-
-int64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
-{
-	int64_t id = UseNextIdentifier();
-
-	//Queue the request
+	//Queue the request and return
 	BuildQueueTask task(Observation()->GetGameLoop(), id, structureAbilityId, callbackSuccess, callbackFailure);
-	mapBuildingQueue.insert(std::pair<int64_t, BuildQueueTask>(id, task));
+	mapBuildingQueue.insert(std::pair<uint64_t, BuildQueueTask>(id, task));
 	return id;
 }
 
-int64_t ConstructionManager::UseNextIdentifier()
+//Retrieves the next available unique task identifier, then moves the counter along.
+uint64_t ConstructionManager::UseNextIdentifier()
 {
-	int64_t useThis = nextBuildingId;
+	uint64_t useThis = nextBuildingId;
 	nextBuildingId++;
 	return useThis;
 }
 
 void ConstructionManager::OnStep()
 {
+	//Hold any tasks that need to be shut down as canceled
+	std::vector<uint64_t> tasksToRemove;
+
 	//Process the events in the queue
-	std::vector<int64_t> tasksToRemove;
-	for(std::pair<int64_t, BuildQueueTask> pair : mapBuildingQueue) {
-		int64_t taskId = pair.first;
+	for(std::pair<uint64_t, BuildQueueTask> pair : mapBuildingQueue)
+	{
+		uint64_t taskId = pair.first;
 		BuildQueueTask task = pair.second;
-		switch (task.GetBuildingState())
+
+		//Has this specific task been running for too long?  Once it's been in the queue too long, we'll
+		//	have to abort it as something we can't handle right now.  Caller will have to try again.
+		if(task.IsTaskLongRunning(Observation()->GetGameLoop()))
 		{
-		case BuildingState::eQueued:
+			if (task.GetFailureCallback() != nullptr) {
+				//Call the success callback function provided
+				std::invoke(task.GetFailureCallback(), taskId);
+			}
+
+			tasksToRemove.push_back(taskId);
+			//Move on to the next task
+			continue;
+		}
+
+		switch (task.GetConstructionTaskState())
+		{
+		case ConstructionTaskState::eQueued:
 			HandledQueuedBuilding(task);
 			break;
-		case BuildingState::eFindingPosition:
+		case ConstructionTaskState::eFindingPosition:
 			HandleFindingPosition(task);
 			break;
-		case BuildingState::eIssuingBuild:
+		case ConstructionTaskState::eIssuingBuild:
 			HandleIssuingBuild(task);
 			break;
-		case BuildingState::eConfirmOrders:
+		case ConstructionTaskState::eConfirmOrders:
 			HandleConfirmingOrders(task, tasksToRemove, taskId);
 			break;
-		case BuildingState::eWaitingOnBuildStart:
+		case ConstructionTaskState::eWaitingOnBuildStart:
 			HandleWaitingOnBuildStart(task);
 			break;
-		case BuildingState::eConstructionInProgress:
+		case ConstructionTaskState::eConstructionInProgress:
 			HandleConstructionInProgress(task);
 			break;
-		case BuildingState::eInterrupted:
-			//TODO:  Not sure how we get into this state.  Look for builder deaths?
+		case ConstructionTaskState::eInterrupted:
 			break;
-		case BuildingState::eInterrupted_FindingNewWorker:
+		case ConstructionTaskState::eInterrupted_FindingNewWorker:
 			break;
-		case BuildingState::eInterrupted_Resuming:	//Jumps back to eConstructionInProgress
+		case ConstructionTaskState::eInterrupted_Resuming:	//Jumps back to eConstructionInProgress
 			break;
-		case BuildingState::eCompleted:
+		case ConstructionTaskState::eCompleted:
 			HandleCompleted(task, tasksToRemove, taskId);
 			break;
 		}
@@ -74,9 +88,18 @@ void ConstructionManager::OnStep()
 	}
 
 	//Cleanup any removed tasks
-	for (int64_t removeMe : tasksToRemove) {
+	for (uint64_t removeMe : tasksToRemove) {
 		mapBuildingQueue.erase(removeMe);
 	}
+}
+
+//Handles all logic around finding the available worker to perform construction.
+const Unit* ConstructionManager::FindConstructionWorker()
+{
+	//We ONLY pull constructors from the list of currently harvesting workers, and only
+	//	those that are gathering, not returning.  Other logic throughout the 
+	//	construction manager uses these assumptions about harvest state.
+	return Utils::GetRandomHarvester(Observation());
 }
 
 //Pre:  Build task has been queued
@@ -84,19 +107,19 @@ void ConstructionManager::OnStep()
 //Post Fail (repeat):  No suitable builder could be found.  Try again next step.
 void ConstructionManager::HandledQueuedBuilding(BuildQueueTask &task)
 {
-	const Unit* builderUnit = Utils::GetRandomHarvester(Observation());
+	const Unit* builderUnit = FindConstructionWorker();
 	if (builderUnit == nullptr) {
 		//Can't find a worker.  Do nothing, we'll try again next step
 	}
 	else {
 		task.AssignBuilder(builderUnit);
 		//Move on to finding a position
-		task.SetBuildingState(BuildingState::eFindingPosition);
+		task.SetConstructionTaskState(ConstructionTaskState::eFindingPosition);
 	}
 }
 
 //Pre:  Builder assigned
-//Post Success:  We have a position in which to build.  TODO:  This position may be invalid.
+//Post Success:  We have a position in which to build.  Note:  This position may be invalid.  If so it'll be caught and re-attempted in the queue.
 //Post Fail:  None at this time, always moves on to next step.
 void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
 {
@@ -104,25 +127,14 @@ void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
 	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
 		const Unit* geyser = HandleFindingRefineryTarget(task.GetBuilder()->pos);
 		task.SetGeyserTarget(geyser);
-		task.SetBuildingState(BuildingState::eIssuingBuild);
 	}
 	else {
-
-		//Find a random place to build
-		//TODO:  Random is a poor way to place buildings
-		float rx = sc2::GetRandomScalar();
-		float ry = sc2::GetRandomScalar();
-		const Unit* myBuilder = task.GetBuilder();
-		if (myBuilder != nullptr) {
-			Point2D buildPoint(myBuilder->pos.x + rx * 15.0f, myBuilder->pos.y + ry * 15.0f);
-			task.SetBuildPoint(buildPoint);
-			//Issue build command
-			task.SetBuildingState(BuildingState::eIssuingBuild);
-		}
-		else {
-			//TODO:  What if we lose our builder?  Would this even be null, or just some invalid pointer?
-		}
+		ConstructionPlacement p;
+		Point2D buildPoint = p.GetBuildPoint(task.GetBuilder());
+		task.SetBuildPoint(buildPoint);
 	}
+	//Issue build command
+	task.SetConstructionTaskState(ConstructionTaskState::eIssuingBuild);
 }
 
 //Pre:  Builder assigned and position known.
@@ -140,55 +152,34 @@ void ConstructionManager::HandleIssuingBuild(BuildQueueTask &task)
 	}
 
 	//wait on build to start
-	task.SetBuildingState(BuildingState::eConfirmOrders);
+	task.SetConstructionTaskState(ConstructionTaskState::eConfirmOrders);
 }
 
 //Pre:  Builder has been issued a command
 //Post Success:  Builder has accepted our orders
 //Post Fail (cancel task):  Builder did not accept our orders.  Entire task is aborted.
-void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
+void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
 {
 	//Did the builder accept our unit command?  Look for an order that isn't harvesting.
+	//	Note:  This is predicated around the assumption that we only pull constructors from harvesters
 	const Unit* builder = task.GetBuilder();
 	bool bFound = false;
 	for (UnitOrder o : builder->orders) {
 		if (o.ability_id != ABILITY_ID::HARVEST_GATHER && o.ability_id != ABILITY_ID::HARVEST_RETURN) {
-			//TODO:  Breakpoint here a bit and see if there are any other cases we're missing?
 			bFound = true;
 		}
 	}
 	if (!bFound) {
 		//Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
-		//	If this task has been in our queue too long, we'll abort it.
-
-		//TODO:  Where should this logic be?  Does it make sense inside BuildQueueTask?  That's a bit of a POCO class.
-		//TODO:  Here's some documentation to put ... somewhere.
-		//	https://github.com/Blizzard/s2client-api/issues/164
-		//	From parsing this, here's some rough ideas:  16 gameloops is used as a measurement of distance.  Presumably because this is about 1s in some speed (normal?)
-		//	The blizz dev also says faster is 22.4 gameloops/second.  So we'll take a nice round value and say "20 loops per second" roughly.  If we don't get a command
-		//	queued within 5 seconds, then kill it.
-		const uint32_t maxGameLoopsBeforeAbort = 20 * 5;
-		if (Observation()->GetGameLoop() - task.GetStartingGameLoop() > maxGameLoopsBeforeAbort) {
-			//This builder failed to get our order in a reasonable time.  Abort the whole thing and remove the task from our build queue.
-			if (task.GetFailureCallback() != nullptr) {
-				//Call the success callback function provided
-				std::invoke(task.GetFailureCallback(), taskId);
-			}
-
-			tasksToRemove.push_back(taskId);
-		}
-		else {
-			//NEW STATE:  Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
-			//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
-			task.AssignBuilder(nullptr);
-			//Requeue back like a new request
-			task.SetBuildingState(BuildingState::eQueued);
-		}
+		//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
+		task.AssignBuilder(nullptr);
+		//Requeue back like a new request
+		task.SetConstructionTaskState(ConstructionTaskState::eQueued);
 	}
 	else {
 		//Otherwise, the builder does have a non-gathering order in their queue.  We'll assume that's ours.
 		//	TODO:  Some small risk of them being kidnapped elsewhere in between or the order not being ours.
-		task.SetBuildingState(BuildingState::eWaitingOnBuildStart);
+		task.SetConstructionTaskState(ConstructionTaskState::eWaitingOnBuildStart);
 	}
 }
 
@@ -222,7 +213,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 		float distance = Distance2D(task.GetBuildPoint(), buildingStarted->pos);
 		if (distance < maxBuildingDistance) {
 			task.SetBuilding(buildingStarted);
-			task.SetBuildingState(BuildingState::eConstructionInProgress);
+			task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
 		}
 	}
 }
@@ -230,18 +221,17 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 //Pre:  Building is started, we found it, and we know it's being built.
 //Post Success:  The building finished, progress is complete.
 //Post Fail (repeat):  The building progress is less than complete.
-//TODO:  Detection for interrupted state.  Lose worker?  How to test this?
 void ConstructionManager::HandleConstructionInProgress(BuildQueueTask &task)
 {
 	if (task.GetBuilding()->build_progress >= 0.999999f) {
 		//Building done!
-		task.SetBuildingState(BuildingState::eCompleted);
+		task.SetConstructionTaskState(ConstructionTaskState::eCompleted);
 	}
 }
 
 //Pre:  Building detected at 100% complete
 //Post Success:  Building is completed, remove it from our queue.
-void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
+void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
 {
 	//Done.  Clean it up, no need to monitor it in our queue any longer.
 	if (task.GetSuccessCallback() != nullptr) {
@@ -251,6 +241,7 @@ void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<int64
 	tasksToRemove.push_back(taskId);
 }
 
+//Find the appropriate vespene geyser when we're trying to build a refinery
 const Unit* ConstructionManager::HandleFindingRefineryTarget(Point2D builderPos)
 {
 	return EconManager::FindNearestVespeneGeyser(builderPos, Observation());
