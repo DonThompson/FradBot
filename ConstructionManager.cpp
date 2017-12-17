@@ -1,6 +1,5 @@
 #include "ConstructionManager.h"
-#include "../utils/Utils.h"
-#include "EconManager.h"
+#include "managers/EconManager.h"
 
 ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)

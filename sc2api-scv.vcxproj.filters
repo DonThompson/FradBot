@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="BuildingConstruction">
+      <UniqueIdentifier>{23b2367f-3208-46f7-96b8-45af3d9e6b76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -37,10 +40,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BuildQueueTask.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BuildingConstruction</Filter>
     </ClCompile>
-    <ClCompile Include="managers\ConstructionManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ConstructionManager.cpp">
+      <Filter>BuildingConstruction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,13 +66,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BuildQueueTask.h">
-      <Filter>Header Files</Filter>
+      <Filter>BuildingConstruction</Filter>
     </ClInclude>
     <ClInclude Include="BuildingState.h">
-      <Filter>Header Files</Filter>
+      <Filter>BuildingConstruction</Filter>
     </ClInclude>
-    <ClInclude Include="managers\ConstructionManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ConstructionManager.h">
+      <Filter>BuildingConstruction</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
