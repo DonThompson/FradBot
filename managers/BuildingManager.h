@@ -21,7 +21,7 @@ class Bot;
 	Progress:
 	[DONE] - callback functions (done.  tested as null)
 	[DONE] - test callbacks non-null
-	- fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
+	[DONE] - fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
 	- put in some kind of counter - can't bounce around forever, it needs to eventually time out
 	- callback on that cancel
 	- test that case somehow
@@ -31,6 +31,7 @@ class Bot;
 	- refactor and cleanup
 	- this should put buildmanager in a good place going forward for a while
 	- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
+	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
 */
 
 class BuildingManager : public ManagerBase

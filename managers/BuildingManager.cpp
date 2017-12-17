@@ -143,20 +143,28 @@ void BuildingManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<i
 		}
 	}
 	if (!bFound) {
-		//This builder failed to get our order.  Abort the whole thing and remove the task from our build queue.
+		//NEW STATE:  Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
+		//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
+		task.AssignBuilder(nullptr);
+		//Requeue back like a new request
+		task.SetBuildingState(BuildingState::eQueued);
 
+		/*	PREVIOUS STATE:  Abort the build command altogether and let the caller figure out how to re-queue it.  Keeping this temporarily as a reference - 
+				TODO:  remove it before we merge the branch back.
+		//This builder failed to get our order.  Abort the whole thing and remove the task from our build queue.
 		if (task.GetFailureCallback() != nullptr) {
 			//Call the success callback function provided
 			std::invoke(task.GetFailureCallback(), taskId);
 		}
 
 		tasksToRemove.push_back(taskId);
-		return;
+		*/
 	}
-
-	//Otherwise, the builder does have a non-gathering order in their queue.  We'll assume that's ours.
-	//	TODO:  Some small risk of them being kidnapped elsewhere in between.
-	task.SetBuildingState(BuildingState::eWaitingOnBuildStart);
+	else {
+		//Otherwise, the builder does have a non-gathering order in their queue.  We'll assume that's ours.
+		//	TODO:  Some small risk of them being kidnapped elsewhere in between or the order not being ours.
+		task.SetBuildingState(BuildingState::eWaitingOnBuildStart);
+	}
 }
 
 //Pre:  Builder has accepted our orders
