@@ -9,7 +9,7 @@ using namespace sc2;
 #include "managers/SupplyManager.h"
 #include "managers/EconManager.h"
 #include "managers/ArmyManager.h"
-#include "managers/BuildingManager.h"
+#include "managers/ConstructionManager.h"
 #include "utils/Utils.h"
 
 
@@ -18,7 +18,7 @@ private:
 	SupplyManager supplyManager;
 	EconManager econManager;
 	ArmyManager armyManager;
-	BuildingManager buildingManager;
+	ConstructionManager constructionManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -29,7 +29,7 @@ public:
 	//////////////////////////////////////////////
 	//  Access to Manager Classes				//
 	//////////////////////////////////////////////
-	BuildingManager & Building();
+	ConstructionManager & Construction();
 	const SupplyManager & Supply();
 	const ArmyManager & Army();
 	const EconManager & Econ();

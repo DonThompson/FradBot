@@ -4,7 +4,7 @@ Bot::Bot()
 	: supplyManager(*this)
 	, econManager(*this)
 	, armyManager(*this)
-	, buildingManager(*this)
+	, constructionManager(*this)
 {
 
 }
@@ -14,9 +14,9 @@ Bot::~Bot()
 
 }
 
-BuildingManager & Bot::Building()
+ConstructionManager & Bot::Construction()
 {
-	return buildingManager;
+	return constructionManager;
 }
 
 const SupplyManager & Bot::Supply()
@@ -46,7 +46,7 @@ void Bot::OnGameStart()
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);
 	managers.push_back(&armyManager);
-	managers.push_back(&buildingManager);
+	managers.push_back(&constructionManager);
 }
 
 void Bot::OnGameEnd()

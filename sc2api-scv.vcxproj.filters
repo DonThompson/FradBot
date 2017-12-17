@@ -36,10 +36,10 @@
     <ClCompile Include="bot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="managers\BuildingManager.cpp">
+    <ClCompile Include="BuildQueueTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BuildQueueTask.cpp">
+    <ClCompile Include="managers\ConstructionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,13 +62,13 @@
     <ClInclude Include="bot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="managers\BuildingManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BuildQueueTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BuildingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\ConstructionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

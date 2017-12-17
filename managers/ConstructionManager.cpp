@@ -1,20 +1,20 @@
-#include "BuildingManager.h"
+#include "ConstructionManager.h"
 #include "../utils/Utils.h"
 #include "EconManager.h"
 
-BuildingManager::BuildingManager(Bot & b)
+ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)
 	, nextBuildingId(0)
 {
 
 }
 
-BuildingManager::~BuildingManager()
+ConstructionManager::~ConstructionManager()
 {
 
 }
 
-int64_t BuildingManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
+int64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
 	int64_t id = UseNextIdentifier();
 
@@ -24,14 +24,14 @@ int64_t BuildingManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueu
 	return id;
 }
 
-int64_t BuildingManager::UseNextIdentifier()
+int64_t ConstructionManager::UseNextIdentifier()
 {
 	int64_t useThis = nextBuildingId;
 	nextBuildingId++;
 	return useThis;
 }
 
-void BuildingManager::OnStep()
+void ConstructionManager::OnStep()
 {
 	//Process the events in the queue
 	std::vector<int64_t> tasksToRemove;
@@ -83,7 +83,7 @@ void BuildingManager::OnStep()
 //Pre:  Build task has been queued
 //Post Success:  We found a unit that will perform the build task.
 //Post Fail (repeat):  No suitable builder could be found.  Try again next step.
-void BuildingManager::HandledQueuedBuilding(BuildQueueTask &task)
+void ConstructionManager::HandledQueuedBuilding(BuildQueueTask &task)
 {
 	const Unit* builderUnit = Utils::GetRandomHarvester(Observation());
 	if (builderUnit == nullptr) {
@@ -99,7 +99,7 @@ void BuildingManager::HandledQueuedBuilding(BuildQueueTask &task)
 //Pre:  Builder assigned
 //Post Success:  We have a position in which to build.  TODO:  This position may be invalid.
 //Post Fail:  None at this time, always moves on to next step.
-void BuildingManager::HandleFindingPosition(BuildQueueTask &task)
+void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
 {
 	//SPECIAL!  If we're building a refinery, it needs a vespene structure, not a position
 	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
@@ -129,7 +129,7 @@ void BuildingManager::HandleFindingPosition(BuildQueueTask &task)
 //Pre:  Builder assigned and position known.
 //Post Success:  Unit command issued to perform a build.  This may or may not succeed, we do not know what happens.
 //Post Fail:  None at this time, always moves on to next step.
-void BuildingManager::HandleIssuingBuild(BuildQueueTask &task)
+void ConstructionManager::HandleIssuingBuild(BuildQueueTask &task)
 {
 	//Geysers require special handling
 	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
@@ -147,7 +147,7 @@ void BuildingManager::HandleIssuingBuild(BuildQueueTask &task)
 //Pre:  Builder has been issued a command
 //Post Success:  Builder has accepted our orders
 //Post Fail (cancel task):  Builder did not accept our orders.  Entire task is aborted.
-void BuildingManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
+void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
 {
 	//Did the builder accept our unit command?  Look for an order that isn't harvesting.
 	const Unit* builder = task.GetBuilder();
@@ -196,7 +196,7 @@ void BuildingManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<i
 //Pre:  Builder has accepted our orders
 //Post Success:  Builder got the command and actually started the building - it's visible on the map.
 //TODO:  Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.
-void BuildingManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
+void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 {
 	//Now we know the builder has the order.
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
@@ -232,7 +232,7 @@ void BuildingManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 //Post Success:  The building finished, progress is complete.
 //Post Fail (repeat):  The building progress is less than complete.
 //TODO:  Detection for interrupted state.  Lose worker?  How to test this?
-void BuildingManager::HandleConstructionInProgress(BuildQueueTask &task)
+void ConstructionManager::HandleConstructionInProgress(BuildQueueTask &task)
 {
 	if (task.GetBuilding()->build_progress >= 0.999999f) {
 		//Building done!
@@ -242,7 +242,7 @@ void BuildingManager::HandleConstructionInProgress(BuildQueueTask &task)
 
 //Pre:  Building detected at 100% complete
 //Post Success:  Building is completed, remove it from our queue.
-void BuildingManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
+void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId)
 {
 	//Done.  Clean it up, no need to monitor it in our queue any longer.
 	if (task.GetSuccessCallback() != nullptr) {
@@ -252,7 +252,7 @@ void BuildingManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> 
 	tasksToRemove.push_back(taskId);
 }
 
-const Unit* BuildingManager::HandleFindingRefineryTarget(Point2D builderPos)
+const Unit* ConstructionManager::HandleFindingRefineryTarget(Point2D builderPos)
 {
 	return EconManager::FindNearestVespeneGeyser(builderPos, Observation());
 }

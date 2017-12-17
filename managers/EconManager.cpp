@@ -133,7 +133,7 @@ void EconManager::OnRefineryFailed(int64_t taskId)
 void EconManager::BuildRefinery()
 {
 	//The build manager will take your request and do all it can to make it happen.  We get a callback on success/fail.
-	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_REFINERY,
+	int64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_REFINERY,
 		std::bind(&EconManager::OnRefinerySuccess, this, std::placeholders::_1),
 		std::bind(&EconManager::OnRefineryFailed, this, std::placeholders::_1));
 
