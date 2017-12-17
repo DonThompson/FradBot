@@ -1,5 +1,6 @@
 #include "BuildingManager.h"
 #include "../utils/Utils.h"
+#include "EconManager.h"
 
 BuildingManager::BuildingManager(Bot & b)
 	: ManagerBase(b)
@@ -100,19 +101,28 @@ void BuildingManager::HandledQueuedBuilding(BuildQueueTask &task)
 //Post Fail:  None at this time, always moves on to next step.
 void BuildingManager::HandleFindingPosition(BuildQueueTask &task)
 {
-	//Find a random place to build
-	//TODO:  Random is a poor way to place buildings
-	float rx = sc2::GetRandomScalar();
-	float ry = sc2::GetRandomScalar();
-	const Unit* myBuilder = task.GetBuilder();
-	if (myBuilder != nullptr) {
-		Point2D buildPoint(myBuilder->pos.x + rx * 15.0f, myBuilder->pos.y + ry * 15.0f);
-		task.SetBuildPoint(buildPoint);
-		//Issue build command
+	//SPECIAL!  If we're building a refinery, it needs a vespene structure, not a position
+	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
+		const Unit* geyser = HandleFindingRefineryTarget(task.GetBuilder()->pos);
+		task.SetGeyserTarget(geyser);
 		task.SetBuildingState(BuildingState::eIssuingBuild);
 	}
 	else {
-		//TODO:  What if we lose our builder?  Would this even be null, or just some invalid pointer?
+
+		//Find a random place to build
+		//TODO:  Random is a poor way to place buildings
+		float rx = sc2::GetRandomScalar();
+		float ry = sc2::GetRandomScalar();
+		const Unit* myBuilder = task.GetBuilder();
+		if (myBuilder != nullptr) {
+			Point2D buildPoint(myBuilder->pos.x + rx * 15.0f, myBuilder->pos.y + ry * 15.0f);
+			task.SetBuildPoint(buildPoint);
+			//Issue build command
+			task.SetBuildingState(BuildingState::eIssuingBuild);
+		}
+		else {
+			//TODO:  What if we lose our builder?  Would this even be null, or just some invalid pointer?
+		}
 	}
 }
 
@@ -121,8 +131,14 @@ void BuildingManager::HandleFindingPosition(BuildQueueTask &task)
 //Post Fail:  None at this time, always moves on to next step.
 void BuildingManager::HandleIssuingBuild(BuildQueueTask &task)
 {
-	//Issue the action to the unit via the command menu to build and where
-	Actions()->UnitCommand(task.GetBuilder(), task.GetBuildingType(), task.GetBuildPoint());
+	//Geysers require special handling
+	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
+		Actions()->UnitCommand(task.GetBuilder(), task.GetBuildingType(), task.GetGeyserTarget());
+	}
+	else {
+		//Issue the action to the unit via the command menu to build and where
+		Actions()->UnitCommand(task.GetBuilder(), task.GetBuildingType(), task.GetBuildPoint());
+	}
 
 	//wait on build to start
 	task.SetBuildingState(BuildingState::eConfirmOrders);
@@ -234,4 +250,9 @@ void BuildingManager::HandleCompleted(BuildQueueTask task, std::vector<int64_t> 
 		std::invoke(task.GetSuccessCallback(), taskId);
 	}
 	tasksToRemove.push_back(taskId);
+}
+
+const Unit* BuildingManager::HandleFindingRefineryTarget(Point2D builderPos)
+{
+	return EconManager::FindNearestVespeneGeyser(builderPos, Observation());
 }

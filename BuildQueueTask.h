@@ -18,6 +18,7 @@ public:
 	BuildingState GetBuildingState();
 	const Unit* GetBuilder();
 	Point2D GetBuildPoint();
+	const Unit* GetGeyserTarget();
 	ABILITY_ID GetBuildingType();
 	const Unit* GetBuilding();
 	BuildQueueTaskCallbackFunction GetSuccessCallback();
@@ -26,6 +27,7 @@ public:
 	void SetBuildingState(BuildingState newState);
 	void AssignBuilder(const Unit* builder);
 	void SetBuildPoint(Point2D _pt);
+	void SetGeyserTarget(const Unit* _geyser);
 	void SetBuilding(const Unit* _building);
 	void SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn);
 	void SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn);
@@ -37,6 +39,8 @@ private:
 	ABILITY_ID structureToBuild;
 	const Unit* builderUnit;
 	Point2D buildingPoint;
+	//TODO:  derive class instead of if/else statements
+	const Unit* geyserTarget;	//alt to buildingPoint
 	const Unit* building;
 	BuildQueueTaskCallbackFunction callbackSuccess;
 	BuildQueueTaskCallbackFunction callbackFailure;

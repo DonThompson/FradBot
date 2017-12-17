@@ -61,4 +61,6 @@ private:
 	void HandleConstructionInProgress(BuildQueueTask &task);
 	void HandleCompleted(BuildQueueTask task, std::vector<int64_t> &tasksToRemove, const int64_t taskId);
 
+	const Unit* HandleFindingRefineryTarget(Point2D builderPos);
+
 };
