@@ -3,6 +3,8 @@
 
 EconManager::EconManager(Bot & b)
 	: ManagerBase(b)
+	, refineriesInProgress(0)
+	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
 }
@@ -13,14 +15,15 @@ EconManager::~EconManager()
 
 void EconManager::OnStep()
 {
-	if (NeedRefinery()) {
-		TryBuildRefinery();
-	}
-
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
 	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
 	if (clock() - lastBalanceClock > rebalanceTime) {
 		BalanceBuilders();
+
+		if (NeedRefinery()) {
+			BuildRefinery();
+		}
+
 		lastBalanceClock = clock();
 	}
 }
@@ -90,10 +93,7 @@ void EconManager::OnCommandCenterIdle(const Unit* unit)
 //TODO:  Hardcoded
 bool EconManager::NeedRefinery()
 {
-	const ObservationInterface* observation = Observation();
-	ActionInterface* actions = Actions();
-
-	int32_t supplyUsed = observation->GetFoodUsed();
+	int32_t supplyUsed = Observation()->GetFoodUsed();
 
 	//Don't build the first until 18 supply.
 	if (supplyUsed >= 18 && GetRefineryCount() < 1) {
@@ -108,37 +108,43 @@ bool EconManager::NeedRefinery()
 	return false;
 }
 
-//Counts building and built
+//Counts in progress and completed
 int32_t EconManager::GetRefineryCount()
 {
-	return Utils::CountOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
+	return refineriesCompleted + refineriesInProgress;
+	// return Utils::CountOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
 }
 
-bool EconManager::TryBuildRefinery()
+void EconManager::OnRefinerySuccess(int64_t taskId)
 {
-	const ObservationInterface* observation = Observation();
-	ActionInterface* actions = Actions();
+	refineriesInProgress--;
+	refineriesCompleted++;
 
-	//Get a builder to work with
-	const Unit* builder = Utils::GetRandomHarvester(observation);
-	if (builder == nullptr) {
-		return false;
-	}
-
-	const Unit* vespeneGeyser = FindNearestVespeneGeyser(builder->pos);
-	if (vespeneGeyser == nullptr) {
-		return false;
-	}
-
-	//Geyers builds are actioned by tag, not by point
-	actions->UnitCommand(builder, ABILITY_ID::BUILD_REFINERY, vespeneGeyser);
-
-	return true;
+	std::cout << "Refinery build success, task:  " << taskId << std::endl;
 }
 
-const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start)
+void EconManager::OnRefineryFailed(int64_t taskId)
 {
-	Units units = Observation()->GetUnits(Unit::Alliance::Neutral);
+	refineriesInProgress--;
+
+	std::cout << "Refinery build failed, task:  " << taskId << std::endl;
+}
+
+void EconManager::BuildRefinery()
+{
+	//The build manager will take your request and do all it can to make it happen.  We get a callback on success/fail.
+	uint64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_REFINERY,
+		std::bind(&EconManager::OnRefinerySuccess, this, std::placeholders::_1),
+		std::bind(&EconManager::OnRefineryFailed, this, std::placeholders::_1));
+
+	refineriesInProgress++;
+
+	std::cout << "Starting new refinery, task id:  " << queueId << std::endl;
+}
+
+const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const ObservationInterface* obs)
+{
+	Units units = obs->GetUnits(Unit::Alliance::Neutral);
 	float distance = std::numeric_limits<float>::max();
 	const Unit* target = nullptr;
 	for (const auto& u : units) {

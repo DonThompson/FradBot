@@ -3,6 +3,8 @@
 
 ArmyManager::ArmyManager(Bot & b)
 	: ManagerBase(b)
+	, lastBalanceClock(clock_t())
+	, raxInProgress(0)
 {
 }
 
@@ -12,33 +14,42 @@ ArmyManager::~ArmyManager()
 
 void ArmyManager::OnStep()
 {
-	const ObservationInterface* observation = Observation();
-	ActionInterface* actions = Actions();
+	//Rebalance supply every few seconds.  We really don't need to do this every step.
+	//TODO:  Clock is REAL time.  Should we use game time?  In super fast AI mode this might actually be 5-6 game seconds.
+	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
+	if (clock() - lastBalanceClock > rebalanceTime) {
 
-	if (BarracksNeeded()) {
-		TryBuildBarracks();
+		//Specific logic
+		if (BarracksNeeded()) {
+			BuildBarracks();
+		}
+
+		//The whole strategy!
+		TryAttackInGroups();
+
+		lastBalanceClock = clock();
 	}
-
-	//The whole strategy!
-	TryAttackInGroups();
 }
 
 bool ArmyManager::BarracksNeeded()
 {
 	const ObservationInterface* observation = Observation();
 
+	//Includes under construction and completed
+	//TODO:  Better to not count in progress so we can use our own counter?
 	int32_t countBarracks = Utils::CountOwnUnits(observation, UNIT_TYPEID::TERRAN_BARRACKS);
 	int32_t currentSupply = observation->GetFoodUsed();
 	int32_t currentMinerals = observation->GetMinerals();
 
-	//Build our first barracks at 16 and build one every time we hit 600 minerals in the bank after that.  Max at 10.
-	//Cap to no more than 1 per 15 food - we were getting hung up sometimes and building 9 rax at ~35 supply
-	if (countBarracks == 0 && currentSupply > 16) {
+	//Build our first barracks at 16 and build one every time we hit 400 minerals in the bank after that.  Max at 10.
+	//Cap to no more than 1 per 10 food - we were getting hung up sometimes and building 9 rax at ~35 supply
+	if (countBarracks == 0 && raxInProgress == 0 && currentSupply >= 16) {
 		return true;
 	}
 	else {
-		int32_t maxDesiredRax = currentSupply / 15;
-		if (countBarracks < maxDesiredRax && currentMinerals >= 600) {
+		//TODO:  In progress but not yet started doesn't fit in here.
+		int32_t maxDesiredRax = currentSupply / 10;
+		if (countBarracks < maxDesiredRax && currentMinerals >= 400) {
 			return true;
 		}
 	}
@@ -46,10 +57,29 @@ bool ArmyManager::BarracksNeeded()
 	return false;
 }
 
-bool ArmyManager::TryBuildBarracks()
+void ArmyManager::BuildBarracks()
 {
-	int64_t queueId = bot.Building().BuildStructure(ABILITY_ID::BUILD_BARRACKS);
-	return true;
+	uint64_t queueId = bot.Construction().BuildStructure(ABILITY_ID::BUILD_BARRACKS,
+		std::bind(&ArmyManager::OnBarracksSuccess, this, std::placeholders::_1),
+		std::bind(&ArmyManager::OnBarracksFailed, this, std::placeholders::_1));
+
+	std::cout << "Starting new barracks, task id:  " << queueId << std::endl;
+
+	raxInProgress++;
+}
+
+void ArmyManager::OnBarracksSuccess(int64_t taskId)
+{
+	raxInProgress--;
+
+	std::cout << "Barracks build success, task:  " << taskId << std::endl;
+}
+
+void ArmyManager::OnBarracksFailed(int64_t taskId)
+{
+	raxInProgress--;
+
+	std::cout << "Barracks build failed, task:  " << taskId << std::endl;
 }
 
 void ArmyManager::TryAttackInGroups()

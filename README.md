@@ -3,6 +3,9 @@ Beginner (SCV Level) Starcraft2 API
 
 Current state:  Defeats all medium AI better than 80% of the time.
 
+General:
+* Generalize the rebalance logic in econ/supply manager to some kind of event system.  Game time is probably preferred.
+
 Supply manager issues:
 * Supply can't keep up.  Regularly supply blocked.
 * Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.
@@ -14,9 +17,15 @@ Econ manager issues:
 Army manager issues:
 * If a barracks needs built, it will often build as many as it can.
 
-Building manager issues:
-* Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.  [Current other managers seem to assume lots of commands don't happen.  need to fix them.]
-* Misc small issues labeled throughout the code.
+Construction manager issues:
+* Maybe claiming queue failure should also force the builder to clear his order?  I did see one real case where a builder got sent very far, the timeout was hit saying the 
+* ConstructionTaskState::eInterrupted, ConstructionTaskState::eInterrupted_FindingNewWorker, ConstructionTaskState::eInterrupted_Resuming
+* DoBuildingPositionsMatch:  We make an assumption of 1.0f distance in 2 positions is a match.  I have not dug into positioning to confirm this or see if there's a better method.
+* HandleWaitingOnBuildStart:  We iterate through all units to find buildings under construction.  Can we find a filter that would slim this to just buildings?
+* Loss of worker.  I've done no testing on this.  It's completely unhandled.
+
+BuildingPlacement issues:
+* Random building placement is a stupid way to place buildings.  This needs improved greatly.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2

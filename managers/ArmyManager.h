@@ -15,12 +15,18 @@ public:
 	~ArmyManager();
 	virtual void OnStep();
 	bool BarracksNeeded();
-	bool TryBuildBarracks();
+	void BuildBarracks();
 	void TryAttackInGroups();
 	void LaunchAttackGroup(Units unitsToAttack);
 	void OnBarracksIdle(const Unit* unit);
 	void OnMarineIdle(const Unit* unit);
 	virtual void OnUnitIdle(const Unit* unit);
+	void OnBarracksSuccess(int64_t taskId);
+	void OnBarracksFailed(int64_t taskId);
+
+private:
+	clock_t lastBalanceClock;
+	uint32_t raxInProgress;
 
 };
 

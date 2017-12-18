@@ -1,6 +1,6 @@
 #pragma once
 
-enum class BuildingState
+enum class ConstructionTaskState
 {
 	eQueued = 0,
 	eFindingPosition,
