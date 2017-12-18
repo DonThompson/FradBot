@@ -20,6 +20,8 @@ Army manager issues:
 Construction manager issues:
 * Loss of worker.  I've done no testing on this.  It's completely unhandled.
 * ConstructionTaskState::eInterrupted, ConstructionTaskState::eInterrupted_FindingNewWorker, ConstructionTaskState::eInterrupted_Resuming
+* DoBuildingPositionsMatch:  We make an assumption of 1.0f distance in 2 positions is a match.  I have not dug into positioning to confirm this or see if there's a better method.
+* HandleWaitingOnBuildStart:  We iterate through all units to find buildings under construction.  Can we find a filter that would slim this to just buildings?
 
 BuildingPlacement issues:
 * Random building placement is a stupid way to place buildings.  This needs improved greatly.

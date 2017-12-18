@@ -28,10 +28,7 @@ class Bot;
 	[DONE]- go fix econ (refineries), supply (depots), and army (rax) managers to not spam so many commands and to implement callbacks
 	- logging work
 	- document, document, document.
-	- refactor and cleanup
-		- HandleConfirmingOrders
-		- HandleWaitingOnBuildStart
-		- everything else looks reasonably good
+	[DONE]- refactor and cleanup
 	- this should put buildmanager in a good place going forward for a while
 	[DONE]- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
@@ -71,4 +68,8 @@ private:
 
 	const Unit* FindConstructionWorker();
 	const Unit* HandleFindingRefineryTarget(Point2D builderPos);
+	bool DoesBuilderHaveNonHarvestOrders(const Unit* builder);
+	bool IsBuildingInProgress(const Unit* building);
+	bool DoBuildingPositionsMatch(Point2D pt1, Point2D pt2);
+	
 };

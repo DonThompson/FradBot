@@ -162,58 +162,40 @@ void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vect
 {
 	//Did the builder accept our unit command?  Look for an order that isn't harvesting.
 	//	Note:  This is predicated around the assumption that we only pull constructors from harvesters
-	const Unit* builder = task.GetBuilder();
-	bool bFound = false;
-	for (UnitOrder o : builder->orders) {
-		if (o.ability_id != ABILITY_ID::HARVEST_GATHER && o.ability_id != ABILITY_ID::HARVEST_RETURN) {
-			bFound = true;
-		}
+	if (DoesBuilderHaveNonHarvestOrders(task.GetBuilder()))	{
+		//The builder does have a non-gathering order in their queue.  We'll assume that's ours.  There is some small risk here
+		//	that it's not our order.
+		task.SetConstructionTaskState(ConstructionTaskState::eWaitingOnBuildStart);
 	}
-	if (!bFound) {
+	else {
 		//Our orders to build were not found on the builder - many failure reasons possible such as invalid location, not enough resources to spend, etc.
 		//	However, to be safest, we're going to re-queue clear back to finding a builder.  Maybe that builder is stuck or has since moved on to something else.
 		task.AssignBuilder(nullptr);
 		//Requeue back like a new request
 		task.SetConstructionTaskState(ConstructionTaskState::eQueued);
 	}
-	else {
-		//Otherwise, the builder does have a non-gathering order in their queue.  We'll assume that's ours.
-		//	TODO:  Some small risk of them being kidnapped elsewhere in between or the order not being ours.
-		task.SetConstructionTaskState(ConstructionTaskState::eWaitingOnBuildStart);
-	}
 }
 
 //Pre:  Builder has accepted our orders
 //Post Success:  Builder got the command and actually started the building - it's visible on the map.
-//TODO:  Could we / should we go back a step?  That might ensure we're completing tasks rather than skipping them.
 void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 {
 	//Now we know the builder has the order.
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
 	//	which one has a position that closely matches our suggested build position.  Note that positions are NOT identical.
+	for (const Unit* buildingStarted : Utils::GetOwnUnits(Observation(), Utils::UnitTypeFromBuildAbility(task.GetBuildingType()))) {
 
-	//TODO:  This is looking for supply depots.  Need to fix for other types of buildings.  How is this working at all?
-	for (const Unit* buildingStarted : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_SUPPLYDEPOT)) {
-		if (buildingStarted->build_progress >= 0.9999f) {
-			//Building is done, can't be what we're looking for.
-			continue;
-		}
-
-		if (buildingStarted->build_progress < 0.0001f) {
-			//Building is unstarted.  It might be ours, or it might be something else.  Wait until it's got a little bit of progress.
+		if (!IsBuildingInProgress(buildingStarted)) {
+			//Building is either unstarted (might be us, we'll check again next loop), or done.  We want in progress.
 			continue;
 		}
 
 		//This building is being constructed.  Let's see where, and if it's within appropriate distance to our suggested build point, 
 		//	it's very likely our building.
-		//TODO:  Be nice to confirm this in some other fashion or confirm the distances.  Is it possible for this distance to be less
-		//	then 1.0f and not be the same?  How can we test this?
-		const float maxBuildingDistance = 1.0f;
-
-		float distance = Distance2D(task.GetBuildPoint(), buildingStarted->pos);
-		if (distance < maxBuildingDistance) {
+		if(DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted->pos)) {
 			task.SetBuilding(buildingStarted);
 			task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
+			return;
 		}
 	}
 }
@@ -245,4 +227,49 @@ void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<uint6
 const Unit* ConstructionManager::HandleFindingRefineryTarget(Point2D builderPos)
 {
 	return EconManager::FindNearestVespeneGeyser(builderPos, Observation());
+}
+
+//Examine the given builder's orders and see if there are any other than harvesting.
+//Future:  This could be moved to a builder class once we get there.
+bool ConstructionManager::DoesBuilderHaveNonHarvestOrders(const Unit* builder)
+{
+	bool found = false;
+	for (UnitOrder o : builder->orders) {
+		if (o.ability_id != ABILITY_ID::HARVEST_GATHER && o.ability_id != ABILITY_ID::HARVEST_RETURN) {
+			found = true;
+		}
+	}
+
+	return found;
+}
+
+//Is the given building in progress?  Returns false if the building is unstarted (0% completion) or done (100% completion)
+//Future:  This could be moved to a building class once we get there.
+bool ConstructionManager::IsBuildingInProgress(const Unit* building)
+{
+	if (building->build_progress >= 0.9999f) {
+		//Building is done, can't be what we're looking for.
+		return false;
+	}
+
+	if (building->build_progress < 0.0001f) {
+		//Building is unstarted.  It might be ours, or it might be something else.  Wait until it's got a little bit of progress.
+		return false;
+	}
+
+	return true;
+}
+
+//There is no good way to get a building from the builder.  This function allows us to match a given position where we asked to build
+//	with a building's actual position.  If they're close, we assume them to match.
+bool ConstructionManager::DoBuildingPositionsMatch(Point2D pt1, Point2D pt2)
+{
+	const float maxBuildingDistance = 1.0f;
+
+	float distance = Distance2D(pt1, pt2);
+	if (distance < maxBuildingDistance) {
+		return true;
+	}
+
+	return false;
 }
