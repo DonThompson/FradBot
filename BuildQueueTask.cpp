@@ -112,7 +112,14 @@ bool BuildQueueTask::IsTaskLongRunning(uint32_t currentGameLoop)
 	//	The blizz dev also says faster is 22.4 gameloops/second.  So we'll take a nice round value and say "20 loops per second" roughly.  If we don't get a command
 	//	queued within 5 seconds, then kill it.
 	const uint32_t maxGameLoopsBeforeAbort = 20 * 5;
-	if (currentGameLoop - GetStartingGameLoop() > maxGameLoopsBeforeAbort) {
+	if (state == ConstructionTaskState::eWaitingOnBuildStart || state == ConstructionTaskState::eConstructionInProgress || state == ConstructionTaskState::eCompleted) {
+		//Ignore anything that reaches the 'construction in progress' state, which will obviously not complete this fast to actually build.
+		//	I also decided to keep 'waiting on build start' here.  I've seen a live case where a worker was sent a long distance, such that the orders were 
+		//	relayed to the builder, he ran off, but it was so far that the max loops was hit before he started.  The construction manager reported failure
+		//	to queue... but that builder still built his thing anyways.
+		return false;
+	}
+	if (currentGameLoop - GetStartingGameLoop() > maxGameLoopsBeforeAbort ) {
 		//This builder failed to get our order in a reasonable time.  Abort the whole thing and remove the task from our build queue.
 		return true;
 	}

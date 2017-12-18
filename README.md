@@ -18,10 +18,11 @@ Army manager issues:
 * If a barracks needs built, it will often build as many as it can.
 
 Construction manager issues:
-* Loss of worker.  I've done no testing on this.  It's completely unhandled.
+* Maybe claiming queue failure should also force the builder to clear his order?  I did see one real case where a builder got sent very far, the timeout was hit saying the 
 * ConstructionTaskState::eInterrupted, ConstructionTaskState::eInterrupted_FindingNewWorker, ConstructionTaskState::eInterrupted_Resuming
 * DoBuildingPositionsMatch:  We make an assumption of 1.0f distance in 2 positions is a match.  I have not dug into positioning to confirm this or see if there's a better method.
 * HandleWaitingOnBuildStart:  We iterate through all units to find buildings under construction.  Can we find a filter that would slim this to just buildings?
+* Loss of worker.  I've done no testing on this.  It's completely unhandled.
 
 BuildingPlacement issues:
 * Random building placement is a stupid way to place buildings.  This needs improved greatly.
