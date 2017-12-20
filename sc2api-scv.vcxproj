@@ -135,11 +135,13 @@
     <ClCompile Include="ConstructionPlacement.cpp" />
     <ClCompile Include="BuildQueueTask.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="managers\ArmyManager.cpp" />
+    <ClCompile Include="ArmyManager.cpp" />
     <ClCompile Include="ConstructionManager.cpp" />
     <ClCompile Include="managers\EconManager.cpp" />
     <ClCompile Include="managers\ManagerBase.cpp" />
     <ClCompile Include="managers\SupplyManager.cpp" />
+    <ClCompile Include="UpgradeList.cpp" />
+    <ClCompile Include="UpgradesManager.cpp" />
     <ClCompile Include="utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,11 +149,13 @@
     <ClInclude Include="ConstructionPlacement.h" />
     <ClInclude Include="ConstructionTaskState.h" />
     <ClInclude Include="BuildQueueTask.h" />
-    <ClInclude Include="managers\ArmyManager.h" />
+    <ClInclude Include="ArmyManager.h" />
     <ClInclude Include="ConstructionManager.h" />
     <ClInclude Include="managers\EconManager.h" />
     <ClInclude Include="managers\ManagerBase.h" />
     <ClInclude Include="managers\SupplyManager.h" />
+    <ClInclude Include="UpgradeList.h" />
+    <ClInclude Include="UpgradesManager.h" />
     <ClInclude Include="utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

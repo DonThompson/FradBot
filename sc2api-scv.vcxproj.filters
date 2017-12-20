@@ -16,6 +16,9 @@
     <Filter Include="BuildingConstruction">
       <UniqueIdentifier>{23b2367f-3208-46f7-96b8-45af3d9e6b76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Military">
+      <UniqueIdentifier>{277bdec3-1e73-4498-89f2-6c4382486e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,9 +36,6 @@
     <ClCompile Include="managers\EconManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="managers\ArmyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,6 +47,15 @@
     </ClCompile>
     <ClCompile Include="ConstructionPlacement.cpp">
       <Filter>BuildingConstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradesManager.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmyManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeList.cpp">
+      <Filter>Military</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,9 +69,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="managers\EconManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\ArmyManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot.h">
@@ -79,6 +85,15 @@
     </ClInclude>
     <ClInclude Include="ConstructionPlacement.h">
       <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradesManager.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeList.h">
+      <Filter>Military</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
