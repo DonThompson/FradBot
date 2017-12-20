@@ -63,6 +63,9 @@
     <ClCompile Include="StructuresManager.cpp">
       <Filter>BuildingStructures</Filter>
     </ClCompile>
+    <ClCompile Include="Structure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="managers\ManagerBase.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="StructuresManager.h">
       <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
