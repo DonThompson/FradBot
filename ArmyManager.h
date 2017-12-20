@@ -1,19 +1,18 @@
-#ifndef __ARMY_MANAGER_H
-#define __ARMY_MANAGER_H
+#pragma once
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
 using namespace sc2;
-#include "ManagerBase.h"
-#include "../utils/Utils.h"
+#include "managers/ManagerBase.h"
+#include "utils/Utils.h"
 
 class Bot;
 
 class ArmyManager : public ManagerBase {
 public:
 	ArmyManager(Bot & b);
-	~ArmyManager();
 	virtual void OnStep();
+
 	bool BarracksNeeded();
 	void BuildBarracks();
 	void TryAttackInGroups();
@@ -29,5 +28,3 @@ private:
 	uint32_t raxInProgress;
 
 };
-
-#endif //__ARMY_MANAGER_H

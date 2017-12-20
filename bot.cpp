@@ -5,6 +5,7 @@ Bot::Bot()
 	, econManager(*this)
 	, armyManager(*this)
 	, constructionManager(*this)
+	, upgradesManager(*this)
 {
 
 }
@@ -47,6 +48,7 @@ void Bot::OnGameStart()
 	managers.push_back(&supplyManager);
 	managers.push_back(&armyManager);
 	managers.push_back(&constructionManager);
+	managers.push_back(&upgradesManager);
 }
 
 void Bot::OnGameEnd()

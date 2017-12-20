@@ -1,14 +1,10 @@
 #include "ArmyManager.h"
-#include "../bot.h"
+#include "bot.h"
 
 ArmyManager::ArmyManager(Bot & b)
 	: ManagerBase(b)
 	, lastBalanceClock(clock_t())
 	, raxInProgress(0)
-{
-}
-
-ArmyManager::~ArmyManager()
 {
 }
 
@@ -31,6 +27,8 @@ void ArmyManager::OnStep()
 	}
 }
 
+
+
 bool ArmyManager::BarracksNeeded()
 {
 	const ObservationInterface* observation = Observation();
@@ -49,7 +47,7 @@ bool ArmyManager::BarracksNeeded()
 	else {
 		//TODO:  In progress but not yet started doesn't fit in here.
 		int32_t maxDesiredRax = currentSupply / 10;
-		if (countBarracks < maxDesiredRax && currentMinerals >= 400) {
+		if (countBarracks < maxDesiredRax && currentMinerals >= 300) {
 			return true;
 		}
 	}

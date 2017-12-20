@@ -8,8 +8,9 @@ using namespace sc2;
 #include "managers/ManagerBase.h"
 #include "managers/SupplyManager.h"
 #include "managers/EconManager.h"
-#include "managers/ArmyManager.h"
+#include "ArmyManager.h"
 #include "ConstructionManager.h"
+#include "UpgradesManager.h"
 #include "utils/Utils.h"
 
 
@@ -19,6 +20,7 @@ private:
 	EconManager econManager;
 	ArmyManager armyManager;
 	ConstructionManager constructionManager;
+	UpgradesManager upgradesManager;
 
 	std::vector<ManagerBase*> managers;
 
