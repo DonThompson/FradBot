@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bot.cpp" />
+    <ClCompile Include="StructuresManager.cpp" />
     <ClCompile Include="ConstructionPlacement.cpp" />
     <ClCompile Include="BuildQueueTask.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
+    <ClInclude Include="StructuresManager.h" />
     <ClInclude Include="ConstructionPlacement.h" />
     <ClInclude Include="ConstructionTaskState.h" />
     <ClInclude Include="BuildQueueTask.h" />
