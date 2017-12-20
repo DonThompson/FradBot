@@ -9,6 +9,11 @@ const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)
 	const int tries = 5;
 	for (int i = 0; i < tries; i++)
 	{
+		//We've probably lost at this point...
+		if (units.size() == 0) {
+			return nullptr;
+		}
+
 		//Get a completely random harvester
 		const Unit* harvester = units[rand() % units.size()];
 		if (harvester == nullptr) {
