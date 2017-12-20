@@ -12,10 +12,12 @@ Supply manager issues:
 * If a depot needs built, it will often build as many as it can.
 
 Econ manager issues:
-* If a refinery needs built, it will often build as many as it can.
+* SCVs keep going off to natural expansions when they built near the choke.
+* Lower all depots on build?  SCVs get stuck occasionally.
 
 Army manager issues:
-* If a barracks needs built, it will often build as many as it can.
+* Queue units at the choke.  Getting too strung out because some are close and some are behind the line.
+* Build orders.  Tough to beat the hard AI without a good plan.
 
 Construction manager issues:
 * Maybe claiming queue failure should also force the builder to clear his order?  I did see one real case where a builder got sent very far, the timeout was hit saying the build failed, but then he started.  The caller went and re-queued the intended building, resulting in a dupe.
