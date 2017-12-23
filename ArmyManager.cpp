@@ -27,15 +27,13 @@ void ArmyManager::OnStep()
 	}
 }
 
-
-
 bool ArmyManager::BarracksNeeded()
 {
 	const ObservationInterface* observation = Observation();
 
 	//Includes under construction and completed
 	//TODO:  Better to not count in progress so we can use our own counter?
-	int32_t countBarracks = Utils::CountOwnUnits(observation, UNIT_TYPEID::TERRAN_BARRACKS);
+	int32_t countBarracks = bot.Structures().CountStructuresByType(UNIT_TYPEID::TERRAN_BARRACKS);
 	int32_t currentSupply = observation->GetFoodUsed();
 	int32_t currentMinerals = observation->GetMinerals();
 

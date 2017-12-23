@@ -16,8 +16,8 @@ BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _stru
 	, structureToBuild(_structure)
 	, builderUnit(nullptr)
 	, buildingPoint()
-	, geyserTarget(nullptr)
 	, building(nullptr)
+	, geyserTarget(nullptr)
 	, callbackSuccess(_successFn)
 	, callbackFailure(_failFn)
 {
@@ -53,7 +53,7 @@ ABILITY_ID BuildQueueTask::GetBuildingType()
 	return structureToBuild;
 }
 
-const Unit* BuildQueueTask::GetBuilding()
+Structure BuildQueueTask::GetBuilding()
 {
 	return building;
 }
@@ -88,7 +88,7 @@ void BuildQueueTask::SetGeyserTarget(const Unit* _geyser)
 	geyserTarget = _geyser;
 }
 
-void BuildQueueTask::SetBuilding(const Unit* _building)
+void BuildQueueTask::SetBuilding(Structure _building)
 {
 	building = _building;
 }

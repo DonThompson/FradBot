@@ -9,10 +9,6 @@ EconManager::EconManager(Bot & b)
 	lastBalanceClock = clock();
 }
 
-EconManager::~EconManager()
-{
-}
-
 void EconManager::OnStep()
 {
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
@@ -49,44 +45,49 @@ void EconManager::OnUnitIdle(const Unit* unit)
 void EconManager::BalanceBuilders()
 {
 	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
-	Units refineries = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
-	for (const Unit* r : refineries) {
-		if (r->build_progress >= 1.0f && r->assigned_harvesters < r->ideal_harvesters) {
-			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r->assigned_harvesters << ".  Ideal:  " << r->ideal_harvesters << std::endl;
+	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+	for (Structure r : refineries) {
+		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
+			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
 			const Unit* unit = Utils::GetRandomHarvester(Observation());
-			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r);
+			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
 		}
 	}
 
 	//Make sure command centers have enough units - we might have just stolen some to bring them below threshold
-	Units cc = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_COMMANDCENTER);
-	for (const Unit* u : cc) {
+	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
+	for (Structure cc : ccs) {
 		//Just call the idle function, it'll quit if not needed
-		if (u->orders.size() == 0) {
-			OnCommandCenterIdle(u);
+		if (cc.getOrderCount() == 0) {
+			HandleCommandCenterIdle(cc);
 		}
 	}
 }
 
 void EconManager::OnCommandCenterIdle(const Unit* unit)
 {
+	HandleCommandCenterIdle(Structure(unit));
+}
+
+void EconManager::HandleCommandCenterIdle(Structure cc)
+{
 	//Only build if we're short harvesters
 	bool buildSCV = false;
 
-	if (unit->assigned_harvesters < unit->ideal_harvesters) {
+	if (cc.assignedHarvesters() < cc.idealHarvesters()) {
 		buildSCV = true;
 	}
 
 	//Or if we're short gas harvesters
-	Units refineries = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
-	for (const Unit* r : refineries) {
-		if (r->assigned_harvesters < r->ideal_harvesters) {
+	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+	for (Structure r : refineries) {
+		if (r.assignedHarvesters() < r.idealHarvesters()) {
 			buildSCV = true;
 		}
 	}
 
 	if (buildSCV) {
-		Actions()->UnitCommand(unit, ABILITY_ID::TRAIN_SCV);
+		Actions()->UnitCommand(cc.building, ABILITY_ID::TRAIN_SCV);
 	}
 }
 

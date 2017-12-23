@@ -12,7 +12,6 @@ public:
 	static Units GetOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID);
 	static Units GetOwnUnits(const ObservationInterface* observation);
 	static Units GetIdleUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID, UNIT_TYPEID unitTypeID2);
-	static UNIT_TYPEID UnitTypeFromBuildAbility(ABILITY_ID abilityID);
 };
 
 

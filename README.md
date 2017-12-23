@@ -5,6 +5,7 @@ Current state:  Defeats all medium AI better than 80% of the time.
 
 General:
 * Generalize the rebalance logic in econ/supply manager to some kind of event system.  Game time is probably preferred.
+* I haven't touched Query() yet, but I threw a few comments below for things that look promising.
 
 Supply manager issues:
 * Supply can't keep up.  Regularly supply blocked.
@@ -28,6 +29,16 @@ Construction manager issues:
 
 BuildingPlacement issues:
 * Random building placement is a stupid way to place buildings.  This needs improved greatly.
+* Query()->Placement(sc2::ABILITY_ID::BUILD_CREEPTUMOR, location) looks promising too.
+
+Upgrades issues:
+* Does this give us a better way to detect upgrades?  Query()->GetAbilitiesForUnit(unit)
+
+Structures manager issues:
+* How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
+* Ideally we don't let Structure convert to const Unit*.  We'd rather that functionality just get moved into Structure.
+* Structure->building maybe should be private too.  Can we move all this into structure?
+* Re-evaluate all float comparisons for building progress.  I've tried to contain these all inside Structure.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2

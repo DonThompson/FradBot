@@ -4,6 +4,7 @@
 #include <sc2api/sc2_api.h>
 using namespace sc2;
 #include "ConstructionTaskState.h"
+#include "Structure.h"
 
 typedef std::function<void(int64_t)> BuildQueueTaskCallbackFunction;
 
@@ -21,7 +22,7 @@ public:
 	Point2D GetBuildPoint();
 	const Unit* GetGeyserTarget();
 	ABILITY_ID GetBuildingType();
-	const Unit* GetBuilding();
+	Structure GetBuilding();
 	BuildQueueTaskCallbackFunction GetSuccessCallback();
 	BuildQueueTaskCallbackFunction GetFailureCallback();
 
@@ -30,7 +31,7 @@ public:
 	void AssignBuilder(const Unit* builder);
 	void SetBuildPoint(Point2D _pt);
 	void SetGeyserTarget(const Unit* _geyser);
-	void SetBuilding(const Unit* _building);
+	void SetBuilding(Structure _building);
 	void SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn);
 	void SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn);
 
@@ -46,7 +47,7 @@ private:
 	Point2D buildingPoint;
 	//TODO:  derive class instead of if/else statements
 	const Unit* geyserTarget;	//alt to buildingPoint
-	const Unit* building;
+	Structure building;
 	BuildQueueTaskCallbackFunction callbackSuccess;
 	BuildQueueTaskCallbackFunction callbackFailure;
 };

@@ -118,8 +118,9 @@ void UpgradesManager::TryToUpgrade()
 
 void UpgradesManager::PerformTechLabUpgrades()
 {
-	for (const Unit* techlab : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_BARRACKSTECHLAB)) {
-		if (techlab->orders.size() > 0)
+	std::vector<Structure> techlabs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_BARRACKSTECHLAB);
+	for (Structure techlab : techlabs) {
+		if (techlab.getOrderCount() > 0)
 			continue;
 		else {
 			//Research in order
@@ -133,8 +134,8 @@ void UpgradesManager::PerformTechLabUpgrades()
 				research = ABILITY_ID::RESEARCH_STIMPACK;
 
 			if (research != ABILITY_ID::INVALID) {
-				std::cout << "Starting research at " << sc2::UnitTypeToName(techlab->unit_type) << " for " << sc2::AbilityTypeToName(research) << std::endl;
-				Actions()->UnitCommand(techlab, research);
+				std::cout << "Starting research at " << sc2::UnitTypeToName(techlab.getUnitTypeID()) << " for " << sc2::AbilityTypeToName(research) << std::endl;
+				Actions()->UnitCommand(techlab.building, research);
 			}
 		}
 	}
@@ -142,9 +143,10 @@ void UpgradesManager::PerformTechLabUpgrades()
 
 void UpgradesManager::PerformEngBayUpgrades()
 {
-	for (const Unit* ebay : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_ENGINEERINGBAY)) {
+	std::vector<Structure> ebays = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_ENGINEERINGBAY);
+	for (Structure ebay : ebays) {
 		//Only build 
-		if (ebay->orders.size() > 0)
+		if (ebay.getOrderCount() > 0)
 			continue;
 		else {
 			//Upgrade order... atttack1, def1, atk2, atk3, def2, def3
@@ -160,8 +162,8 @@ void UpgradesManager::PerformEngBayUpgrades()
 				research = ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR;
 
 			if (research != ABILITY_ID::INVALID) {
-				std::cout << "Starting research at " << sc2::UnitTypeToName(ebay->unit_type) << " for " << sc2::AbilityTypeToName(research) << std::endl;
-				Actions()->UnitCommand(ebay, research);
+				std::cout << "Starting research at " << sc2::UnitTypeToName(ebay.getUnitTypeID()) << " for " << sc2::AbilityTypeToName(research) << std::endl;
+				Actions()->UnitCommand(ebay.building, research);
 			}
 		}
 	}

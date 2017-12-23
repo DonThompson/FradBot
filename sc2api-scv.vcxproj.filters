@@ -19,6 +19,9 @@
     <Filter Include="Military">
       <UniqueIdentifier>{277bdec3-1e73-4498-89f2-6c4382486e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BuildingStructures">
+      <UniqueIdentifier>{b965ea68-edda-4adf-84b3-23200bba3212}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,10 +54,16 @@
     <ClCompile Include="UpgradesManager.cpp">
       <Filter>Military</Filter>
     </ClCompile>
-    <ClCompile Include="ArmyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpgradeList.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuresManager.cpp">
+      <Filter>BuildingStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="Structure.cpp">
+      <Filter>BuildingStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmyManager.cpp">
       <Filter>Military</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,10 +98,16 @@
     <ClInclude Include="UpgradesManager.h">
       <Filter>Military</Filter>
     </ClInclude>
-    <ClInclude Include="ArmyManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UpgradeList.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuresManager.h">
+      <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmyManager.h">
       <Filter>Military</Filter>
     </ClInclude>
   </ItemGroup>

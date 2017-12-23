@@ -66,7 +66,6 @@ private:
 	const Unit* FindConstructionWorker();
 	const Unit* HandleFindingRefineryTarget(Point2D builderPos);
 	bool DoesBuilderHaveNonHarvestOrders(const Unit* builder);
-	bool IsBuildingInProgress(const Unit* building);
 	bool DoBuildingPositionsMatch(Point2D pt1, Point2D pt2);
 	
 };
