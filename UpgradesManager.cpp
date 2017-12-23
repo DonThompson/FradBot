@@ -118,7 +118,8 @@ void UpgradesManager::TryToUpgrade()
 
 void UpgradesManager::PerformTechLabUpgrades()
 {
-	for (const Unit* techlab : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_BARRACKSTECHLAB)) {
+	std::vector<Structure> techlabs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_BARRACKSTECHLAB);
+	for (const Unit* techlab : techlabs) {
 		if (techlab->orders.size() > 0)
 			continue;
 		else {
@@ -142,7 +143,8 @@ void UpgradesManager::PerformTechLabUpgrades()
 
 void UpgradesManager::PerformEngBayUpgrades()
 {
-	for (const Unit* ebay : Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_ENGINEERINGBAY)) {
+	std::vector<Structure> ebays = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_ENGINEERINGBAY);
+	for (const Unit* ebay : ebays) {
 		//Only build 
 		if (ebay->orders.size() > 0)
 			continue;

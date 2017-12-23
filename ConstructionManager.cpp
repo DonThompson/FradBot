@@ -1,6 +1,7 @@
 #include "ConstructionManager.h"
 #include "managers/EconManager.h"
 #include "ConstructionPlacement.h"
+#include "bot.h"
 
 ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)
@@ -183,7 +184,8 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 	//Now we know the builder has the order.
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
 	//	which one has a position that closely matches our suggested build position.  Note that positions are NOT identical.
-	for (const Unit* buildingStarted : Utils::GetOwnUnits(Observation(), Utils::UnitTypeFromBuildAbility(task.GetBuildingType()))) {
+	std::vector<Structure> structures = bot.Structures().GetStructuresByBuildAbility(task.GetBuildingType());
+	for (const Unit* buildingStarted : structures) {
 
 		if (!IsBuildingInProgress(buildingStarted)) {
 			//Building is either unstarted (might be us, we'll check again next loop), or done.  We want in progress.

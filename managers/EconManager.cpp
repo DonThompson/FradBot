@@ -49,7 +49,7 @@ void EconManager::OnUnitIdle(const Unit* unit)
 void EconManager::BalanceBuilders()
 {
 	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
-	Units refineries = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
+	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
 	for (const Unit* r : refineries) {
 		if (r->build_progress >= 1.0f && r->assigned_harvesters < r->ideal_harvesters) {
 			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r->assigned_harvesters << ".  Ideal:  " << r->ideal_harvesters << std::endl;
@@ -59,8 +59,8 @@ void EconManager::BalanceBuilders()
 	}
 
 	//Make sure command centers have enough units - we might have just stolen some to bring them below threshold
-	Units cc = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_COMMANDCENTER);
-	for (const Unit* u : cc) {
+	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
+	for (const Unit* u : ccs) {
 		//Just call the idle function, it'll quit if not needed
 		if (u->orders.size() == 0) {
 			OnCommandCenterIdle(u);
@@ -78,7 +78,7 @@ void EconManager::OnCommandCenterIdle(const Unit* unit)
 	}
 
 	//Or if we're short gas harvesters
-	Units refineries = Utils::GetOwnUnits(Observation(), UNIT_TYPEID::TERRAN_REFINERY);
+	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
 	for (const Unit* r : refineries) {
 		if (r->assigned_harvesters < r->ideal_harvesters) {
 			buildSCV = true;

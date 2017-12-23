@@ -64,7 +64,7 @@
       <Filter>BuildingStructures</Filter>
     </ClCompile>
     <ClCompile Include="Structure.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BuildingStructures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +108,7 @@
       <Filter>BuildingStructures</Filter>
     </ClInclude>
     <ClInclude Include="Structure.h">
-      <Filter>Header Files</Filter>
+      <Filter>BuildingStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

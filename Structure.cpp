@@ -1,12 +1,15 @@
 #include "Structure.h"
 
-
-
-Structure::Structure()
+Structure::Structure(const Unit* _building)
 {
+	building = _building;
 }
-
 
 Structure::~Structure()
 {
+}
+
+Structure::operator const Unit*()
+{
+	return building;
 }

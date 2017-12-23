@@ -21,6 +21,11 @@ ConstructionManager & Bot::Construction()
 	return constructionManager;
 }
 
+StructuresManager & Bot::Structures()
+{
+	return structuresManager;
+}
+
 const SupplyManager & Bot::Supply()
 {
 	return supplyManager;

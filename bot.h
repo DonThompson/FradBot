@@ -34,7 +34,7 @@ public:
 	//  Access to Manager Classes				//
 	//////////////////////////////////////////////
 	ConstructionManager & Construction();
-	const StructuresManager & Structures();
+	StructuresManager & Structures();
 	const SupplyManager & Supply();
 	const ArmyManager & Army();
 	const EconManager & Econ();

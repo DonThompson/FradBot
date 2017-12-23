@@ -9,10 +9,19 @@ using namespace sc2;
 
 class Bot;
 
+/*
+	v1 Usage:  A thin wrapper over structure related functionality.
+
+	vFuture:  If we can do it better/for good reason, actually maintain our own list of all structures and 
+		use them directly.  No clear need at present, document as it comes up.
+
+*/
+
 class StructuresManager : public ManagerBase
 {
 public:
 	StructuresManager(Bot & b);
+	static UNIT_TYPEID StructuresManager::UnitTypeFromBuildAbility(ABILITY_ID abilityID);
 
 	virtual void OnStep();
 	virtual void OnUnitDestroyed(const Unit* unit);
@@ -20,8 +29,9 @@ public:
 
 	//Public functionality
 	std::vector<Structure> GetStructuresByType(UNIT_TYPEID unitTypeID);
-	std::vector<Structure> GetAllStructures();
+	std::vector<Structure> GetStructuresByBuildAbility(ABILITY_ID abilityID);
 
 private:
-	std::vector<Structure> structures;
+	//Perhaps in vFuture
+	//std::vector<Structure> structures;
 };
