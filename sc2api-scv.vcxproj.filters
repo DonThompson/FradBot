@@ -54,9 +54,6 @@
     <ClCompile Include="UpgradesManager.cpp">
       <Filter>Military</Filter>
     </ClCompile>
-    <ClCompile Include="ArmyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpgradeList.cpp">
       <Filter>Military</Filter>
     </ClCompile>
@@ -65,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Structure.cpp">
       <Filter>BuildingStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmyManager.cpp">
+      <Filter>Military</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +98,6 @@
     <ClInclude Include="UpgradesManager.h">
       <Filter>Military</Filter>
     </ClInclude>
-    <ClInclude Include="ArmyManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UpgradeList.h">
       <Filter>Military</Filter>
     </ClInclude>
@@ -109,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Structure.h">
       <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmyManager.h">
+      <Filter>Military</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

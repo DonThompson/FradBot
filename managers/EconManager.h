@@ -6,6 +6,7 @@
 using namespace sc2;
 #include "ManagerBase.h"
 #include "../utils/Utils.h"
+#include "../Structure.h"
 
 class Bot;
 
@@ -15,7 +16,6 @@ private:
 
 public:
 	EconManager(Bot & b);
-	~EconManager();
 	virtual void OnStep();
 	virtual void OnUnitIdle(const Unit* unit);
 
@@ -32,6 +32,7 @@ private:
 	void BuildRefinery();
 	
 	const Unit* FindNearestMineralPatch(const Point2D& start);
+	void HandleCommandCenterIdle(Structure cc);
 
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;

@@ -185,16 +185,15 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
 	//	which one has a position that closely matches our suggested build position.  Note that positions are NOT identical.
 	std::vector<Structure> structures = bot.Structures().GetStructuresByBuildAbility(task.GetBuildingType());
-	for (const Unit* buildingStarted : structures) {
-
-		if (!IsBuildingInProgress(buildingStarted)) {
+	for (Structure buildingStarted : structures) {
+		if (!buildingStarted.IsBuildingInProgress()) {
 			//Building is either unstarted (might be us, we'll check again next loop), or done.  We want in progress.
 			continue;
 		}
 
 		if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
 			//SPECIAL!  Referineries won't match on position of target -- use the geyser position instead
-			if (DoBuildingPositionsMatch(task.GetGeyserTarget()->pos, buildingStarted->pos)) {
+			if (DoBuildingPositionsMatch(task.GetGeyserTarget()->pos, buildingStarted.buildingPosition())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
 				return;
@@ -203,7 +202,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 		else {
 			//This building is being constructed.  Let's see where, and if it's within appropriate distance to our suggested build point, 
 			//	it's very likely our building.
-			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted->pos)) {
+			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted.buildingPosition())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
 				return;
@@ -217,7 +216,8 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 //Post Fail (repeat):  The building progress is less than complete.
 void ConstructionManager::HandleConstructionInProgress(BuildQueueTask &task)
 {
-	if (task.GetBuilding()->build_progress >= 0.999999f) {
+	Structure s(task.GetBuilding());
+	if(s.IsBuildingComplete()) {
 		//Building done!
 		task.SetConstructionTaskState(ConstructionTaskState::eCompleted);
 	}
@@ -253,23 +253,6 @@ bool ConstructionManager::DoesBuilderHaveNonHarvestOrders(const Unit* builder)
 	}
 
 	return found;
-}
-
-//Is the given building in progress?  Returns false if the building is unstarted (0% completion) or done (100% completion)
-//Future:  This could be moved to a building class once we get there.
-bool ConstructionManager::IsBuildingInProgress(const Unit* building)
-{
-	if (building->build_progress >= 0.9999f) {
-		//Building is done, can't be what we're looking for.
-		return false;
-	}
-
-	if (building->build_progress < 0.0001f) {
-		//Building is unstarted.  It might be ours, or it might be something else.  Wait until it's got a little bit of progress.
-		return false;
-	}
-
-	return true;
 }
 
 //There is no good way to get a building from the builder.  This function allows us to match a given position where we asked to build

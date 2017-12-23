@@ -38,6 +38,7 @@ Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
 * Ideally we don't let Structure convert to const Unit*.  We'd rather that functionality just get moved into Structure.
 * Structure->building maybe should be private too.  Can we move all this into structure?
+* Re-evaluate all float comparisons for building progress.  I've tried to contain these all inside Structure.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
