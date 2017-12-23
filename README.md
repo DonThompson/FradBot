@@ -1,5 +1,5 @@
-# sc2api-scv
-Beginner (SCV Level) Starcraft2 API
+# FradBot
+Beginner Starcraft2 Bot
 
 Current state:  Defeats all medium AI better than 80% of the time.
 
@@ -55,7 +55,7 @@ See "Precompiled Libs" near the end.  Unzip the include & lib folders here.
 https://github.com/Blizzard/s2client-api#coding-standard
 
 Unzip, put the lib & include folders in a folder called 'sc2api-precompiled'.
-Sibling to that, create your folder for this project -- 'sc1api-scv'
+Sibling to that, create your folder for this project -- 'FradBot'
 
 ## One time configuration
 Project Settings -> C++ -> General - Additional Include Directories should point to ../sc2api-precompiled/include  (or wherever you load these files)
