@@ -161,7 +161,8 @@ std::vector<Structure> StructuresManager::GetStructuresByBuildAbility(ABILITY_ID
 	return GetStructuresByType(StructuresManager::UnitTypeFromBuildAbility(abilityID));
 }
 
-size_t StructuresManager::CountStructuresByType(UNIT_TYPEID unitTypeID)
+int32_t StructuresManager::CountStructuresByType(UNIT_TYPEID unitTypeID)
 {
-	return GetStructuresByType(unitTypeID).size();
+	//Cast it as a 32-bit int, we'll never have more than 32 bits of anything.  Makes all caller's lives easier.
+	return static_cast<int32_t>(GetStructuresByType(unitTypeID).size());
 }

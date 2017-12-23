@@ -50,7 +50,7 @@ void EconManager::BalanceBuilders()
 		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
 			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
 			const Unit* unit = Utils::GetRandomHarvester(Observation());
-			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r);
+			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
 		}
 	}
 

@@ -6,6 +6,7 @@ using namespace sc2;
 class Structure
 {
 public:
+	Structure();
 	Structure(const Unit* _building);
 
 	//Start to map out pass throughs
@@ -22,9 +23,7 @@ public:
 	bool IsBuildingInProgress();
 
 public:
-	//TODO:  Goal to get rid of this
-	operator const Unit*();
-	//TODO:  and make this private
+	//TODO:  and make this private.  Lots of use like Actions()->UnitCommand(.... structure)
 	const Unit* building;
 };
 

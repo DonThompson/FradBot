@@ -135,7 +135,7 @@ void UpgradesManager::PerformTechLabUpgrades()
 
 			if (research != ABILITY_ID::INVALID) {
 				std::cout << "Starting research at " << sc2::UnitTypeToName(techlab.getUnitTypeID()) << " for " << sc2::AbilityTypeToName(research) << std::endl;
-				Actions()->UnitCommand(techlab, research);
+				Actions()->UnitCommand(techlab.building, research);
 			}
 		}
 	}
@@ -163,7 +163,7 @@ void UpgradesManager::PerformEngBayUpgrades()
 
 			if (research != ABILITY_ID::INVALID) {
 				std::cout << "Starting research at " << sc2::UnitTypeToName(ebay.getUnitTypeID()) << " for " << sc2::AbilityTypeToName(research) << std::endl;
-				Actions()->UnitCommand(ebay, research);
+				Actions()->UnitCommand(ebay.building, research);
 			}
 		}
 	}
