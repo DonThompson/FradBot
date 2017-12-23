@@ -31,7 +31,10 @@ public:
 	std::vector<Structure> GetStructuresByType(UNIT_TYPEID unitTypeID);
 	std::vector<Structure> GetStructuresByBuildAbility(ABILITY_ID abilityID);
 
+	size_t CountStructuresByType(UNIT_TYPEID unitTypeID);
+
 private:
 	//Perhaps in vFuture
 	//std::vector<Structure> structures;
+
 };

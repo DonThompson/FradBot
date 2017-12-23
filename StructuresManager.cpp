@@ -160,3 +160,8 @@ std::vector<Structure> StructuresManager::GetStructuresByBuildAbility(ABILITY_ID
 	//Just do the lookup then let our standard GetStructures* handle the work
 	return GetStructuresByType(StructuresManager::UnitTypeFromBuildAbility(abilityID));
 }
+
+size_t StructuresManager::CountStructuresByType(UNIT_TYPEID unitTypeID)
+{
+	return GetStructuresByType(unitTypeID).size();
+}

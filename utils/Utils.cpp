@@ -40,12 +40,12 @@ const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)
 	//None found, try again later
 	return nullptr;
 }
-
 int32_t Utils::CountOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID)
 {
 	return (int32_t)observation->GetUnits(Unit::Alliance::Self, IsUnit(unitTypeID)).size();
 }
 
+//Previously Utils::
 Units Utils::GetOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID)
 {
 	return observation->GetUnits(Unit::Alliance::Self, IsUnit(unitTypeID));

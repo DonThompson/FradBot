@@ -73,14 +73,15 @@ void EconManager::OnCommandCenterIdle(const Unit* unit)
 	//Only build if we're short harvesters
 	bool buildSCV = false;
 
-	if (unit->assigned_harvesters < unit->ideal_harvesters) {
+	Structure cc(unit);
+	if (cc.assignedHarvesters() < cc.idealHarvesters()) {
 		buildSCV = true;
 	}
 
 	//Or if we're short gas harvesters
 	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (const Unit* r : refineries) {
-		if (r->assigned_harvesters < r->ideal_harvesters) {
+	for (Structure r : refineries) {
+		if (r.assignedHarvesters() < r.idealHarvesters()) {
 			buildSCV = true;
 		}
 	}

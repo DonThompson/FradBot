@@ -35,7 +35,7 @@ Upgrades issues:
 * Does this give us a better way to detect upgrades?  Query()->GetAbilitiesForUnit(unit)
 
 Structures manager issues:
-* Replace all uses of GetOwnUnits() with a building to use the structures manager instead.
+* How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
 * Ideally we don't let Structure convert to const Unit*.  We'd rather that functionality just get moved into Structure.
 * Structure->building maybe should be private too.  Can we move all this into structure?
 
