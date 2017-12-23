@@ -149,7 +149,7 @@
     <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="UpgradeList.cpp" />
     <ClCompile Include="UpgradesManager.cpp" />
-    <ClCompile Include="utils\Utils.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
@@ -165,7 +165,7 @@
     <ClInclude Include="SupplyManager.h" />
     <ClInclude Include="UpgradeList.h" />
     <ClInclude Include="UpgradesManager.h" />
-    <ClInclude Include="utils\Utils.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

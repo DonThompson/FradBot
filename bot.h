@@ -12,7 +12,7 @@ using namespace sc2;
 #include "ConstructionManager.h"
 #include "StructuresManager.h"
 #include "UpgradesManager.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 
 
 class Bot : public Agent {

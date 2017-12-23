@@ -5,7 +5,7 @@
 #include <sc2api/sc2_api.h>
 using namespace sc2;
 #include "ManagerBase.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 
 class Bot;
 

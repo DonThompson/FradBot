@@ -1,5 +1,5 @@
 #include "StructuresManager.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 
 StructuresManager::StructuresManager(Bot & b)
 	: ManagerBase(b)
