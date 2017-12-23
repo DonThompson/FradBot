@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sc2api/sc2_api.h>
 using namespace sc2;
-#include "managers/ManagerBase.h"
+#include "ManagerBase.h"
 #include "utils/Utils.h"
 #include "Structure.h"
 

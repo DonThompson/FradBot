@@ -1,5 +1,5 @@
 #include "ManagerBase.h"
-#include "../bot.h"
+#include "bot.h"
 
 ManagerBase::ManagerBase(Bot & b)
 	: bot(b)

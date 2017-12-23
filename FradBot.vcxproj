@@ -145,7 +145,7 @@
     <ClCompile Include="ArmyManager.cpp" />
     <ClCompile Include="ConstructionManager.cpp" />
     <ClCompile Include="EconManager.cpp" />
-    <ClCompile Include="managers\ManagerBase.cpp" />
+    <ClCompile Include="ManagerBase.cpp" />
     <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="UpgradeList.cpp" />
     <ClCompile Include="UpgradesManager.cpp" />
@@ -161,7 +161,7 @@
     <ClInclude Include="ArmyManager.h" />
     <ClInclude Include="ConstructionManager.h" />
     <ClInclude Include="EconManager.h" />
-    <ClInclude Include="managers\ManagerBase.h" />
+    <ClInclude Include="ManagerBase.h" />
     <ClInclude Include="SupplyManager.h" />
     <ClInclude Include="UpgradeList.h" />
     <ClInclude Include="UpgradesManager.h" />

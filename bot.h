@@ -5,7 +5,7 @@
 #include <sc2api/sc2_api.h>
 using namespace sc2;
 
-#include "managers/ManagerBase.h"
+#include "ManagerBase.h"
 #include "SupplyManager.h"
 #include "EconManager.h"
 #include "ArmyManager.h"
