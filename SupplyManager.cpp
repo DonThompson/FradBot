@@ -1,5 +1,5 @@
 #include "SupplyManager.h"
-#include "../bot.h"
+#include "bot.h"
 
 void SupplyManager::successTest(int64_t x)
 {

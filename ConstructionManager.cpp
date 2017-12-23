@@ -1,5 +1,5 @@
 #include "ConstructionManager.h"
-#include "managers/EconManager.h"
+#include "EconManager.h"
 #include "ConstructionPlacement.h"
 #include "bot.h"
 

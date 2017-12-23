@@ -30,9 +30,6 @@
     <ClCompile Include="managers\ManagerBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="managers\SupplyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="utils\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,12 +63,12 @@
     <ClCompile Include="EconManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SupplyManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="managers\ManagerBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\SupplyManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\Utils.h">
@@ -108,6 +105,9 @@
       <Filter>Military</Filter>
     </ClInclude>
     <ClInclude Include="EconManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SupplyManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

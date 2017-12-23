@@ -146,7 +146,7 @@
     <ClCompile Include="ConstructionManager.cpp" />
     <ClCompile Include="EconManager.cpp" />
     <ClCompile Include="managers\ManagerBase.cpp" />
-    <ClCompile Include="managers\SupplyManager.cpp" />
+    <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="UpgradeList.cpp" />
     <ClCompile Include="UpgradesManager.cpp" />
     <ClCompile Include="utils\Utils.cpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="ConstructionManager.h" />
     <ClInclude Include="EconManager.h" />
     <ClInclude Include="managers\ManagerBase.h" />
-    <ClInclude Include="managers\SupplyManager.h" />
+    <ClInclude Include="SupplyManager.h" />
     <ClInclude Include="UpgradeList.h" />
     <ClInclude Include="UpgradesManager.h" />
     <ClInclude Include="utils\Utils.h" />

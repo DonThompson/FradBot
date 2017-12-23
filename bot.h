@@ -6,7 +6,7 @@
 using namespace sc2;
 
 #include "managers/ManagerBase.h"
-#include "managers/SupplyManager.h"
+#include "SupplyManager.h"
 #include "EconManager.h"
 #include "ArmyManager.h"
 #include "ConstructionManager.h"
