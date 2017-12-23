@@ -8,9 +8,7 @@ General:
 * I haven't touched Query() yet, but I threw a few comments below for things that look promising.
 
 Supply manager issues:
-* Supply can't keep up.  Regularly supply blocked.
-* Supply is queuing a new request constantly from the beginning of the game -- hundreds of them.  this floods the build queue because they never actually happen.
-* If a depot needs built, it will often build as many as it can.
+* Supply can't keep up at higher levels.  Ocassionally supply blocked.  Seems happy till about 60-70.
 
 Econ manager issues:
 * SCVs keep going off to natural expansions when they built near the choke.
@@ -36,9 +34,7 @@ Upgrades issues:
 
 Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
-* Ideally we don't let Structure convert to const Unit*.  We'd rather that functionality just get moved into Structure.
 * Structure->building maybe should be private too.  Can we move all this into structure?
-* Re-evaluate all float comparisons for building progress.  I've tried to contain these all inside Structure.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
