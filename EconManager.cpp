@@ -1,5 +1,5 @@
 #include "EconManager.h"
-#include "../bot.h"
+#include "bot.h"
 
 EconManager::EconManager(Bot & b)
 	: ManagerBase(b)

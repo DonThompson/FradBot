@@ -4,9 +4,9 @@
 #include <iostream>
 #include <sc2api/sc2_api.h>
 using namespace sc2;
-#include "ManagerBase.h"
-#include "../utils/Utils.h"
-#include "../Structure.h"
+#include "managers/ManagerBase.h"
+#include "utils/Utils.h"
+#include "Structure.h"
 
 class Bot;
 

@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CodeAnalysisRuleSet>D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,7 +94,7 @@
       <AdditionalIncludeDirectories>../sc2api-precompiled/include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>../sc2api-precompiled/lib</AdditionalLibraryDirectories>
@@ -144,7 +144,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ArmyManager.cpp" />
     <ClCompile Include="ConstructionManager.cpp" />
-    <ClCompile Include="managers\EconManager.cpp" />
+    <ClCompile Include="EconManager.cpp" />
     <ClCompile Include="managers\ManagerBase.cpp" />
     <ClCompile Include="managers\SupplyManager.cpp" />
     <ClCompile Include="UpgradeList.cpp" />
@@ -160,7 +160,7 @@
     <ClInclude Include="BuildQueueTask.h" />
     <ClInclude Include="ArmyManager.h" />
     <ClInclude Include="ConstructionManager.h" />
-    <ClInclude Include="managers\EconManager.h" />
+    <ClInclude Include="EconManager.h" />
     <ClInclude Include="managers\ManagerBase.h" />
     <ClInclude Include="managers\SupplyManager.h" />
     <ClInclude Include="UpgradeList.h" />

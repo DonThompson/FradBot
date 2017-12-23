@@ -36,9 +36,6 @@
     <ClCompile Include="utils\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="managers\EconManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     <ClCompile Include="ArmyManager.cpp">
       <Filter>Military</Filter>
     </ClCompile>
+    <ClCompile Include="EconManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="managers\ManagerBase.h">
@@ -75,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\EconManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot.h">
@@ -109,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="ArmyManager.h">
       <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="EconManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
