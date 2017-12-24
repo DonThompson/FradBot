@@ -80,7 +80,10 @@
       <Filter>BaseManagement</Filter>
     </ClCompile>
     <ClCompile Include="BaseLocation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLocationInitializer.cpp">
+      <Filter>BaseManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +134,10 @@
       <Filter>BaseManagement</Filter>
     </ClInclude>
     <ClInclude Include="BaseLocation.h">
-      <Filter>Header Files</Filter>
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLocationInitializer.h">
+      <Filter>BaseManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

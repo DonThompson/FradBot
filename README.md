@@ -36,6 +36,9 @@ Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
 * Structure->building maybe should be private too.  Can we move all this into structure?
 
+BaseLocationInitializer issues:
+* This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
+
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * using statements in header is bad practice, clean that up.

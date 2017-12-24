@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseLocation.cpp" />
+    <ClCompile Include="BaseLocationInitializer.cpp" />
     <ClCompile Include="BaseLocationManager.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="DrawingManager.cpp" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseLocation.h" />
+    <ClInclude Include="BaseLocationInitializer.h" />
     <ClInclude Include="BaseLocationManager.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="DrawingManager.h" />

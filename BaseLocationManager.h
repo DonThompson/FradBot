@@ -16,9 +16,4 @@ public:
 
 private:
 	std::vector<BaseLocation> baseLocations;
-
-	//Base location initialization
-	void InitializeBaseLocations();
-	void CreateBaseLocationsFromResourceNodes(std::vector<const Unit*> nodes);
-	void FindAllMineralsAndGeysers(std::vector<const Unit*> *mineralPatches, std::vector<const Unit*> *geysers);
 };
