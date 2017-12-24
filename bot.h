@@ -12,8 +12,9 @@ using namespace sc2;
 #include "ConstructionManager.h"
 #include "StructuresManager.h"
 #include "UpgradesManager.h"
-#include "Utils.h"
 #include "DrawingManager.h"
+#include "BaseLocationManager.h"
+#include "Utils.h"
 
 
 class Bot : public Agent {
@@ -25,6 +26,7 @@ private:
 	StructuresManager structuresManager;
 	UpgradesManager upgradesManager;
 	DrawingManager drawingManager;
+	BaseLocationManager baseLocationManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -41,6 +43,7 @@ public:
 	const ArmyManager & Army();
 	const EconManager & Econ();
 	DrawingManager & Draw();
+	BaseLocationManager & BaseLocations();
 
 
 	//////////////////////////////////////////////

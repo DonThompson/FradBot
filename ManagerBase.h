@@ -16,6 +16,7 @@ public:
 	virtual void OnStep() = 0;
 
 	//Individual game actions, not required for managers to implement.  Use as needed.
+	virtual void OnGameStart() {}
 	virtual void OnUnitIdle(const Unit* unit) {}
 	virtual void OnUnitDestroyed(const Unit* unit) {}
 	virtual void OnUnitCreated(const Unit* unit) {}

@@ -136,6 +136,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseLocation.cpp" />
+    <ClCompile Include="BaseLocationManager.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="DrawingManager.cpp" />
     <ClCompile Include="Structure.cpp" />
@@ -153,6 +155,8 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseLocation.h" />
+    <ClInclude Include="BaseLocationManager.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="DrawingManager.h" />
     <ClInclude Include="Structure.h" />
