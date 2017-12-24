@@ -16,9 +16,14 @@ public:
 	void AddGeyser(const Unit* geyser);
 
 	void DrawSelf(Bot & bot);
+	void Initialize();
 
 private:
 	Point3D starterPointMinPatch;
+	Point3D resourceDepotLocation;	//The ideal position for a CC, Nexus, Hatchery in this base location
+
+	//TEMP
+	Point3D resourceCenterLocation;
 
 	std::vector<const Unit*> mineralPatches;
 	std::vector<const Unit*> geysers;
