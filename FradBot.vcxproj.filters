@@ -25,14 +25,11 @@
     <Filter Include="Util">
       <UniqueIdentifier>{7ccb6d27-c388-4687-8948-b6e73dc4a013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Economy">
+      <UniqueIdentifier>{26b5e6c4-1a2d-44b4-92d6-e325307b3c09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BuildQueueTask.cpp">
       <Filter>BuildingConstruction</Filter>
     </ClCompile>
@@ -57,26 +54,27 @@
     <ClCompile Include="ArmyManager.cpp">
       <Filter>Military</Filter>
     </ClCompile>
-    <ClCompile Include="EconManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SupplyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagerBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DrawingManager.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="bot.cpp" />
+    <ClCompile Include="Utils.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerBase.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="EconManager.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
+    <ClCompile Include="SupplyManager.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BuildQueueTask.h">
       <Filter>BuildingConstruction</Filter>
     </ClInclude>
@@ -104,20 +102,21 @@
     <ClInclude Include="ArmyManager.h">
       <Filter>Military</Filter>
     </ClInclude>
-    <ClInclude Include="EconManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SupplyManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ManagerBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DrawingManager.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="bot.h" />
+    <ClInclude Include="Utils.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagerBase.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="EconManager.h">
+      <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="SupplyManager.h">
+      <Filter>Economy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
