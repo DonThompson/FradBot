@@ -3,6 +3,7 @@
 BaseLocationInitializer::BaseLocationInitializer(Bot & b, std::vector<BaseLocation> *locs)
 	: bot(b)
 	, baseLocations(locs)
+	, nextBaseLocationId(1)
 {
 }
 
@@ -20,9 +21,12 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	CreateBaseLocationsFromResourceNodes(mineralPatches);
 	CreateBaseLocationsFromResourceNodes(geysers);
 
+	//Determine the center of the map
+	Point2D centerOfMap(static_cast<float_t>(bot.Observation()->GetGameInfo().width) / 2.0f, static_cast<float_t>(bot.Observation()->GetGameInfo().height) / 2.0f);
+
 	//Now let each base location handle any consolidation
 	for (BaseLocation &l : (*baseLocations)) {
-		l.Initialize();
+		l.Initialize(bot, centerOfMap);
 	}
 }
 
@@ -58,8 +62,15 @@ void BaseLocationInitializer::CreateBaseLocationsFromResourceNodes(std::vector<c
 
 		if (!found) {
 			//New base!  Add it to our known list
-			BaseLocation locNew(node);
+			BaseLocation locNew(UseNextBaseLocationId(), node);
 			baseLocations->push_back(locNew);
 		}
 	}
+}
+
+uint32_t BaseLocationInitializer::UseNextBaseLocationId()
+{
+	uint32_t useThis = nextBaseLocationId;
+	nextBaseLocationId++;
+	return useThis;
 }

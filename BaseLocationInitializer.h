@@ -21,4 +21,7 @@ private:
 	//Base location initialization
 	void CreateBaseLocationsFromResourceNodes(std::vector<const Unit*> nodes);
 	void FindAllMineralsAndGeysers(std::vector<const Unit*> *mineralPatches, std::vector<const Unit*> *geysers);
+
+	uint32_t UseNextBaseLocationId();
+	uint32_t nextBaseLocationId;
 };

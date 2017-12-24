@@ -8,7 +8,7 @@ class Bot;
 class BaseLocation
 {
 public:
-	BaseLocation(const Unit* startingMineralPatch);
+	BaseLocation(uint32_t _baseLocationId, const Unit* startingMineralPatch);
 
 	bool IsUnitInBase(const Unit* unit);
 
@@ -16,9 +16,10 @@ public:
 	void AddGeyser(const Unit* geyser);
 
 	void DrawSelf(Bot & bot);
-	void Initialize();
+	void Initialize(Bot & bot, Point2D centerOfMap);
 
 private:
+	uint32_t baseLocationId;
 	Point3D starterPointMinPatch;
 	Point3D resourceDepotLocation;	//The ideal position for a CC, Nexus, Hatchery in this base location
 

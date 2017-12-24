@@ -1,7 +1,9 @@
 #include "BaseLocation.h"
 #include "bot.h"
+#include <sstream>
 
-BaseLocation::BaseLocation(const Unit* startingMineralPatch)
+BaseLocation::BaseLocation(uint32_t _baseLocationId, const Unit* startingMineralPatch)
+	: baseLocationId(_baseLocationId)
 {
 	starterPointMinPatch = startingMineralPatch->pos;
 	AddMineralPatch(startingMineralPatch);
@@ -47,6 +49,9 @@ void BaseLocation::DrawSelf(Bot & bot)
 	bot.Draw().DrawCircle(resourceCenterLocation, 0.2f, color);
 	bot.Draw().DrawCircle(resourceCenterLocation, 0.3f, color);
 
+	//and box in resource depot center
+	bot.Draw().DrawBox(resourceDepotLocation, 0.5f, 0.5f, color);		//TODO:  Get cc size
+
 	//Now highlight the mineral patches
 	for (const Unit* patch : mineralPatches) {
 		bot.Draw().DrawCircle(patch->pos, patch->radius, color);
@@ -56,12 +61,16 @@ void BaseLocation::DrawSelf(Bot & bot)
 	for (const Unit* geyser : geysers) {
 		bot.Draw().DrawCircle(geyser->pos, geyser->radius, color);
 	}
+
+	std::ostringstream oss;
+	oss << "Base location " << baseLocationId << std::endl;
+	bot.Draw().DrawText(oss.str(), resourceCenterLocation, color);
 }
 
 //Only call once
 //Takes a base location with mineral patches and geysers and performs some one time calculations
 //	and setup on positioning.
-void BaseLocation::Initialize()
+void BaseLocation::Initialize(Bot & bot, Point2D centerOfMap)
 {
 	//Here's a rough algorithm we'll try to follow...
 	//	* find the center of our minerals x/y pos
@@ -81,4 +90,30 @@ void BaseLocation::Initialize()
 	float_t centerY = totalY / mineralPatches.size();
 	//TEMP;  house in class so we can draw it
 	resourceCenterLocation = Point3D(centerX, centerY, lastZ);
+
+	//Center the map at the same z-coord
+	Point3D mapCenter(centerOfMap.x, centerOfMap.y, lastZ);
+	
+	//This doesn't work
+	/*
+	uint32_t numTries = 0;
+	const uint32_t maxTries = 20;
+	bool found = false;
+	Point2D lastPoint(resourceCenterLocation.x, resourceCenterLocation.y);
+	while (!found && numTries < maxTries) {
+		Point2D testPoint2D(lastPoint + Point3D(0.5f, 0.5f, 0.0f));
+		Point3D testPoint3D(testPoint2D.x, testPoint2D.y, lastZ);
+		bot.Draw().DrawCircle(testPoint3D, 0.2f, Colors::Red);
+
+		if (bot.Query()->Placement(ABILITY_ID::BUILD_COMMANDCENTER, testPoint2D)) {
+			//Yes, it's buildable!
+			found = true;
+			resourceDepotLocation = testPoint3D;
+		}
+		else {
+			//nope, keep trying
+			numTries++;
+		}
+	}
+	*/
 }
