@@ -7,6 +7,7 @@ Bot::Bot()
 	, constructionManager(*this)
 	, structuresManager(*this)
 	, upgradesManager(*this)
+	, drawingManager(*this)
 {
 
 }
@@ -41,6 +42,11 @@ const EconManager & Bot::Econ()
 	return econManager;
 }
 
+DrawingManager & Bot::Draw()
+{
+	return drawingManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -56,6 +62,8 @@ void Bot::OnGameStart()
 	managers.push_back(&constructionManager);
 	managers.push_back(&structuresManager);
 	managers.push_back(&upgradesManager);
+	//Intentionally not giving the drawing manager game events at this time
+	//managers.push_back(&drawingManager);
 
 }
 
@@ -73,6 +81,9 @@ void Bot::OnStep() {
 	for (ManagerBase* m : managers) {
 		m->OnStep();
 	}
+
+	//Sends all batched debug commands for all managers
+	Debug()->SendDebug();
 }
 
 void Bot::OnUnitDestroyed(const Unit* unit)

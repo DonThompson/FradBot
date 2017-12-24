@@ -14,7 +14,8 @@ public:
 	int32_t idealHarvesters()	{		return building->ideal_harvesters;		}
 	size_t getOrderCount()		{		return building->orders.size();			}
 	float_t buildProgress()		{		return building->build_progress;		}
-	Point2D buildingPosition()	{		return building->pos;					}
+	Point2D buildingPosition2D(){		return static_cast<Point2D>(building->pos);	}
+	Point3D buildingPosition3D(){		return building->pos;					}
 	UnitTypeID getUnitTypeID()	{		return building->unit_type;				}
 
 

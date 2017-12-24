@@ -13,6 +13,7 @@ using namespace sc2;
 #include "StructuresManager.h"
 #include "UpgradesManager.h"
 #include "Utils.h"
+#include "DrawingManager.h"
 
 
 class Bot : public Agent {
@@ -23,6 +24,7 @@ private:
 	ConstructionManager constructionManager;
 	StructuresManager structuresManager;
 	UpgradesManager upgradesManager;
+	DrawingManager drawingManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -38,6 +40,7 @@ public:
 	const SupplyManager & Supply();
 	const ArmyManager & Army();
 	const EconManager & Econ();
+	DrawingManager & Draw();
 
 
 	//////////////////////////////////////////////

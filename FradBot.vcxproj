@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bot.cpp" />
+    <ClCompile Include="DrawingManager.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="StructuresManager.cpp" />
     <ClCompile Include="ConstructionPlacement.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
+    <ClInclude Include="DrawingManager.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="StructuresManager.h" />
     <ClInclude Include="ConstructionPlacement.h" />

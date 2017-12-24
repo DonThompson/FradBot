@@ -61,6 +61,7 @@ Project Settings -> Linker -> General - Additional Library Directories should po
 # Running the bot
 
 The bot will currently always play as Terran.  There are a several command line parameters you can use when launching the bot.  Note all commands are case sensitive.
+
 **Opponent Race**
 * -or Random (default value)
 * -ot Terran

@@ -193,7 +193,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 
 		if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
 			//SPECIAL!  Referineries won't match on position of target -- use the geyser position instead
-			if (DoBuildingPositionsMatch(task.GetGeyserTarget()->pos, buildingStarted.buildingPosition())) {
+			if (DoBuildingPositionsMatch(task.GetGeyserTarget()->pos, buildingStarted.buildingPosition2D())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
 				return;
@@ -202,7 +202,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 		else {
 			//This building is being constructed.  Let's see where, and if it's within appropriate distance to our suggested build point, 
 			//	it's very likely our building.
-			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted.buildingPosition())) {
+			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted.buildingPosition2D())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
 				return;
