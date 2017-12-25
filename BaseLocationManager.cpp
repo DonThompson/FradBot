@@ -33,5 +33,5 @@ BaseLocation BaseLocationManager::GetLocationById(uint32_t baseId)
 	}
 
 	//TODO:  Don't like this
-	return BaseLocation(0, nullptr);
+	return BaseLocation(0, Point3D());
 }

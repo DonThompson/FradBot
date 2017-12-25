@@ -43,6 +43,8 @@ Structures manager issues:
 
 BaseLocationInitializer issues:
 * This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
+* Players initial base doesn't quite work -- we know there's a cc already there, so we set the next place near it and end up building a second.
+* URGENT:  NEW CLEAN CODE METHOD DOESN'T QUITE WORK!  Bases with geysers on 1 side end up finding 2 bases at each loc.  I really do need to average the minerals.
 
 Expansion issues:
 * I need an expansion manager, I think.
