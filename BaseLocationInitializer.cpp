@@ -48,7 +48,7 @@ std::vector<MineralLine> BaseLocationInitializer::FindMineralLines(std::vector<c
 	for (const Unit* node : nodes) {
 		//See if it's in a mineral line
 		bool found = false;
-		for (MineralLine line : mineralLines) {
+		for (MineralLine& line : mineralLines) {
 			if (line.AreTheseMineralsNear(node)) {
 				found = true;
 				//Add it to this mineral line
