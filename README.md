@@ -44,6 +44,7 @@ Structures manager issues:
 BaseLocationInitializer issues:
 * This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
 * Players initial base doesn't quite work -- we know there's a cc already there, so we set the next place near it and end up building a second.
+* Empty member of BaseLocation.  Need to find syntax for this.
 
 Expansion issues:
 * I need an expansion manager, I think.

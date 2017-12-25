@@ -13,8 +13,11 @@ public:
 	virtual void OnStep();
 	virtual void OnGameStart();
 
-	BaseLocation GetLocationById(uint32_t baseId);
+	BaseLocation& GetLocationById(uint32_t baseId);
+	BaseLocation& GetLocationByPosition(Point2D pt);
 
 private:
 	std::vector<BaseLocation> baseLocations;
+
+	void InitializeKnownBases();
 };
