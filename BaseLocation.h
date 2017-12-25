@@ -16,7 +16,6 @@ public:
 	void AddGeyser(const Unit* geyser);
 
 	void DrawSelf(Bot & bot);
-	void Initialize(Bot & bot);
 
 	uint32_t GetBaseLocationId();
 	Point3D GetResourceDepotLocation();
@@ -27,7 +26,6 @@ private:
 
 	std::vector<const Unit*> mineralPatches;
 	std::vector<const Unit*> geysers;
-
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?
 	const float_t baseRadius = 15.0f;

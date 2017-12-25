@@ -1,4 +1,5 @@
 #include "BaseLocationInitializer.h"
+#include "MineralLine.h"
 
 BaseLocationInitializer::BaseLocationInitializer(Bot & b, std::vector<BaseLocation> *locs)
 	: bot(b)
@@ -16,10 +17,17 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	std::vector<const Unit*> geysers;
 	FindAllMineralsAndGeysers(&mineralPatches, &geysers);
 
-	//We now have all the resources.  We want to sort them into base locations by distance from each other.  It's important that we
-	//	do this by mineral patches first, not by geysers - they being on the ends is often too far away to detect without risk.
-	CreateBaseLocationsFromResourceNodes(mineralPatches);
-	CreateBaseLocationsFromResourceNodes(geysers);
+	//Turn these into mineral lines
+	std::vector<MineralLine> mineralLines = FindMineralLines(mineralPatches);
+
+	//We now should have a set of mineral lines for each base location on the map.  Create BaseLocation objects
+	//	from these.
+	for (MineralLine line : mineralLines) {
+		baseLocations->push_back(SetupNewBaseLocation(line));
+	}
+
+	//Lastly add our geysers and we're initialized
+	AddGeysersToBases(geysers);
 }
 
 //Searches all neutral units to find mineral patches and vespene geysers.  Fills the 2 provided arrays with the resulting units
@@ -34,33 +42,39 @@ void BaseLocationInitializer::FindAllMineralsAndGeysers(std::vector<const Unit*>
 	}
 }
 
-//Evaluates all the given resource nodes.  If its within a known base, adds the node to that base.  Otherwise, 
-//	creates a new base location at the given position.
-void BaseLocationInitializer::CreateBaseLocationsFromResourceNodes(std::vector<const Unit*> nodes)
+std::vector<MineralLine> BaseLocationInitializer::FindMineralLines(std::vector<const Unit*> nodes)
 {
+	std::vector<MineralLine> mineralLines;
 	for (const Unit* node : nodes) {
-		//Search all existing base locations to see if it's in any by radius
+		//See if it's in a mineral line
 		bool found = false;
-		for (BaseLocation &l : (*baseLocations)) {
-			if (l.IsUnitInBase(node)) {
+		for (MineralLine line : mineralLines) {
+			if (line.AreTheseMineralsNear(node)) {
 				found = true;
-				//Already know this base, so add the node to it.
-				if (node->unit_type == UNIT_TYPEID::NEUTRAL_MINERALFIELD)
-					l.AddMineralPatch(node);
-				else
-					l.AddGeyser(node);
+				//Add it to this mineral line
+				line.AddMineralPatch(node);
 			}
 		}
 
 		if (!found) {
-			//TODO: NEW
-			BaseLocation baseNew(SetupNewBaseLocation(node));
-			baseNew.AddMineralPatch(node);
+			//Must be a new mineral line
+			mineralLines.push_back(MineralLine(node));
+		}
+	}
+	return mineralLines;
+}
 
-			//TODO: OLD
-			//New base!  Add it to our known list
-			//BaseLocation locNew(UseNextBaseLocationId(), node);
-			baseLocations->push_back(baseNew);
+void BaseLocationInitializer::AddGeysersToBases(std::vector<const Unit*>geysers)
+{
+	//Assumes every geyser fits in a base.  Any abandoned ones will just be ignored.
+	for (const Unit* geyser : geysers) {
+		//find the right base
+		bool found = false;
+		for (BaseLocation &l : (*baseLocations)) {
+			if (l.IsUnitInBase(geyser) && !found) {
+				l.AddGeyser(geyser);
+				found = true;
+			}
 		}
 	}
 }
@@ -113,10 +127,10 @@ Point2D BaseLocationInitializer::FindClosestPointTo(Point2D startingPoint, std::
 	return closestPoint;
 }
 
-BaseLocation BaseLocationInitializer::SetupNewBaseLocation(const Unit* startingMineralPatch)
+BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLine)
 {
 	//Here's roughly how we define the base location...
-	//	* Using a new mineral patch, define an arbitrary search space of 'tiles' around that patch
+	//	* Using the center of a mineral line, define an arbitrary search space of 'tiles' around that line
 	//	* The search space should be big enough to surely fit a command center, but not so big that
 	//		we're searching tons of unnecessary tiles.
 	//	* For each tile, check the Placement engine to see if a command center can be built there.  Save the winners.
@@ -124,7 +138,7 @@ BaseLocation BaseLocationInitializer::SetupNewBaseLocation(const Unit* startingM
 	//		center should be built.
 	
 	//Starting point
-	Point3D startingPoint(startingMineralPatch->pos);
+	Point3D startingPoint(mineralLine.GetMineralCenterLocation());
 	//List of buildable spots in search space around it
 	std::vector<Point2D> buildablePoints = GetBuildableStartingPoints(startingPoint);
 	//Find closest point
@@ -132,7 +146,13 @@ BaseLocation BaseLocationInitializer::SetupNewBaseLocation(const Unit* startingM
 	//And now we have our winning point.  Z matches our mineral patch.
 	Point3D resourceDepotLocation = Point3D(closestPoint.x, closestPoint.y, startingPoint.z);
 	//Setup a new base location at it.
-	return BaseLocation(UseNextBaseLocationId(), resourceDepotLocation);
+	BaseLocation loc(UseNextBaseLocationId(), resourceDepotLocation);
+	
+	for (const Unit* patch : mineralLine.GetMineralPatches()) {
+		loc.AddMineralPatch(patch);
+	}
+
+	return loc;
 }
 
 uint32_t BaseLocationInitializer::UseNextBaseLocationId()

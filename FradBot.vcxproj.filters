@@ -85,6 +85,9 @@
     <ClCompile Include="BaseLocationInitializer.cpp">
       <Filter>BaseManagement</Filter>
     </ClCompile>
+    <ClCompile Include="MineralLine.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildQueueTask.h">
@@ -137,6 +140,9 @@
       <Filter>BaseManagement</Filter>
     </ClInclude>
     <ClInclude Include="BaseLocationInitializer.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="MineralLine.h">
       <Filter>BaseManagement</Filter>
     </ClInclude>
   </ItemGroup>
