@@ -42,7 +42,7 @@ Structures manager issues:
 * Structure->building maybe should be private too.  Can we move all this into structure?
 
 BaseLocationInitializer issues:
-* This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
+* This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them? [https://github.com/Blizzard/s2client-api/issues/225]
 
 Expansion issues:
 * I need an expansion manager, I think.
@@ -51,6 +51,7 @@ Expansion issues:
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * using statements in header is bad practice, clean that up.
+* Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 
 
 

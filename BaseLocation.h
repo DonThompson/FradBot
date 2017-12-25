@@ -22,7 +22,6 @@ public:
 	uint32_t GetBaseLocationId();
 	Point3D GetResourceDepotLocation();
 
-	void SetStartingBase(const Unit* resourceDepot);
 	void SetEnemyBase();
 	void SetMyBase();
 	void SetUnownedBase();
@@ -46,5 +45,6 @@ private:
 	BaseOwner baseOwner;
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?
-	const float_t baseRadius = 15.0f;
+	//	Updated from 15.0f to 16.0f for Paladino Terminal.
+	const float_t baseRadius = 16.0f;
 };

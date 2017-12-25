@@ -19,5 +19,5 @@ public:
 private:
 	std::vector<BaseLocation> baseLocations;
 
-	void InitializeKnownBases();
+	void InitializeKnownEnemyBase();
 };

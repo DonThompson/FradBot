@@ -57,6 +57,10 @@ void BaseLocation::DrawSelf(Bot & bot)
 	std::ostringstream oss;
 	oss << "Base location " << baseLocationId << std::endl;
 	bot.Draw().DrawText(oss.str(), resourceDepotLocation, color);
+
+	for (const Unit* patch : mineralPatches) {
+		bot.Draw().DrawCircle(patch->pos, patch->radius, color);
+	}
 }
 
 uint32_t BaseLocation::GetBaseLocationId()
@@ -67,16 +71,6 @@ uint32_t BaseLocation::GetBaseLocationId()
 Point3D BaseLocation::GetResourceDepotLocation()
 {
 	return resourceDepotLocation;
-}
-
-void BaseLocation::SetStartingBase(const Unit* resourceDepot)
-{
-	baseOwner = BaseOwner::Self;
-
-	//Special.  Bases are initialized by looking at the map and finding room to build a command center.  However, because
-	//	our starting position already has a command center, the position we find ends up being next to our existing one.
-	//We'll just update with the one given here.
-	resourceDepotLocation = resourceDepot->pos;
 }
 
 void BaseLocation::SetEnemyBase()
