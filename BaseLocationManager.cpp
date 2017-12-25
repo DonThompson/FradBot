@@ -24,17 +24,17 @@ void BaseLocationManager::InitializeKnownBases()
 	//1)  Find our command center and assign it to our base.
 	Structure cc = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER).front();
 	//Figure out which base it's in
-	BaseLocation& loc = GetLocationByPosition(cc.building->pos);
-	if (loc != Empty)
-		loc.SetStartingBase(cc.building);
+	BaseLocation* myLoc = GetLocationByPosition(cc.building->pos);
+	if (myLoc != nullptr)
+		myLoc->SetStartingBase(cc.building);
 
 	//2)  If the map is 1v1, then we know where the enemy is.  If it's not 1v1, we'll have to leave it up to a scout.
 	std::vector<Point2D> startLocations = bot.Observation()->GetGameInfo().enemy_start_locations;
 	if (startLocations.size() == 1) {
 		//Enemy must be here
-		BaseLocation& loc = GetLocationByPosition(startLocations[0]);
-		if (loc != Empty) {
-			loc.SetEnemyBase();
+		BaseLocation* loc = GetLocationByPosition(startLocations[0]);
+		if (loc != nullptr) {
+			loc->SetEnemyBase();
 		}
 	}
 }
@@ -46,23 +46,24 @@ void BaseLocationManager::OnStep()
 	}
 }
 
-BaseLocation& BaseLocationManager::GetLocationById(uint32_t baseId)
+//TODO:  not sure i need this at all.
+BaseLocation* BaseLocationManager::GetLocationById(uint32_t baseId)
 {
 	for (BaseLocation& loc : baseLocations) {
 		if (loc.GetBaseLocationId() == baseId)
-			return loc;
+			return &loc;
 	}
 
-	return Empty;
+	return nullptr;
 }
 
-BaseLocation& BaseLocationManager::GetLocationByPosition(Point2D pt)
+BaseLocation* BaseLocationManager::GetLocationByPosition(Point2D pt)
 {
 	for (BaseLocation& loc : baseLocations) {
 		if (loc.IsPointInBase(pt)) {
-			return loc;
+			return &loc;
 		}
 	}
 
-	return Empty;
+	return nullptr;
 }

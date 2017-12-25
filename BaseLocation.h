@@ -48,5 +48,3 @@ private:
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?
 	const float_t baseRadius = 15.0f;
 };
-
-static BaseLocation Empty(0, Point3D());
