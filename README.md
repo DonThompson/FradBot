@@ -43,6 +43,9 @@ Structures manager issues:
 
 BaseLocationInitializer issues:
 * This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
+* paladino -- top left gets no drawing (but the base is found).  Bottom right ends up in the wrong position sometimes.  sometimes works. wtf?
+* Paladino exposes an issue:  Because the cc is there, the attempt to find the ideal spot can fail (and does in top left here) because I can't build where it already is.  It exhausts
+	the entire search space and results in no buildable points.  But in the end it doesn't matter because we really aren't looking for a home there.
 
 Expansion issues:
 * I need an expansion manager, I think.

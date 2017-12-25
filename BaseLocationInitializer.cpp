@@ -13,6 +13,12 @@ BaseLocationInitializer::BaseLocationInitializer(Bot & b, std::vector<BaseLocati
 //	At completion, will have filled the baseLocations array with each found.
 void BaseLocationInitializer::InitializeBaseLocations()
 {
+	//First, create a base where we've spawned.
+	Structure cc = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER).front();
+	BaseLocation locMine(UseNextBaseLocationId(), cc.building->pos);
+	locMine.SetMyBase();
+
+	//Now figure out where all the mineral lines are throughout the map.
 	std::vector<const Unit*> mineralPatches;
 	std::vector<const Unit*> geysers;
 	FindAllMineralsAndGeysers(&mineralPatches, &geysers);
@@ -23,8 +29,19 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	//We now should have a set of mineral lines for each base location on the map.  Create BaseLocation objects
 	//	from these.
 	for (MineralLine line : mineralLines) {
-		baseLocations->push_back(SetupNewBaseLocation(line));
+		if (locMine.IsPointInBase(line.GetMineralCenterLocation())) {
+			//Already there, just add the mineral patches
+			for (const Unit* patch : line.GetMineralPatches()) {
+				locMine.AddMineralPatch(patch);
+			}
+		}
+		else {
+			//New base
+			baseLocations->push_back(SetupNewBaseLocation(line));
+		}
 	}
+	//Lastly add our location
+	baseLocations->push_back(locMine);
 
 	//Lastly add our geysers and we're initialized
 	AddGeysersToBases(geysers);
@@ -42,6 +59,7 @@ void BaseLocationInitializer::FindAllMineralsAndGeysers(std::vector<const Unit*>
 	}
 }
 
+//Using a list of all minerals on the map, groups them into mineral lines based on their proximity to each other.
 std::vector<MineralLine> BaseLocationInitializer::FindMineralLines(std::vector<const Unit*> nodes)
 {
 	std::vector<MineralLine> mineralLines;
@@ -64,6 +82,7 @@ std::vector<MineralLine> BaseLocationInitializer::FindMineralLines(std::vector<c
 	return mineralLines;
 }
 
+//Adds a list of geyser locations to the already known bases on the map
 void BaseLocationInitializer::AddGeysersToBases(std::vector<const Unit*>geysers)
 {
 	//Assumes every geyser fits in a base.  Any abandoned ones will just be ignored.
@@ -147,7 +166,7 @@ BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLi
 	Point3D resourceDepotLocation = Point3D(closestPoint.x, closestPoint.y, startingPoint.z);
 	//Setup a new base location at it.
 	BaseLocation loc(UseNextBaseLocationId(), resourceDepotLocation);
-	
+	//Finally add all the mineral patches to the location for future use.
 	for (const Unit* patch : mineralLine.GetMineralPatches()) {
 		loc.AddMineralPatch(patch);
 	}
@@ -155,6 +174,7 @@ BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLi
 	return loc;
 }
 
+//Retrieves the next available location Id and increments the counter for the next caller
 uint32_t BaseLocationInitializer::UseNextBaseLocationId()
 {
 	uint32_t useThis = nextBaseLocationId;

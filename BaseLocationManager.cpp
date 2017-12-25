@@ -13,22 +13,14 @@ void BaseLocationManager::OnGameStart()
 	BaseLocationInitializer baseInitializer(bot, &baseLocations);
 	baseInitializer.InitializeBaseLocations();
 
-	InitializeKnownBases();
+	InitializeKnownEnemyBase();
 
 	//done!
 	std::cout << "Base location manager initialized... found " << baseLocations.size() << " bases." << std::endl;
 }
 
-void BaseLocationManager::InitializeKnownBases()
+void BaseLocationManager::InitializeKnownEnemyBase()
 {
-	//1)  Find our command center and assign it to our base.
-	Structure cc = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER).front();
-	//Figure out which base it's in
-	BaseLocation* myLoc = GetLocationByPosition(cc.building->pos);
-	if (myLoc != nullptr)
-		myLoc->SetStartingBase(cc.building);
-
-	//2)  If the map is 1v1, then we know where the enemy is.  If it's not 1v1, we'll have to leave it up to a scout.
 	std::vector<Point2D> startLocations = bot.Observation()->GetGameInfo().enemy_start_locations;
 	if (startLocations.size() == 1) {
 		//Enemy must be here

@@ -6,6 +6,7 @@ using namespace sc2;
 #include "BaseLocation.h"
 #include "MineralLine.h"
 
+//One time initialization of all bases on the map
 class BaseLocationInitializer
 {
 public:
@@ -19,15 +20,12 @@ private:
 	Bot& bot;
 	std::vector<BaseLocation> *baseLocations;
 
-	//Base location initialization
 	void FindAllMineralsAndGeysers(std::vector<const Unit*> *mineralPatches, std::vector<const Unit*> *geysers);
 	std::vector<Point2D> GetBuildableStartingPoints(Point3D startingPoint);
 	Point2D FindClosestPointTo(Point2D startingPoint, std::vector<Point2D> pointList);
 	BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLine);
 	void AddGeysersToBases(std::vector<const Unit*>geysers);
-
 	std::vector<MineralLine> FindMineralLines(std::vector<const Unit*> nodes);
-
 	uint32_t UseNextBaseLocationId();
 	uint32_t nextBaseLocationId;
 };
