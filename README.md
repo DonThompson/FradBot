@@ -6,6 +6,10 @@ Current state:  Defeats all medium AI better than 80% of the time.
 General:
 * Generalize the rebalance logic in econ/supply manager to some kind of event system.  Game time is probably preferred.
 * I haven't touched Query() yet, but I threw a few comments below for things that look promising.
+* Speed checks.  Add some logic per game step in.  Avg across 5-10 seconds and look for max/avg.  student comp I saw fails you at:
+** More than 1 frame longer than 10 seconds, or
+** more than 10 frames longer than 1 second, or
+** more than 320 frames longer than 85 milliseconds.
 
 Supply manager issues:
 * Supply can't keep up at higher levels.  Ocassionally supply blocked.  Seems happy till about 60-70.
@@ -23,7 +27,7 @@ Construction manager issues:
 * ConstructionTaskState::eInterrupted, ConstructionTaskState::eInterrupted_FindingNewWorker, ConstructionTaskState::eInterrupted_Resuming are unreachable.  No handling for lost builders.
 * DoBuildingPositionsMatch:  We make an assumption of 1.0f distance in 2 positions is a match.  I have not dug into positioning to confirm this or see if there's a better method.
 * HandleWaitingOnBuildStart:  We iterate through all units to find buildings under construction.  Can we find a filter that would slim this to just buildings?
-* Loss of worker.  I've done no testing on this.  It's completely unhandled.
+* Loss of worker.  I've done no testing on this.  It's completely unhandled.  [EDIT:  I think I had this happen.  HandleConfirmingOrders had a nullptr builder.  I put in a check to bounce back in the queue here.  This was definitely pre-build-start.]
 
 BuildingPlacement issues:
 * Random building placement is a stupid way to place buildings.  This needs improved greatly.
@@ -31,13 +35,22 @@ BuildingPlacement issues:
 
 Upgrades issues:
 * Does this give us a better way to detect upgrades?  Query()->GetAbilitiesForUnit(unit)
+* Upgrade spam once you get all the ebay upgrades but don't have an armory - it just keeps trying like mad to schedule an upgrade you can't do.
 
 Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
 * Structure->building maybe should be private too.  Can we move all this into structure?
 
+BaseLocationInitializer issues:
+* This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them?
+
+Expansion issues:
+* I need an expansion manager, I think.
+* Almost certainly the construction manager is kicking the tasks from the queue and then re-building because of the long walk (see issues in construction manager).  More reason to go around this.
+
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
+* using statements in header is bad practice, clean that up.
 
 
 

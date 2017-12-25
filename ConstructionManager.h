@@ -6,6 +6,7 @@ using namespace sc2;
 #include "ManagerBase.h"
 #include "Utils.h"
 #include "BuildQueueTask.h"
+#include "BaseLocation.h"
 
 class Bot;
 
@@ -44,6 +45,8 @@ public:
 	//callbackSuccess - Function to call back on success of the construction
 	//callbackFailure - Function to call back on failure of the construction.
 	uint64_t BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
+
+	uint64_t Expand(BaseLocation expandingToLocation, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
 
 	//Called for each step of the game.  Not for public consumption.
 	virtual void OnStep();

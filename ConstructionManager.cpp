@@ -10,6 +10,35 @@ ConstructionManager::ConstructionManager(Bot & b)
 
 }
 
+//TODO:  Ugly ugly process.  Maybe expanding should just live outside the standard build process...?
+//	Usage:  bot.Construction().Expand(bot.BaseLocations().GetLocationById(1));
+uint64_t ConstructionManager::Expand(BaseLocation expandingToLocation, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
+{
+	//Use the standard function to create a queued command
+	uint64_t taskId = BuildStructure(ABILITY_ID::BUILD_COMMANDCENTER, callbackSuccess, callbackFailure);
+
+	//Pull the task from the queue
+	std::map<uint64_t, BuildQueueTask>::iterator found = mapBuildingQueue.find(taskId);
+	if (found == mapBuildingQueue.end()) {
+		//Not found.  Should be impossible.
+		return -1;
+	}
+	BuildQueueTask task = found->second;
+
+	//Handle the queued state and get a builder.
+	HandledQueuedBuilding(task);
+
+	//TODO:  This is a bit of duplication of the HandleFindingPosition function.  Might want to unify these some day.
+	Point2D buildPoint = expandingToLocation.GetResourceDepotLocation();
+	task.SetBuildPoint(buildPoint);
+
+	//Move on to next state
+	task.SetConstructionTaskState(ConstructionTaskState::eIssuingBuild);
+	mapBuildingQueue[taskId] = task;
+
+	return taskId;
+}
+
 uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
 	uint64_t id = UseNextIdentifier();
@@ -161,9 +190,11 @@ void ConstructionManager::HandleIssuingBuild(BuildQueueTask &task)
 //Post Fail (cancel task):  Builder did not accept our orders.  Entire task is aborted.
 void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
 {
+	const Unit* builder = task.GetBuilder();
+
 	//Did the builder accept our unit command?  Look for an order that isn't harvesting.
 	//	Note:  This is predicated around the assumption that we only pull constructors from harvesters
-	if (DoesBuilderHaveNonHarvestOrders(task.GetBuilder()))	{
+	if (builder != nullptr && DoesBuilderHaveNonHarvestOrders(task.GetBuilder()))	{
 		//The builder does have a non-gathering order in their queue.  We'll assume that's ours.  There is some small risk here
 		//	that it's not our order.
 		task.SetConstructionTaskState(ConstructionTaskState::eWaitingOnBuildStart);

@@ -28,6 +28,9 @@
     <Filter Include="Economy">
       <UniqueIdentifier>{26b5e6c4-1a2d-44b4-92d6-e325307b3c09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BaseManagement">
+      <UniqueIdentifier>{e66d51b0-5ed0-424c-8d7e-b08f2203c230}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildQueueTask.cpp">
@@ -73,6 +76,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BaseLocationManager.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLocation.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLocationInitializer.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="MineralLine.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildQueueTask.h">
@@ -117,6 +132,18 @@
     </ClInclude>
     <ClInclude Include="SupplyManager.h">
       <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLocationManager.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLocation.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLocationInitializer.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="MineralLine.h">
+      <Filter>BaseManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

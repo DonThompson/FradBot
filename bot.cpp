@@ -8,6 +8,7 @@ Bot::Bot()
 	, structuresManager(*this)
 	, upgradesManager(*this)
 	, drawingManager(*this)
+	, baseLocationManager(*this)
 {
 
 }
@@ -47,6 +48,11 @@ DrawingManager & Bot::Draw()
 	return drawingManager;
 }
 
+BaseLocationManager & Bot::BaseLocations()
+{
+	return baseLocationManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -62,9 +68,15 @@ void Bot::OnGameStart()
 	managers.push_back(&constructionManager);
 	managers.push_back(&structuresManager);
 	managers.push_back(&upgradesManager);
+	managers.push_back(&baseLocationManager);
 	//Intentionally not giving the drawing manager game events at this time
 	//managers.push_back(&drawingManager);
 
+
+	//Let everyone know the game has started
+	for (ManagerBase* m : managers) {
+		m->OnGameStart();
+	}
 }
 
 void Bot::OnGameEnd()
