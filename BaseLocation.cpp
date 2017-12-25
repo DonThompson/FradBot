@@ -48,7 +48,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 	bot.Draw().DrawCircle(resourceCenterLocation, 0.3f, color);
 
 	//and box in resource depot center
-	bot.Draw().DrawBox(resourceDepotLocation, 2.75f, 2.75f, color);	//CC Radius is 2.75
+	bot.Draw().DrawBox(resourceDepotLocation, 5.50f, 5.50f, color);	//CC Radius is 2.75
 	//And set a radius around the whole thing
 	bot.Draw().DrawCircle(resourceDepotLocation, baseRadius, color);
 
@@ -134,31 +134,18 @@ void BaseLocation::Initialize(Bot & bot, Point2D centerOfMap)
 	}
 
 	//And now we have our winning point
-	resourceDepotLocation = Point3D(closestPoint.x, closestPoint.y, lastZ * 1.1f);
+	resourceDepotLocation = Point3D(closestPoint.x, closestPoint.y, lastZ * 1.05f);
 
-	
-	//This doesn't work
-	//	[BAD] * move a slight distance toward the center of the map
-	/*
+	//NOTE:  This works!  These points are correct, they are indeed closest (I built expansions at all and lifted/dropped and they were correct).
+	//	Additionally, the test doesn't seem too bad -- anywhere from 20-40 buildable tiles are found at each location to be tested.
+}
 
-	uint32_t numTries = 0;
-	const uint32_t maxTries = 20;
-	bool found = false;
-	Point2D lastPoint(resourceCenterLocation.x, resourceCenterLocation.y);
-	while (!found && numTries < maxTries) {
-		Point2D testPoint2D(lastPoint + Point3D(0.5f, 0.5f, 0.0f));
-		Point3D testPoint3D(testPoint2D.x, testPoint2D.y, lastZ);
-		bot.Draw().DrawCircle(testPoint3D, 0.2f, Colors::Red);
+uint32_t BaseLocation::GetBaseLocationId()
+{
+	return baseLocationId;
+}
 
-		if (bot.Query()->Placement(ABILITY_ID::BUILD_COMMANDCENTER, testPoint2D)) {
-			//Yes, it's buildable!
-			found = true;
-			resourceDepotLocation = testPoint3D;
-		}
-		else {
-			//nope, keep trying
-			numTries++;
-		}
-	}
-	*/
+Point3D BaseLocation::GetResourceDepotLocation()
+{
+	return resourceDepotLocation;
 }

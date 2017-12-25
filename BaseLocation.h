@@ -18,6 +18,9 @@ public:
 	void DrawSelf(Bot & bot);
 	void Initialize(Bot & bot, Point2D centerOfMap);
 
+	uint32_t GetBaseLocationId();
+	Point3D GetResourceDepotLocation();
+
 private:
 	uint32_t baseLocationId;
 	Point3D starterPointMinPatch;

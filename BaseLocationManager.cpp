@@ -24,3 +24,14 @@ void BaseLocationManager::OnStep()
 		loc.DrawSelf(bot);
 	}
 }
+
+BaseLocation BaseLocationManager::GetLocationById(uint32_t baseId)
+{
+	for (BaseLocation loc : baseLocations) {
+		if (loc.GetBaseLocationId() == baseId)
+			return loc;
+	}
+
+	//TODO:  Don't like this
+	return BaseLocation(0, nullptr);
+}
