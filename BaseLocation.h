@@ -24,6 +24,8 @@ public:
 	void SetEnemyBase();
 	void SetMyBase();
 	void SetUnownedBase();
+	bool IsMyBase();
+	bool IsEnemyBase();
 
 	//One of the starting positions on the map?  Player or enemy
 	bool IsStartingPosition();

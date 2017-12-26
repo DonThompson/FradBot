@@ -109,6 +109,16 @@ void BaseLocation::SetUnownedBase()
 	baseOwner = BaseOwner::Unowned;
 }
 
+bool BaseLocation::IsMyBase()
+{
+	return baseOwner == BaseOwner::Self;
+}
+
+bool BaseLocation::IsEnemyBase()
+{
+	return baseOwner == BaseOwner::Enemy;
+}
+
 void BaseLocation::SetIsStartingPosition()
 {
 	isStartingPosition = true;
