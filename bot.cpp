@@ -6,7 +6,8 @@
 using namespace sc2;
 
 Bot::Bot()
-	: supplyManager(*this)
+	: strategyManager(*this)
+	, supplyManager(*this)
 	, econManager(*this)
 	, armyManager(*this)
 	, constructionManager(*this)
@@ -74,6 +75,7 @@ void Bot::OnGameStart()
 	//std::cout << "* Map:  " << GameSettings().map_name << std::endl;
 
 	//Order added is order they'll get notifications and steps
+	managers.push_back(&strategyManager);
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);
 	managers.push_back(&armyManager);

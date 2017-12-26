@@ -91,6 +91,7 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="StrategyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildQueueTask.h">
@@ -151,5 +152,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="StrategyManager.h" />
   </ItemGroup>
 </Project>

@@ -142,6 +142,7 @@
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="DrawingManager.cpp" />
     <ClCompile Include="MineralLine.cpp" />
+    <ClCompile Include="StrategyManager.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="StructuresManager.cpp" />
     <ClCompile Include="ConstructionPlacement.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="bot.h" />
     <ClInclude Include="DrawingManager.h" />
     <ClInclude Include="MineralLine.h" />
+    <ClInclude Include="StrategyManager.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="StructuresManager.h" />
     <ClInclude Include="ConstructionPlacement.h" />

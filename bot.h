@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
+#include "StrategyManager.h"
 #include "SupplyManager.h"
 #include "EconManager.h"
 #include "ArmyManager.h"
@@ -17,6 +18,7 @@
 
 class Bot : public sc2::Agent {
 private:
+	StrategyManager strategyManager;
 	SupplyManager supplyManager;
 	EconManager econManager;
 	ArmyManager armyManager;
