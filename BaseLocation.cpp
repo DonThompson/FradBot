@@ -8,6 +8,7 @@ BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocat
 	: baseLocationId(_baseLocationId)
 	, baseOwner(BaseLocation::BaseOwner::Unowned)
 	, isStartingPosition(false)
+	, naturalExpansionId(0)
 {
 	resourceDepotLocation = _resourceDepotLocation;
 }
@@ -56,8 +57,21 @@ void BaseLocation::DrawSelf(Bot & bot)
 	//And set a radius around the whole base location
 	bot.Draw().DrawCircle(resourceDepotLocation, baseRadius, color);
 
+	//Flags for start and naturals
+	std::string flags;
+	if (isStartingPosition) {
+		std::ostringstream ossFlags;
+		ossFlags << "(s->n" << naturalExpansionId << ")";
+		flags += ossFlags.str();
+	}
+	if (parentOfNaturalId > 0) {
+		std::ostringstream ossFlags;
+		ossFlags << "(n:" << parentOfNaturalId << ")";
+		flags += ossFlags.str();
+	}
+
 	std::ostringstream oss;
-	oss << "Base location " << baseLocationId << (isStartingPosition ? "(s)" : "") << std::endl;
+	oss << "Base location " << baseLocationId << flags << std::endl;
 	bot.Draw().DrawText(oss.str(), resourceDepotLocation, color);
 
 	for (const Unit* patch : mineralPatches) {
@@ -103,6 +117,26 @@ void BaseLocation::SetIsStartingPosition()
 bool BaseLocation::IsStartingPosition()
 {
 	return isStartingPosition;
+}
+
+void BaseLocation::SetNaturalExpansionId(uint32_t _naturalId)
+{
+	naturalExpansionId = _naturalId;
+}
+
+uint32_t BaseLocation::GetNaturalExpansionId()
+{
+	return naturalExpansionId;
+}
+
+uint32_t BaseLocation::GetParentOfNaturalId()
+{
+	return parentOfNaturalId;
+}
+
+void BaseLocation::SetParentOfNaturalId(uint32_t _parentId)
+{
+	parentOfNaturalId = _parentId;
 }
 
 bool BaseLocation::operator ==(BaseLocation rhs)

@@ -1,6 +1,7 @@
 #include "BaseLocationManager.h"
 #include "bot.h"
 #include "BaseLocationInitializer.h"
+#include <limits>
 using namespace sc2;
 
 BaseLocationManager::BaseLocationManager(Bot & b)
@@ -44,7 +45,34 @@ void BaseLocationManager::InitializeKnownEnemyBase()
 
 void BaseLocationManager::InitializeNaturalExpansions()
 {
-	//bot.Observation()->GetGameInfo().enemy_start_locations
+	//Find all the start locations...
+	for (BaseLocation &startBase : baseLocations) {
+		if (startBase.IsStartingPosition()) {
+			//Find nearest expansion - that's our natural
+			uint32_t closestBaseId = 0;
+			float_t closestDistance = std::numeric_limits<float_t>::max();
+			for (BaseLocation &destBase : baseLocations) {
+				//Another start can't be a natural
+				if (destBase.IsStartingPosition())
+					continue;
+				float_t dist = DistanceSquared3D(startBase.GetResourceDepotLocation(), destBase.GetResourceDepotLocation());
+				if (dist < closestDistance) {
+					closestDistance = dist;
+					closestBaseId = destBase.GetBaseLocationId();
+				}
+			}
+
+			//Map the start base to its natural - the closest base we found
+			startBase.SetNaturalExpansionId(closestBaseId);
+			//Then map the natural back to its start base
+			BaseLocation* natural = GetLocationById(closestBaseId);
+			if(natural != nullptr)
+				natural->SetParentOfNaturalId(startBase.GetBaseLocationId());
+		}
+	}
+
+
+	
 }
 
 void BaseLocationManager::OnStep()
