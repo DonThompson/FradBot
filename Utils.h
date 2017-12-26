@@ -11,7 +11,8 @@ public:
 	static sc2::Units GetOwnUnits(const sc2::ObservationInterface* observation, sc2::UNIT_TYPEID unitTypeID);
 	static sc2::Units GetOwnUnits(const sc2::ObservationInterface* observation);
 	static sc2::Units GetIdleUnits(const sc2::ObservationInterface* observation, sc2::UNIT_TYPEID unitTypeID, sc2::UNIT_TYPEID unitTypeID2);
+	static bool IsMineralPatch(sc2::UNIT_TYPEID unitTypeID);
+	static bool IsVespeneGeyser(sc2::UNIT_TYPEID unitTypeID);
 };
-
 
 #endif //__UTILS_H

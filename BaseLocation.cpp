@@ -62,6 +62,10 @@ void BaseLocation::DrawSelf(Bot & bot)
 	for (const Unit* patch : mineralPatches) {
 		bot.Draw().DrawCircle(patch->pos, patch->radius, color);
 	}
+
+	for (const Unit* geyser : geysers) {
+		bot.Draw().DrawCircle(geyser->pos, geyser->radius, color);
+	}
 }
 
 uint32_t BaseLocation::GetBaseLocationId()

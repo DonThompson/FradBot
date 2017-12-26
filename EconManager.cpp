@@ -150,7 +150,7 @@ const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const Ob
 	float distance = std::numeric_limits<float>::max();
 	const Unit* target = nullptr;
 	for (const auto& u : units) {
-		if (u->unit_type == UNIT_TYPEID::NEUTRAL_VESPENEGEYSER) {
+		if (Utils::IsVespeneGeyser(u->unit_type)) {
 			float d = DistanceSquared2D(u->pos, start);
 			if (d < distance) {
 				distance = d;
@@ -167,7 +167,7 @@ const Unit* EconManager::FindNearestMineralPatch(const Point2D& start)
 	float distance = std::numeric_limits<float>::max();
 	const Unit* target = nullptr;
 	for (const auto& u : units) {
-		if (u->unit_type == UNIT_TYPEID::NEUTRAL_MINERALFIELD) {
+		if (Utils::IsMineralPatch(u->unit_type)) {
 			float d = DistanceSquared2D(u->pos, start);
 			if (d < distance) {
 				distance = d;

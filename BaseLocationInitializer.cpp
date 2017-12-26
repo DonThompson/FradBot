@@ -1,5 +1,6 @@
 #include "BaseLocationInitializer.h"
 #include "MineralLine.h"
+#include "Utils.h"
 using namespace sc2;
 
 BaseLocationInitializer::BaseLocationInitializer(Bot & b, std::vector<BaseLocation> *locs)
@@ -53,9 +54,9 @@ void BaseLocationInitializer::FindAllMineralsAndGeysers(std::vector<const Unit*>
 {
 	Units units = bot.Observation()->GetUnits(Unit::Alliance::Neutral, {});
 	for (const Unit* u : units) {
-		if (u->unit_type == UNIT_TYPEID::NEUTRAL_MINERALFIELD)
+		if (Utils::IsMineralPatch(u->unit_type))
 			mineralPatches->push_back(u);
-		else if (u->unit_type == UNIT_TYPEID::NEUTRAL_VESPENEGEYSER)
+		else if(Utils::IsVespeneGeyser(u->unit_type))
 			geysers->push_back(u);
 	}
 }

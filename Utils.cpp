@@ -77,3 +77,32 @@ Units Utils::GetIdleUnits(const ObservationInterface* observation, UNIT_TYPEID u
 
 	return idleUnits;
 }
+
+//There are numerous types of mineral patches.  Consolidate logic.
+bool Utils::IsMineralPatch(sc2::UNIT_TYPEID unitTypeID)
+{
+	switch (unitTypeID)
+	{
+	case UNIT_TYPEID::NEUTRAL_MINERALFIELD:
+	case UNIT_TYPEID::NEUTRAL_MINERALFIELD750:
+	case UNIT_TYPEID::NEUTRAL_LABMINERALFIELD:
+	case UNIT_TYPEID::NEUTRAL_LABMINERALFIELD750:
+	case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD:
+	case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD750:
+		return true;
+	}
+	return false;
+}
+
+//There are numerous types of geysers.  Consolidate logic.
+bool Utils::IsVespeneGeyser(sc2::UNIT_TYPEID unitTypeID)
+{
+	switch (unitTypeID)
+	{
+	case UNIT_TYPEID::NEUTRAL_VESPENEGEYSER:
+	case UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER:
+	case UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER:
+		return true;
+	}
+	return false;
+}
