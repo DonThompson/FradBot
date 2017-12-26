@@ -1,4 +1,5 @@
 #include "ConstructionPlacement.h"
+using namespace sc2;
 
 ConstructionPlacement::ConstructionPlacement()
 {

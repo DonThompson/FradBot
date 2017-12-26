@@ -1,5 +1,6 @@
 #include "ArmyManager.h"
 #include "bot.h"
+using namespace sc2;
 
 ArmyManager::ArmyManager(Bot & b)
 	: ManagerBase(b)

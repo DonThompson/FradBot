@@ -1,4 +1,5 @@
 #include "Utils.h"
+using namespace sc2;
 
 //Get a random peon that is currently harvesting (not returning, not building, not moving somewhere on another mission, etc).
 const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)

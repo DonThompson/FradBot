@@ -1,5 +1,6 @@
 #include "EconManager.h"
 #include "bot.h"
+using namespace sc2;
 
 EconManager::EconManager(Bot & b)
 	: ManagerBase(b)

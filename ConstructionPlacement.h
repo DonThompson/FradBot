@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 
 /* Usage
 
@@ -14,5 +13,5 @@ class ConstructionPlacement
 {
 public:
 	ConstructionPlacement();
-	Point2D GetBuildPoint(const Unit* builder);
+	sc2::Point2D GetBuildPoint(const sc2::Unit* builder);
 };

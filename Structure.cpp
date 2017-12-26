@@ -1,4 +1,5 @@
 #include "Structure.h"
+using namespace sc2;
 
 //Float calculations
 //	I mostly ran empirical tests and compared against what others have done for float-type safety in determining where things stand.

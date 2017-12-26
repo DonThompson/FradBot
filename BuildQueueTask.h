@@ -2,7 +2,6 @@
 #define __BUILDQUEUETASK_H
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ConstructionTaskState.h"
 #include "Structure.h"
 
@@ -13,24 +12,24 @@ class BuildQueueTask
 public:
 	//Initialization
 	BuildQueueTask();
-	BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn);
+	BuildQueueTask(uint32_t _gameLoop, int64_t _id, sc2::ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn);
 
 	//Getters
 	uint32_t GetStartingGameLoop();
 	ConstructionTaskState GetConstructionTaskState();
-	const Unit* GetBuilder();
-	Point2D GetBuildPoint();
-	const Unit* GetGeyserTarget();
-	ABILITY_ID GetBuildingType();
+	const sc2::Unit* GetBuilder();
+	sc2::Point2D GetBuildPoint();
+	const sc2::Unit* GetGeyserTarget();
+	sc2::ABILITY_ID GetBuildingType();
 	Structure GetBuilding();
 	BuildQueueTaskCallbackFunction GetSuccessCallback();
 	BuildQueueTaskCallbackFunction GetFailureCallback();
 
 	//Setters
 	void SetConstructionTaskState(ConstructionTaskState newState);
-	void AssignBuilder(const Unit* builder);
-	void SetBuildPoint(Point2D _pt);
-	void SetGeyserTarget(const Unit* _geyser);
+	void AssignBuilder(const sc2::Unit* builder);
+	void SetBuildPoint(sc2::Point2D _pt);
+	void SetGeyserTarget(const sc2::Unit* _geyser);
 	void SetBuilding(Structure _building);
 	void SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn);
 	void SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn);
@@ -42,11 +41,11 @@ private:
 	uint32_t startingGameLoop;
 	int64_t id;
 	ConstructionTaskState state;
-	ABILITY_ID structureToBuild;
-	const Unit* builderUnit;
-	Point2D buildingPoint;
+	sc2::ABILITY_ID structureToBuild;
+	const sc2::Unit* builderUnit;
+	sc2::Point2D buildingPoint;
 	//TODO:  derive class instead of if/else statements
-	const Unit* geyserTarget;	//alt to buildingPoint
+	const sc2::Unit* geyserTarget;	//alt to buildingPoint
 	Structure building;
 	BuildQueueTaskCallbackFunction callbackSuccess;
 	BuildQueueTaskCallbackFunction callbackFailure;

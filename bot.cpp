@@ -1,4 +1,5 @@
 #include "bot.h"
+using namespace sc2;
 
 Bot::Bot()
 	: supplyManager(*this)
@@ -84,7 +85,7 @@ void Bot::OnGameEnd()
 	std::cout << "Goodbye, World!" << std::endl;
 }
 
-void Bot::OnError(const std::vector<ClientError>& client_errors, const std::vector<std::string>& protocol_errors /*= {}*/)
+void Bot::OnError(const std::vector<sc2::ClientError>& client_errors, const std::vector<std::string>& protocol_errors /*= {}*/)
 {
 }
 

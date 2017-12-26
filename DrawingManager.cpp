@@ -1,5 +1,6 @@
 #include "DrawingManager.h"
 #include "bot.h"
+using namespace sc2;
 
 DrawingManager::DrawingManager(Bot & b)
 	: ManagerBase(b)

@@ -50,7 +50,6 @@ Expansion issues:
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
-* using statements in header is bad practice, clean that up.
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 
 

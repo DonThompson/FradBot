@@ -2,7 +2,6 @@
 #define __MANAGER_BASE_H
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 
 class Bot;
 
@@ -17,23 +16,23 @@ public:
 
 	//Individual game actions, not required for managers to implement.  Use as needed.
 	virtual void OnGameStart() {}
-	virtual void OnUnitIdle(const Unit* unit) {}
-	virtual void OnUnitDestroyed(const Unit* unit) {}
-	virtual void OnUnitCreated(const Unit* unit) {}
-	virtual void OnUpgradeCompleted(UpgradeID upgradeID) {}
-	virtual void OnBuildingConstructionComplete(const Unit* unit) {}
+	virtual void OnUnitIdle(const sc2::Unit* unit) {}
+	virtual void OnUnitDestroyed(const sc2::Unit* unit) {}
+	virtual void OnUnitCreated(const sc2::Unit* unit) {}
+	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID) {}
+	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit) {}
 	virtual void OnNydusDetected() {}
 	virtual void OnNuclearLaunchDetected() {}
-	virtual void OnUnitEnterVision(const Unit* unit) {}
+	virtual void OnUnitEnterVision(const sc2::Unit* unit) {}
 
 protected:
 	//Our working bot
 	Bot& bot;
 
 	//Provide access to the bot agent's Observation interface
-	const ObservationInterface* ManagerBase::Observation();
+	const sc2::ObservationInterface* ManagerBase::Observation();
 	//Provide access to the bot agent's Action interface
-	ActionInterface* ManagerBase::Actions();
+	sc2::ActionInterface* ManagerBase::Actions();
 
 };
 

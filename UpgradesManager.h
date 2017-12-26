@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ManagerBase.h"
 #include "Utils.h"
 #include "UpgradeList.h"
@@ -13,7 +12,7 @@ public:
 	UpgradesManager(Bot & b);
 
 	virtual void OnStep();
-	virtual void OnUpgradeCompleted(UpgradeID upgradeID);
+	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID);
 
 private:
 	clock_t lastBalanceClock;

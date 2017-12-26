@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ManagerBase.h"
 #include "BaseLocation.h"
 
@@ -14,7 +13,7 @@ public:
 	virtual void OnGameStart();
 
 	BaseLocation* GetLocationById(uint32_t baseId);
-	BaseLocation* GetLocationByPosition(Point2D pt);
+	BaseLocation* GetLocationByPosition(sc2::Point2D pt);
 
 private:
 	std::vector<BaseLocation> baseLocations;

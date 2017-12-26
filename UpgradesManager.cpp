@@ -1,5 +1,6 @@
 #include "UpgradesManager.h"
 #include "bot.h"
+using namespace sc2;
 
 UpgradesManager::UpgradesManager(Bot & b)
 	: ManagerBase(b)

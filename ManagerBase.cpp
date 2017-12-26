@@ -1,5 +1,6 @@
 #include "ManagerBase.h"
 #include "bot.h"
+using namespace sc2;
 
 ManagerBase::ManagerBase(Bot & b)
 	: bot(b)

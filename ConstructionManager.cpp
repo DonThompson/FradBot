@@ -2,6 +2,7 @@
 #include "EconManager.h"
 #include "ConstructionPlacement.h"
 #include "bot.h"
+using namespace sc2;
 
 ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)

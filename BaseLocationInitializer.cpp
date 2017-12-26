@@ -1,5 +1,6 @@
 #include "BaseLocationInitializer.h"
 #include "MineralLine.h"
+using namespace sc2;
 
 BaseLocationInitializer::BaseLocationInitializer(Bot & b, std::vector<BaseLocation> *locs)
 	: bot(b)

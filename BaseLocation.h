@@ -1,26 +1,25 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 
 class Bot;
 
 class BaseLocation
 {
 public:
-	BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocation);
+	BaseLocation(uint32_t _baseLocationId, sc2::Point3D _resourceDepotLocation);
 
-	bool IsUnitInBase(const Unit* unit);
-	bool IsPointInBase(Point3D pt);
-	bool IsPointInBase(Point2D pt);
+	bool IsUnitInBase(const sc2::Unit* unit);
+	bool IsPointInBase(sc2::Point3D pt);
+	bool IsPointInBase(sc2::Point2D pt);
 
-	void AddMineralPatch(const Unit* patch);
-	void AddGeyser(const Unit* geyser);
+	void AddMineralPatch(const sc2::Unit* patch);
+	void AddGeyser(const sc2::Unit* geyser);
 
 	void DrawSelf(Bot & bot);
 
 	uint32_t GetBaseLocationId();
-	Point3D GetResourceDepotLocation();
+	sc2::Point3D GetResourceDepotLocation();
 
 	void SetEnemyBase();
 	void SetMyBase();
@@ -37,10 +36,10 @@ private:
 	};
 
 	uint32_t baseLocationId;
-	Point3D resourceDepotLocation;	//The ideal position for a CC, Nexus, Hatchery in this base location
+	sc2::Point3D resourceDepotLocation;	//The ideal position for a CC, Nexus, Hatchery in this base location
 
-	std::vector<const Unit*> mineralPatches;
-	std::vector<const Unit*> geysers;
+	std::vector<const sc2::Unit*> mineralPatches;
+	std::vector<const sc2::Unit*> geysers;
 
 	BaseOwner baseOwner;
 

@@ -1,6 +1,7 @@
 #include "BaseLocationManager.h"
 #include "bot.h"
 #include "BaseLocationInitializer.h"
+using namespace sc2;
 
 BaseLocationManager::BaseLocationManager(Bot & b)
 	: ManagerBase(b)

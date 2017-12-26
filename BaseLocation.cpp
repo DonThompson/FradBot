@@ -2,6 +2,7 @@
 #include "bot.h"
 #include <sstream>
 #include "Utils.h"
+using namespace sc2;
 
 BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocation)
 	: baseLocationId(_baseLocationId)

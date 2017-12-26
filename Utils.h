@@ -3,15 +3,14 @@
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 
 class Utils {
 public:
-	static const Unit* GetRandomHarvester(const ObservationInterface* observation);
-	static int32_t CountOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID);
-	static Units GetOwnUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID);
-	static Units GetOwnUnits(const ObservationInterface* observation);
-	static Units GetIdleUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID, UNIT_TYPEID unitTypeID2);
+	static const sc2::Unit* GetRandomHarvester(const sc2::ObservationInterface* observation);
+	static int32_t CountOwnUnits(const sc2::ObservationInterface* observation, sc2::UNIT_TYPEID unitTypeID);
+	static sc2::Units GetOwnUnits(const sc2::ObservationInterface* observation, sc2::UNIT_TYPEID unitTypeID);
+	static sc2::Units GetOwnUnits(const sc2::ObservationInterface* observation);
+	static sc2::Units GetIdleUnits(const sc2::ObservationInterface* observation, sc2::UNIT_TYPEID unitTypeID, sc2::UNIT_TYPEID unitTypeID2);
 };
 
 

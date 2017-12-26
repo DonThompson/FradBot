@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ManagerBase.h"
 #include "Utils.h"
 #include "BuildQueueTask.h"
@@ -44,7 +43,7 @@ public:
 	//structureAbilityId - Structure to be constructed.
 	//callbackSuccess - Function to call back on success of the construction
 	//callbackFailure - Function to call back on failure of the construction.
-	uint64_t BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
+	uint64_t BuildStructure(sc2::ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
 
 	uint64_t Expand(BaseLocation expandingToLocation, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
 
@@ -66,9 +65,9 @@ private:
 	void HandleConstructionInProgress(BuildQueueTask &task);
 	void HandleCompleted(BuildQueueTask task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId);
 
-	const Unit* FindConstructionWorker();
-	const Unit* HandleFindingRefineryTarget(Point2D builderPos);
-	bool DoesBuilderHaveNonHarvestOrders(const Unit* builder);
-	bool DoBuildingPositionsMatch(Point2D pt1, Point2D pt2);
+	const sc2::Unit* FindConstructionWorker();
+	const sc2::Unit* HandleFindingRefineryTarget(sc2::Point2D builderPos);
+	bool DoesBuilderHaveNonHarvestOrders(const sc2::Unit* builder);
+	bool DoBuildingPositionsMatch(sc2::Point2D pt1, sc2::Point2D pt2);
 	
 };

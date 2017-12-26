@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "bot.h"
 #include "BaseLocation.h"
 #include "MineralLine.h"
@@ -20,12 +19,12 @@ private:
 	Bot& bot;
 	std::vector<BaseLocation> *baseLocations;
 
-	void FindAllMineralsAndGeysers(std::vector<const Unit*> *mineralPatches, std::vector<const Unit*> *geysers);
-	std::vector<Point2D> GetBuildableStartingPoints(Point3D startingPoint);
-	Point2D FindClosestPointTo(Point2D startingPoint, std::vector<Point2D> pointList);
+	void FindAllMineralsAndGeysers(std::vector<const sc2::Unit*> *mineralPatches, std::vector<const sc2::Unit*> *geysers);
+	std::vector<sc2::Point2D> GetBuildableStartingPoints(sc2::Point3D startingPoint);
+	sc2::Point2D FindClosestPointTo(sc2::Point2D startingPoint, std::vector<sc2::Point2D> pointList);
 	BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLine);
-	void AddGeysersToBases(std::vector<const Unit*>geysers);
-	std::vector<MineralLine> FindMineralLines(std::vector<const Unit*> nodes);
+	void AddGeysersToBases(std::vector<const sc2::Unit*>geysers);
+	std::vector<MineralLine> FindMineralLines(std::vector<const sc2::Unit*> nodes);
 	uint32_t UseNextBaseLocationId();
 	uint32_t nextBaseLocationId;
 };

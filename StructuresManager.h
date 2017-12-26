@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ManagerBase.h"
 #include "Utils.h"
 #include "Structure.h"
@@ -21,17 +20,17 @@ class StructuresManager : public ManagerBase
 {
 public:
 	StructuresManager(Bot & b);
-	static UNIT_TYPEID StructuresManager::UnitTypeFromBuildAbility(ABILITY_ID abilityID);
+	static sc2::UNIT_TYPEID StructuresManager::UnitTypeFromBuildAbility(sc2::ABILITY_ID abilityID);
 
 	virtual void OnStep();
-	virtual void OnUnitDestroyed(const Unit* unit);
-	virtual void OnBuildingConstructionComplete(const Unit* unit);
+	virtual void OnUnitDestroyed(const sc2::Unit* unit);
+	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit);
 
 	//Public functionality
-	std::vector<Structure> GetStructuresByType(UNIT_TYPEID unitTypeID);
-	std::vector<Structure> GetStructuresByBuildAbility(ABILITY_ID abilityID);
+	std::vector<Structure> GetStructuresByType(sc2::UNIT_TYPEID unitTypeID);
+	std::vector<Structure> GetStructuresByBuildAbility(sc2::ABILITY_ID abilityID);
 
-	int32_t CountStructuresByType(UNIT_TYPEID unitTypeID);
+	int32_t CountStructuresByType(sc2::UNIT_TYPEID unitTypeID);
 
 private:
 	//Perhaps in vFuture

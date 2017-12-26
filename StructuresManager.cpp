@@ -1,5 +1,6 @@
 #include "StructuresManager.h"
 #include "Utils.h"
+using namespace sc2;
 
 StructuresManager::StructuresManager(Bot & b)
 	: ManagerBase(b)

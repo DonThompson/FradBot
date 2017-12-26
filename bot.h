@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
-
 #include "ManagerBase.h"
 #include "SupplyManager.h"
 #include "EconManager.h"
@@ -17,7 +15,7 @@ using namespace sc2;
 #include "Utils.h"
 
 
-class Bot : public Agent {
+class Bot : public sc2::Agent {
 private:
 	SupplyManager supplyManager;
 	EconManager econManager;
@@ -60,7 +58,7 @@ public:
 	//! Called when a game has ended.
 	virtual void OnGameEnd();
 	//! Called for various errors the library can encounter. See ClientError enum for possible errors.
-	virtual void OnError(const std::vector<ClientError>& client_errors, const std::vector<std::string>& protocol_errors = {});
+	virtual void OnError(const std::vector<sc2::ClientError>& client_errors, const std::vector<std::string>& protocol_errors = {});
 
 	////////////////////////////////////////
 	// In game events, passed to managers //
@@ -71,29 +69,29 @@ public:
 	virtual void OnStep();
 	//! Called whenever one of the player's units has been destroyed.
 	//!< \param unit The destroyed unit.
-	virtual void OnUnitDestroyed(const Unit* unit);
+	virtual void OnUnitDestroyed(const sc2::Unit* unit);
 	//! Called when a Unit has been created by the player.
 	//!< \param unit The created unit.
-	virtual void OnUnitCreated(const Unit* unit);
+	virtual void OnUnitCreated(const sc2::Unit* unit);
 	//! Called when a unit becomes idle, this will only occur as an event so will only be called when the unit becomes
 	//! idle and not a second time. Being idle is defined by having orders in the previous step and not currently having
 	//! orders or if it did not exist in the previous step and now does, a unit being created, for instance, will call both
 	//! OnUnitCreated and OnUnitIdle if it does not have a rally set.
 	//!< \param unit The idle unit.
-	virtual void OnUnitIdle(const Unit* unit);
+	virtual void OnUnitIdle(const sc2::Unit* unit);
 	//! Called when an upgrade is finished, warp gate, ground weapons, baneling speed, etc.
 	//!< \param upgrade The completed upgrade.
-	virtual void OnUpgradeCompleted(UpgradeID upgradeID);
+	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID);
 	//! Called when the unit in the previous step had a build progress less than 1.0 but is greater than or equal to 1.0 in the current step.
 	//!< \param unit The constructed unit.
-	virtual void OnBuildingConstructionComplete(const Unit* unit);
+	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit);
 	//! Called when a nydus is placed.
 	virtual void OnNydusDetected();
 	//! Called when a nuclear launch is detected.
 	virtual void OnNuclearLaunchDetected();
 	//! Called when an enemy unit enters vision from out of fog of war.
 	//!< \param unit The unit entering vision.
-	virtual void OnUnitEnterVision(const Unit* unit);
+	virtual void OnUnitEnterVision(const sc2::Unit* unit);
 
 };
 

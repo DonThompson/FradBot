@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sc2api/sc2_api.h>
-using namespace sc2;
 #include "ManagerBase.h"
 #include "Utils.h"
 
@@ -16,10 +15,10 @@ public:
 	bool BarracksNeeded();
 	void BuildBarracks();
 	void TryAttackInGroups();
-	void LaunchAttackGroup(Units unitsToAttack);
-	void OnBarracksIdle(const Unit* unit);
-	void OnMarineIdle(const Unit* unit);
-	virtual void OnUnitIdle(const Unit* unit);
+	void LaunchAttackGroup(sc2::Units unitsToAttack);
+	void OnBarracksIdle(const sc2::Unit* unit);
+	void OnMarineIdle(const sc2::Unit* unit);
+	virtual void OnUnitIdle(const sc2::Unit* unit);
 	void OnBarracksSuccess(int64_t taskId);
 	void OnBarracksFailed(int64_t taskId);
 

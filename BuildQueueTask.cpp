@@ -1,5 +1,5 @@
 #include "BuildQueueTask.h"
-
+using namespace sc2;
 
 //Base constructor, builds a queue task with no values.  Not recommended for use.
 BuildQueueTask::BuildQueueTask()

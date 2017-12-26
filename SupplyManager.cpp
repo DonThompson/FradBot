@@ -1,5 +1,6 @@
 #include "SupplyManager.h"
 #include "bot.h"
+using namespace sc2;
 
 void SupplyManager::successTest(int64_t x)
 {
