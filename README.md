@@ -42,7 +42,7 @@ Structures manager issues:
 * Structure->building maybe should be private too.  Can we move all this into structure?
 
 BaseLocationInitializer issues:
-* This only seems to find exactly 4 mineral patches per base.  Good enough for what we want... but why not all of them? [https://github.com/Blizzard/s2client-api/issues/225]
+* BaseLocationInitializer::GetBuildableStartingPoints is slow.  300 ms for the first base location and ~150 for each subsequent one.  For a map with 20 bases, this results in a big pause to start.  Can we make this more efficient?
 
 Expansion issues:
 * I need an expansion manager, I think.
