@@ -59,6 +59,11 @@ BaseLocationManager & Bot::BaseLocations()
 	return baseLocationManager;
 }
 
+UpgradesManager & Bot::Upgrades()
+{
+	return upgradesManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }

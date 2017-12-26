@@ -44,6 +44,7 @@ public:
 	EconManager & Econ();
 	DrawingManager & Draw();
 	BaseLocationManager & BaseLocations();
+	UpgradesManager & Upgrades();
 
 
 	std::string GetVersion();
