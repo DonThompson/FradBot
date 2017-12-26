@@ -25,6 +25,9 @@ public:
 	void SetMyBase();
 	void SetUnownedBase();
 
+	bool IsStartingPosition();
+	void SetIsStartingPosition();
+
 	bool operator ==(BaseLocation rhs);
 	bool operator !=(BaseLocation rhs);
 
@@ -42,6 +45,7 @@ private:
 	std::vector<const sc2::Unit*> geysers;
 
 	BaseOwner baseOwner;
+	bool isStartingPosition;
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?
 	//	Updated from 15.0f to 16.0f for Paladino Terminal.

@@ -7,6 +7,7 @@ using namespace sc2;
 BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocation)
 	: baseLocationId(_baseLocationId)
 	, baseOwner(BaseLocation::BaseOwner::Unowned)
+	, isStartingPosition(false)
 {
 	resourceDepotLocation = _resourceDepotLocation;
 }
@@ -91,6 +92,16 @@ void BaseLocation::SetMyBase()
 void BaseLocation::SetUnownedBase()
 {
 	baseOwner = BaseOwner::Unowned;
+}
+
+void BaseLocation::SetIsStartingPosition()
+{
+	isStartingPosition = true;
+}
+
+bool BaseLocation::IsStartingPosition()
+{
+	return isStartingPosition;
 }
 
 bool BaseLocation::operator ==(BaseLocation rhs)

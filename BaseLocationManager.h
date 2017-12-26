@@ -19,4 +19,5 @@ private:
 	std::vector<BaseLocation> baseLocations;
 
 	void InitializeKnownEnemyBase();
+	void InitializeNaturalExpansions();
 };

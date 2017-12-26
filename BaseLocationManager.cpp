@@ -16,6 +16,8 @@ void BaseLocationManager::OnGameStart()
 
 	InitializeKnownEnemyBase();
 
+	AssignNaturalExpansions();
+
 	//done!
 	std::cout << "Base location manager initialized... found " << baseLocations.size() << " bases." << std::endl;
 }
@@ -30,6 +32,16 @@ void BaseLocationManager::InitializeKnownEnemyBase()
 			loc->SetEnemyBase();
 		}
 	}
+
+	//In all cases, flag all the possible start locations
+	for (Point2D startingPt : startLocations) {
+
+	}
+}
+
+void BaseLocationManager::InitializeNaturalExpansions()
+{
+	//bot.Observation()->GetGameInfo().enemy_start_locations
 }
 
 void BaseLocationManager::OnStep()
