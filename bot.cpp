@@ -39,7 +39,7 @@ SupplyManager & Bot::Supply()
 	return supplyManager;
 }
 
-const ArmyManager & Bot::Army()
+ArmyManager & Bot::Army()
 {
 	return armyManager;
 }
