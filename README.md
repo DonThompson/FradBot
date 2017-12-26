@@ -34,8 +34,7 @@ BuildingPlacement issues:
 * Query()->Placement(sc2::ABILITY_ID::BUILD_CREEPTUMOR, location) looks promising too.
 
 Upgrades issues:
-* Does this give us a better way to detect upgrades?  Query()->GetAbilitiesForUnit(unit)
-* Upgrade spam once you get all the ebay upgrades but don't have an armory - it just keeps trying like mad to schedule an upgrade you can't do.
+* None
 
 Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.

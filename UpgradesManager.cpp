@@ -124,14 +124,30 @@ void UpgradesManager::PerformTechLabUpgrades()
 		if (techlab.getOrderCount() > 0)
 			continue;
 		else {
+			//What can the building actually upgrade right now?
+			AvailableAbilities aa = bot.Query()->GetAbilitiesForUnit(techlab.building);
+
+			//Shortcut - we'll fairly early on run out of upgrades to do.  Just quit when we hit that point.
+			if (aa.abilities.size() == 0) {
+				continue;
+			}
+
+			//Crazy c++ syntax...
+			bool canUpgradeStim = std::find_if(aa.abilities.begin(), aa.abilities.end(),
+				[](const AvailableAbility &aa) -> bool { return aa.ability_id == ABILITY_ID::RESEARCH_STIMPACK; }) != aa.abilities.end();
+			bool canUpgradeShields = std::find_if(aa.abilities.begin(), aa.abilities.end(),
+				[](const AvailableAbility &aa) -> bool { return aa.ability_id == ABILITY_ID::RESEARCH_COMBATSHIELD; }) != aa.abilities.end();
+			bool canUpgradeGrenades = std::find_if(aa.abilities.begin(), aa.abilities.end(),
+				[](const AvailableAbility &aa) -> bool { return aa.ability_id == ABILITY_ID::RESEARCH_CONCUSSIVESHELLS; }) != aa.abilities.end();
+
 			//Research in order
 			ABILITY_ID research = ABILITY_ID::INVALID;
 			//TODO:  When we know how to use stim, it should go first
-			if (!upgrades.hasCombatShields)
+			if (!upgrades.hasCombatShields && canUpgradeShields)
 				research = ABILITY_ID::RESEARCH_COMBATSHIELD;
-			else if (!upgrades.hasConcussionGrenades)
+			else if (!upgrades.hasConcussionGrenades && canUpgradeGrenades)
 				research = ABILITY_ID::RESEARCH_CONCUSSIVESHELLS;
-			else if (!upgrades.hasStim)
+			else if (!upgrades.hasStim && canUpgradeStim)
 				research = ABILITY_ID::RESEARCH_STIMPACK;
 
 			if (research != ABILITY_ID::INVALID) {
@@ -150,16 +166,25 @@ void UpgradesManager::PerformEngBayUpgrades()
 		if (ebay.getOrderCount() > 0)
 			continue;
 		else {
+			//What can the building actually upgrade right now?
+			AvailableAbilities aa = bot.Query()->GetAbilitiesForUnit(ebay.building);
+
 			//Upgrade order... atttack1, def1, atk2, atk3, def2, def3
 			ABILITY_ID research = ABILITY_ID::INVALID;
 
-			if (upgrades.infAttackLevel == 0)
+			//Crazy c++ syntax...
+			bool canUpgradeWeapons = std::find_if(aa.abilities.begin(), aa.abilities.end(),
+				[](const AvailableAbility &aa) -> bool { return aa.ability_id == ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS; }) != aa.abilities.end();
+			bool canUpgradeArmor = std::find_if(aa.abilities.begin(), aa.abilities.end(),
+				[](const AvailableAbility &aa) -> bool { return aa.ability_id == ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR; }) != aa.abilities.end();
+
+			if (upgrades.infAttackLevel == 0 && canUpgradeWeapons)
 				research = ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS;
-			else if (upgrades.infDefenseLevel == 0)
+			else if (upgrades.infDefenseLevel == 0 && canUpgradeArmor)
 				research = ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR;
-			else if (upgrades.infAttackLevel < 3)
+			else if (upgrades.infAttackLevel < 3 && canUpgradeWeapons)
 				research = ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS;
-			else if (upgrades.infDefenseLevel < 3)
+			else if (upgrades.infDefenseLevel < 3 && canUpgradeArmor)
 				research = ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR;
 
 			if (research != ABILITY_ID::INVALID) {
