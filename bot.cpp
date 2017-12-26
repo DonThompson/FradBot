@@ -44,7 +44,7 @@ const ArmyManager & Bot::Army()
 	return armyManager;
 }
 
-const EconManager & Bot::Econ()
+EconManager & Bot::Econ()
 {
 	return econManager;
 }

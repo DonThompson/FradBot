@@ -23,7 +23,15 @@ public:
 
 	static const sc2::Unit* FindNearestVespeneGeyser(const sc2::Point2D& start, const sc2::ObservationInterface* obs);
 
+	//Enables the economy manager to act autonomously.  In this mode, it will attempt to smartly optimize workers, harvesting
+	//	activities, vespene, etc.
+	void EnableAutonomy();
+	//Disables the economy manager to act autonomously.  In this mode, it will not build anything, but will still manage
+	//	idle workers and attempt to optimize.
+	void DisableAutonomy();
+
 private:
+	bool actAutonomously;
 	void BalanceBuilders();
 	void OnCommandCenterIdle(const sc2::Unit* unit);
 	bool NeedRefinery();

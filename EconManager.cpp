@@ -6,23 +6,41 @@ EconManager::EconManager(Bot & b)
 	: ManagerBase(b)
 	, refineriesInProgress(0)
 	, refineriesCompleted(0)
+	, actAutonomously(false)
 {
 	lastBalanceClock = clock();
 }
 
+void EconManager::EnableAutonomy()
+{
+	actAutonomously = true;
+}
+
+void EconManager::DisableAutonomy()
+{
+	actAutonomously = false;
+}
+
 void EconManager::OnStep()
 {
-	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
-	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
-	if (clock() - lastBalanceClock > rebalanceTime) {
-		BalanceBuilders();
+	//If the economy manager has been asked to run on its own, perform these actions
+	if (actAutonomously) 
+	{
+		//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
+		const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
+		if (clock() - lastBalanceClock > rebalanceTime) {
+			BalanceBuilders();
 
-		if (NeedRefinery()) {
-			BuildRefinery();
+			if (NeedRefinery()) {
+				BuildRefinery();
+			}
+
+			lastBalanceClock = clock();
 		}
-
-		lastBalanceClock = clock();
 	}
+	
+	//Work to do regardless of automony
+
 }
 
 void EconManager::OnUnitIdle(const Unit* unit)
@@ -72,23 +90,27 @@ void EconManager::OnCommandCenterIdle(const Unit* unit)
 
 void EconManager::HandleCommandCenterIdle(Structure cc)
 {
-	//Only build if we're short harvesters
-	bool buildSCV = false;
+	//Only build if we're acting autonomously.  Otherwise let the game strategy handle it.
+	if (actAutonomously)
+	{
+		//Only build if we're short harvesters
+		bool buildSCV = false;
 
-	if (cc.assignedHarvesters() < cc.idealHarvesters()) {
-		buildSCV = true;
-	}
-
-	//Or if we're short gas harvesters
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (Structure r : refineries) {
-		if (r.assignedHarvesters() < r.idealHarvesters()) {
+		if (cc.assignedHarvesters() < cc.idealHarvesters()) {
 			buildSCV = true;
 		}
-	}
 
-	if (buildSCV) {
-		Actions()->UnitCommand(cc.building, ABILITY_ID::TRAIN_SCV);
+		//Or if we're short gas harvesters
+		std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+		for (Structure r : refineries) {
+			if (r.assignedHarvesters() < r.idealHarvesters()) {
+				buildSCV = true;
+			}
+		}
+
+		if (buildSCV) {
+			Actions()->UnitCommand(cc.building, ABILITY_ID::TRAIN_SCV);
+		}
 	}
 }
 

@@ -9,5 +9,6 @@ class StrategyManager : public ManagerBase
 public:
 	StrategyManager(Bot & b);
 
+	virtual void OnGameStart();
 	virtual void OnStep();
 };

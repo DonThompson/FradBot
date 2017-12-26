@@ -41,7 +41,7 @@ public:
 	StructuresManager & Structures();
 	const SupplyManager & Supply();
 	const ArmyManager & Army();
-	const EconManager & Econ();
+	EconManager & Econ();
 	DrawingManager & Draw();
 	BaseLocationManager & BaseLocations();
 
