@@ -34,7 +34,7 @@ StructuresManager & Bot::Structures()
 	return structuresManager;
 }
 
-const SupplyManager & Bot::Supply()
+SupplyManager & Bot::Supply()
 {
 	return supplyManager;
 }

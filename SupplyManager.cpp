@@ -31,18 +31,24 @@ SupplyManager::~SupplyManager()
 
 void SupplyManager::OnStep()
 {
-	//Rebalance supply every few seconds.  We really don't need to do this every step.
-	//TODO:  Clock is REAL time.  Should we use game time?  In super fast AI mode this might actually be 5-6 game seconds.
-	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
-	if (clock() - lastBalanceClock > rebalanceTime) {
+	//Do these things when we're autonomous
+	if (actAutonomously)
+	{
+		//Rebalance supply every few seconds.  We really don't need to do this every step.
+		//TODO:  Clock is REAL time.  Should we use game time?  In super fast AI mode this might actually be 5-6 game seconds.
+		const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
+		if (clock() - lastBalanceClock > rebalanceTime) {
 
-		//Specific logic
-		if (SupplyDepotNeeded()) {
-			BuildSupplyDepot();
+			//Specific logic
+			if (SupplyDepotNeeded()) {
+				BuildSupplyDepot();
+			}
+
+			lastBalanceClock = clock();
 		}
-
-		lastBalanceClock = clock();
 	}
+
+	//Do these things always
 }
 
 //Evaluate if we need a depot by predicting what we may build imminently.

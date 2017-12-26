@@ -9,6 +9,9 @@
 
 class Bot;
 
+//Autonomy:
+//	Enabled:  Builds workers if we have not saturated the minerals & gas fully.  Builds refineries if missing.  Shifts workers between the two.  And everything in disabled.
+//	Disabled:  Handlers idle workers and puts them back to mining.
 class EconManager : public ManagerBase {
 private:
 	clock_t lastBalanceClock;
@@ -23,15 +26,7 @@ public:
 
 	static const sc2::Unit* FindNearestVespeneGeyser(const sc2::Point2D& start, const sc2::ObservationInterface* obs);
 
-	//Enables the economy manager to act autonomously.  In this mode, it will attempt to smartly optimize workers, harvesting
-	//	activities, vespene, etc.
-	void EnableAutonomy();
-	//Disables the economy manager to act autonomously.  In this mode, it will not build anything, but will still manage
-	//	idle workers and attempt to optimize.
-	void DisableAutonomy();
-
 private:
-	bool actAutonomously;
 	void BalanceBuilders();
 	void OnCommandCenterIdle(const sc2::Unit* unit);
 	bool NeedRefinery();

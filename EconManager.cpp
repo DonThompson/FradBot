@@ -6,19 +6,8 @@ EconManager::EconManager(Bot & b)
 	: ManagerBase(b)
 	, refineriesInProgress(0)
 	, refineriesCompleted(0)
-	, actAutonomously(false)
 {
 	lastBalanceClock = clock();
-}
-
-void EconManager::EnableAutonomy()
-{
-	actAutonomously = true;
-}
-
-void EconManager::DisableAutonomy()
-{
-	actAutonomously = false;
 }
 
 void EconManager::OnStep()

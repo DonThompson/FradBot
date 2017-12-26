@@ -8,6 +8,9 @@
 
 class Bot;
 
+//Autonomy:
+//Enabled:  Attempts to predict supply needs and build depots in time to stay ahead.
+//Disabled:  Does absolutely nothing.
 class SupplyManager : public ManagerBase
 {
 public:

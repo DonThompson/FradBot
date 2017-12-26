@@ -39,7 +39,7 @@ public:
 	//////////////////////////////////////////////
 	ConstructionManager & Construction();
 	StructuresManager & Structures();
-	const SupplyManager & Supply();
+	SupplyManager & Supply();
 	const ArmyManager & Army();
 	EconManager & Econ();
 	DrawingManager & Draw();

@@ -10,6 +10,7 @@ void StrategyManager::OnGameStart()
 {
 	//for now
 	bot.Econ().EnableAutonomy();
+	bot.Supply().EnableAutonomy();
 }
 
 void StrategyManager::OnStep()
