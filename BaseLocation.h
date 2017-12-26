@@ -25,6 +25,18 @@ public:
 	void SetMyBase();
 	void SetUnownedBase();
 
+	//One of the starting positions on the map?  Player or enemy
+	bool IsStartingPosition();
+	void SetIsStartingPosition();
+	//Id of the location that is a natural expansion of this base.  Only applied to starting bases, 0 otherwise.
+	uint32_t GetNaturalExpansionId();
+	//Id of the location that is a natural expansion of this base.  Should only be set for starting bases.
+	void SetNaturalExpansionId(uint32_t _naturalId);
+	//If this base is a natural expansion, of what base?  Only applied to naturals of starting bases, 0 otherwise.
+	uint32_t GetParentOfNaturalId();
+	//If this base is a natural expansion, of what base?  This should only be set for naturals of starting bases.
+	void SetParentOfNaturalId(uint32_t _parentId);
+
 	bool operator ==(BaseLocation rhs);
 	bool operator !=(BaseLocation rhs);
 
@@ -42,6 +54,13 @@ private:
 	std::vector<const sc2::Unit*> geysers;
 
 	BaseOwner baseOwner;
+	//One of the starting positions on the map?  Player or enemy
+	bool isStartingPosition;
+	//Id of the location that is a natural expansion of this base.  Only applied to starting bases, 0 otherwise.
+	uint32_t naturalExpansionId;
+	//If this base is a natural expansion, of what base?  Only applied to naturals of starting bases, 0 otherwise.
+	uint32_t parentOfNaturalId;
+
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?
 	//	Updated from 15.0f to 16.0f for Paladino Terminal.
