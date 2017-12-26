@@ -44,6 +44,9 @@ public:
 	BaseLocationManager & BaseLocations();
 
 
+	std::string GetVersion();
+
+
 	//////////////////////////////////////////////
 	//Everything in ClientEvents, with comments //
 	//////////////////////////////////////////////
@@ -93,6 +96,11 @@ public:
 	//!< \param unit The unit entering vision.
 	virtual void OnUnitEnterVision(const sc2::Unit* unit);
 
+
+private:
+	//If a single step takes over this threshold, print out a warning.
+	//	85ms comes from the student AI competition rules settings.
+	const int64_t stepWarningThresholdMs = 85;
 };
 
 #endif //__BOT_H

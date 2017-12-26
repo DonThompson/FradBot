@@ -88,6 +88,9 @@
     <ClCompile Include="MineralLine.cpp">
       <Filter>BaseManagement</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildQueueTask.h">
@@ -144,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="MineralLine.h">
       <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

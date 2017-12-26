@@ -152,6 +152,7 @@
     <ClCompile Include="EconManager.cpp" />
     <ClCompile Include="ManagerBase.cpp" />
     <ClCompile Include="SupplyManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UpgradeList.cpp" />
     <ClCompile Include="UpgradesManager.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="EconManager.h" />
     <ClInclude Include="ManagerBase.h" />
     <ClInclude Include="SupplyManager.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="UpgradeList.h" />
     <ClInclude Include="UpgradesManager.h" />
     <ClInclude Include="Utils.h" />
