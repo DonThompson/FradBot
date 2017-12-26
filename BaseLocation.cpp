@@ -57,7 +57,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 	bot.Draw().DrawCircle(resourceDepotLocation, baseRadius, color);
 
 	std::ostringstream oss;
-	oss << "Base location " << baseLocationId << std::endl;
+	oss << "Base location " << baseLocationId << (isStartingPosition ? "(s)" : "") << std::endl;
 	bot.Draw().DrawText(oss.str(), resourceDepotLocation, color);
 
 	for (const Unit* patch : mineralPatches) {
@@ -87,6 +87,7 @@ void BaseLocation::SetEnemyBase()
 void BaseLocation::SetMyBase()
 {
 	baseOwner = BaseOwner::Self;
+	isStartingPosition = true;
 }
 
 void BaseLocation::SetUnownedBase()
