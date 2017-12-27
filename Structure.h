@@ -9,8 +9,8 @@ public:
 	Structure(const sc2::Unit* _building);
 
 	//Start to map out pass throughs
-	int32_t assignedHarvesters() {		return building->assigned_harvesters;	}
-	int32_t idealHarvesters()	{		return building->ideal_harvesters;		}
+	int32_t assignedHarvesters();
+	int32_t idealHarvesters();
 	size_t getOrderCount()		{		return building->orders.size();			}
 	float_t buildProgress()		{		return building->build_progress;		}
 	sc2::Point2D buildingPosition2D(){		return static_cast<sc2::Point2D>(building->pos);	}

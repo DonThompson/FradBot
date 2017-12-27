@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
+#include "Structure.h"
 
 class Bot;
 
@@ -19,6 +20,8 @@ public:
 	void DrawSelf(Bot & bot);
 
 	uint32_t GetBaseLocationId();
+	Structure& GetResourceDepot();
+	void SetResourceDepot(Structure _depot);
 	sc2::Point3D GetResourceDepotLocation();
 
 	void SetEnemyBase();
@@ -50,6 +53,7 @@ private:
 	};
 
 	uint32_t baseLocationId;
+	Structure resourceDepot;
 	sc2::Point3D resourceDepotLocation;	//The ideal position for a CC, Nexus, Hatchery in this base location
 
 	std::vector<const sc2::Unit*> mineralPatches;

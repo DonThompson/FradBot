@@ -36,3 +36,19 @@ bool Structure::IsBuildingInProgress()
 	//Building is unstarted, it is also not in progress.  It may become in progress in the next loop.
 	return false;
 }
+
+int32_t Structure::assignedHarvesters()
+{
+	if (building != nullptr)
+		return building->assigned_harvesters;
+	else 
+		return 0;
+}
+
+int32_t Structure::idealHarvesters()
+{
+	if (building != nullptr)
+		return building->ideal_harvesters;
+	else
+		return 0;
+}

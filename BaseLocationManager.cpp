@@ -24,7 +24,7 @@ void BaseLocationManager::OnGameStart()
 	for (BaseLocation &l : mapBaseLocations) {
 		if (l.IsMyBase()) {
 			mainBase = &l;
-			naturalBase = GetLocationById(l.GetNaturalExpansionId);
+			naturalBase = GetLocationById(l.GetNaturalExpansionId());
 			break;
 		}
 	}

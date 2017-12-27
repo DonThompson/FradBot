@@ -9,6 +9,7 @@ BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocat
 	, baseOwner(BaseLocation::BaseOwner::Unowned)
 	, isStartingPosition(false)
 	, naturalExpansionId(0)
+	, resourceDepot(nullptr)
 {
 	resourceDepotLocation = _resourceDepotLocation;
 }
@@ -91,6 +92,16 @@ uint32_t BaseLocation::GetBaseLocationId()
 Point3D BaseLocation::GetResourceDepotLocation()
 {
 	return resourceDepotLocation;
+}
+
+Structure & BaseLocation::GetResourceDepot()
+{
+	return resourceDepot;
+}
+
+void BaseLocation::SetResourceDepot(Structure _depot)
+{
+	resourceDepot = _depot;
 }
 
 void BaseLocation::SetEnemyBase()

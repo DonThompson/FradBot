@@ -98,8 +98,62 @@ void EconManager::HandleCommandCenterIdle(Structure cc)
 		}
 
 		if (buildSCV) {
-			Actions()->UnitCommand(cc.building, ABILITY_ID::TRAIN_SCV);
+			TrainWorker(&cc);
 		}
+	}
+}
+
+bool EconManager::NeedsMoreWorkers(Structure& resourceDepot)
+{
+	//TODO:  Consider factoring gas in?
+	if (resourceDepot.assignedHarvesters() < resourceDepot.idealHarvesters())
+		return true;
+	return false;
+}
+
+Structure* EconManager::FindOptimalWorkerBuildLocation()
+{
+	Structure* buildFrom = nullptr;
+
+	//Always try to build at our main first
+	Structure& mainDepot = bot.BaseLocations().Main()->GetResourceDepot();
+	
+	if (NeedsMoreWorkers(mainDepot)) {
+		//Main isn't full, always build here first
+		return &mainDepot;
+	}
+
+	//Nope, try the natural
+	Structure &naturalDepot = bot.BaseLocations().Natural()->GetResourceDepot();
+	//add 6 to account for gas workers
+	if (NeedsMoreWorkers(naturalDepot)) {
+		//We have room for more workers at the natural, use it
+		return &naturalDepot;
+	}
+
+	//Still searching, look at all other bases
+	std::vector<BaseLocation*> bases = bot.BaseLocations().OtherBases();
+	for (BaseLocation* base : bases) {
+		Structure& resourceDepot = base->GetResourceDepot();
+		if (NeedsMoreWorkers(resourceDepot)) {
+			return &resourceDepot;
+		}
+	}
+
+	//None found, the fallback is always main
+	return &mainDepot;
+}
+
+void EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
+{
+	//If the caller didn't provide one, find the optimal place to build.
+	if (buildFrom == nullptr) {
+		buildFrom = FindOptimalWorkerBuildLocation();
+	}
+
+	//Now execute the train command.
+	if (buildFrom != nullptr) {
+		Actions()->UnitCommand(buildFrom->building, ABILITY_ID::TRAIN_SCV);
 	}
 }
 

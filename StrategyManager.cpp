@@ -8,11 +8,16 @@ StrategyManager::StrategyManager(Bot & b)
 
 void StrategyManager::OnGameStart()
 {
-	//for now
+	//Until now, our "strategy" has been to let each part of the bot operate independently to come
+	//	out with a good result.
+	/*
 	bot.Econ().EnableAutonomy();
 	bot.Supply().EnableAutonomy();
 	bot.Army().EnableAutonomy();
 	bot.Upgrades().EnableAutonomy();
+	*/
+
+	//New strategy leaves them all reliant on the strategy manager to coordinate!
 }
 
 void StrategyManager::OnStep()
@@ -22,8 +27,8 @@ void StrategyManager::OnStep()
 
 	int32_t currentFood = Observation()->GetFoodUsed();
 	switch (currentFood) {
-	case 13:
-		//build an scv - econmgr autonous
+	case 13:	//Build an SCV
+		bot.Econ().TrainWorker();
 		break;
 	case 14:
 		//build an scv - econmgr autonomous
