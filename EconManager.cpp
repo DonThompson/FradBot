@@ -144,7 +144,9 @@ Structure* EconManager::FindOptimalWorkerBuildLocation()
 	return &mainDepot;
 }
 
-void EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
+//Returns true if the training structure had the worker available to build and we issued the command.
+//	TODO:  Still possible that it doesn't execute.
+bool EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
 {
 	//If the caller didn't provide one, find the optimal place to build.
 	if (buildFrom == nullptr) {
@@ -153,8 +155,14 @@ void EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
 
 	//Now execute the train command.
 	if (buildFrom != nullptr) {
-		Actions()->UnitCommand(buildFrom->building, ABILITY_ID::TRAIN_SCV);
+		ABILITY_ID abilityID = ABILITY_ID::TRAIN_SCV;
+		if (buildFrom->HasAbilityAvailable(bot, abilityID)) {
+			Actions()->UnitCommand(buildFrom->building, abilityID);
+			return true;
+		}
 	}
+
+	return false;
 }
 
 //TODO:  Hardcoded

@@ -19,6 +19,30 @@ void StrategyManager::OnGameStart()
 	*/
 
 	//New strategy leaves them all reliant on the strategy manager to coordinate!
+
+	//Setup our initial build order
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		//Expand to our natural!
+		{
+			//where are we?
+			//bot.BaseLocations().GetLocationById()
+			//expand nonsense
+			//bot.Construction().Expand(())
+		}
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+		//TODO:  Continue on...
 }
 
 void StrategyManager::OnStep()
@@ -34,63 +58,4 @@ void StrategyManager::OnStep()
 		return;
 	}
 
-
-	//int32_t currentFood = Observation()->GetFoodUsed();
-	switch (currentFood) {
-	case 12:	//Build an SCV
-		bot.Econ().TrainWorker();
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		break;
-	case 13:	//Build an SCV
-		bot.Econ().TrainWorker();
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		//build a depot - supplymgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
-		break;
-	case 14:
-		//build an scv - econmgr autonomous
-		bot.Econ().TrainWorker();
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		break;
-	case 15:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		break;
-	case 16:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		//TODO:  Econ will quit here
-		//Expand to our natural!
-		{
-			//where are we?
-			//bot.BaseLocations().GetLocationById()
-			//expand nonsense
-			//bot.Construction().Expand(())
-		}
-		break;
-	case 17:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		//rax 1
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
-		break;
-	case 18:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		//rax 2
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
-		break;
-	case 19:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		break;
-	case 20:
-		//build an scv - econmgr autonomous
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-		break;
-	case 21:
-		//first marine
-		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
-		break;
-	}
 }

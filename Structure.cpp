@@ -1,4 +1,5 @@
 #include "Structure.h"
+#include "bot.h"
 using namespace sc2;
 
 //Float calculations
@@ -51,4 +52,15 @@ int32_t Structure::idealHarvesters()
 		return building->ideal_harvesters;
 	else
 		return 0;
+}
+
+bool Structure::HasAbilityAvailable(Bot & bot, sc2::AbilityID abilityID)
+{
+	AvailableAbilities aa = bot.Query()->GetAbilitiesForUnit(building);
+	for (AvailableAbility a : aa.abilities) {
+		if (a.ability_id == abilityID)
+			return true;
+	}
+
+	return false;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sc2api/sc2_api.h>
+class Bot;
 
 class Structure
 {
@@ -21,6 +22,9 @@ public:
 	bool IsBuildingComplete();
 	//Is the given building in progress?  Returns false if the building is unstarted (0% completion) or done (100% completion)
 	bool IsBuildingInProgress();
+	//Can the building perform this action right now?
+	//TODO:  Bleh, don't like having to load the bot here
+	bool HasAbilityAvailable(Bot & bot, sc2::AbilityID abilityID);
 
 public:
 	//TODO:  and make this private.  Lots of use like Actions()->UnitCommand(.... structure)

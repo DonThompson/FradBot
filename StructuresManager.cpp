@@ -18,6 +18,10 @@ void StructuresManager::OnStep()
 //TODO:  Only supporting terran for now.
 /*static*/UNIT_TYPEID StructuresManager::UnitTypeFromBuildAbility(ABILITY_ID abilityID)
 {
+
+	//TODO:  This is all found in bot.Observation()->GetUnitTypeData!  get rid of this.
+	//TODO:  Except BuildQueueManager::IsBuilding is expecting this list, so it might need it.
+
 	UNIT_TYPEID type = UNIT_TYPEID::INVALID;
 
 	switch (abilityID)

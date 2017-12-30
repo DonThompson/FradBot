@@ -27,7 +27,7 @@ public:
 	static const sc2::Unit* FindNearestVespeneGeyser(const sc2::Point2D& start, const sc2::ObservationInterface* obs);
 
 	//Train a worker.  Optionally provide a source to build from.  If not provided, one will be found from the most suitable base.
-	void TrainWorker(Structure* buildFrom = nullptr);
+	bool TrainWorker(Structure* buildFrom = nullptr);
 
 private:
 	void BalanceBuilders();
