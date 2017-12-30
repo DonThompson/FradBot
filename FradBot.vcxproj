@@ -140,6 +140,8 @@
     <ClCompile Include="BaseLocationInitializer.cpp" />
     <ClCompile Include="BaseLocationManager.cpp" />
     <ClCompile Include="bot.cpp" />
+    <ClCompile Include="BuildQueueItem.cpp" />
+    <ClCompile Include="BuildQueueManager.cpp" />
     <ClCompile Include="DrawingManager.cpp" />
     <ClCompile Include="MineralLine.cpp" />
     <ClCompile Include="StrategyManager.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="BaseLocationInitializer.h" />
     <ClInclude Include="BaseLocationManager.h" />
     <ClInclude Include="bot.h" />
+    <ClInclude Include="BuildQueueItem.h" />
+    <ClInclude Include="BuildQueueManager.h" />
     <ClInclude Include="DrawingManager.h" />
     <ClInclude Include="MineralLine.h" />
     <ClInclude Include="StrategyManager.h" />

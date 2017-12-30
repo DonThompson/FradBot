@@ -13,6 +13,7 @@
 #include "UpgradesManager.h"
 #include "DrawingManager.h"
 #include "BaseLocationManager.h"
+#include "BuildQueueManager.h"
 #include "Utils.h"
 
 
@@ -27,6 +28,7 @@ private:
 	UpgradesManager upgradesManager;
 	DrawingManager drawingManager;
 	BaseLocationManager baseLocationManager;
+	BuildQueueManager buildQueueManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -45,6 +47,7 @@ public:
 	DrawingManager & Draw();
 	BaseLocationManager & BaseLocations();
 	UpgradesManager & Upgrades();
+	BuildQueueManager & BuildQueue();
 
 
 	std::string GetVersion();

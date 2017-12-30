@@ -31,6 +31,9 @@
     <Filter Include="BaseManagement">
       <UniqueIdentifier>{e66d51b0-5ed0-424c-8d7e-b08f2203c230}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BuildQueue">
+      <UniqueIdentifier>{51c02b3d-5fcb-41a8-a2a2-a139c9a1eb53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildQueueTask.cpp">
@@ -92,6 +95,12 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="StrategyManager.cpp" />
+    <ClCompile Include="BuildQueueItem.cpp">
+      <Filter>BuildQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildQueueManager.cpp">
+      <Filter>BuildQueue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuildQueueTask.h">
@@ -153,5 +162,11 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="StrategyManager.h" />
+    <ClInclude Include="BuildQueueItem.h">
+      <Filter>BuildQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildQueueManager.h">
+      <Filter>BuildQueue</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

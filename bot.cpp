@@ -15,6 +15,7 @@ Bot::Bot()
 	, upgradesManager(*this)
 	, drawingManager(*this)
 	, baseLocationManager(*this)
+	, buildQueueManager(*this)
 {
 
 }
@@ -64,6 +65,11 @@ UpgradesManager & Bot::Upgrades()
 	return upgradesManager;
 }
 
+BuildQueueManager & Bot::BuildQueue()
+{
+	return buildQueueManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -88,6 +94,7 @@ void Bot::OnGameStart()
 	managers.push_back(&structuresManager);
 	managers.push_back(&upgradesManager);
 	managers.push_back(&baseLocationManager);
+	managers.push_back(&buildQueueManager);
 	//Intentionally not giving the drawing manager game events at this time
 	//managers.push_back(&drawingManager);
 
