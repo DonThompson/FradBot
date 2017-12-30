@@ -25,7 +25,8 @@ public:
 	sc2::Point3D GetResourceDepotLocation();
 
 	void SetEnemyBase();
-	void SetMyBase();
+	void SetMyStartingBase();
+	void ClaimBaseForPlayer();
 	void SetUnownedBase();
 	bool IsMyBase();
 	bool IsEnemyBase();

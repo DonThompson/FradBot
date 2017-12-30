@@ -27,6 +27,7 @@ void StrategyManager::OnGameStart()
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_COMMANDCENTER));
 		//Expand to our natural!
 		{
 			//where are we?
@@ -40,6 +41,10 @@ void StrategyManager::OnGameStart()
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+
+		//TEMP
+		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_COMMANDCENTER));
+
 		bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
 
 		//TODO:  Continue on...

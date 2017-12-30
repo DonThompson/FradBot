@@ -125,3 +125,45 @@ std::vector<BaseLocation*> BaseLocationManager::OtherBases()
 {
 	return otherBases;
 }
+
+std::vector<BaseLocation*> BaseLocationManager::GetNeutralBases()
+{
+	std::vector<BaseLocation*> neutralLocations;
+	for (BaseLocation& loc : mapBaseLocations) {
+		if (!loc.IsMyBase() && !loc.IsEnemyBase()) {
+			neutralLocations.push_back(&loc);
+		}
+	}
+	return neutralLocations;
+}
+
+
+BaseLocation* BaseLocationManager::FindNearestAvailableExpansionLocation()
+{
+	//first try to expand to the natural
+	BaseLocation* natural = Natural();
+	if (!natural->IsMyBase()) {
+		return natural;
+	}
+	//Find closest to main
+	Point2D mainPt = Main()->GetResourceDepotLocation();
+	BaseLocation* winner = nullptr;
+	float_t distanceFromMain = std::numeric_limits<float_t>::max();
+	for (BaseLocation* loc : GetNeutralBases()) {
+		float_t dist = Distance2D(loc->GetResourceDepotLocation(), mainPt);
+		if (dist < distanceFromMain) {
+			//new winner
+			winner = loc;
+			distanceFromMain = dist;
+		}
+	}
+	return winner;
+}
+
+void BaseLocationManager::ClaimBaseByPosition(Point2D resourceDepotLocation)
+{
+	BaseLocation* loc = GetLocationByPosition(resourceDepotLocation);
+	if (loc) {
+		loc->ClaimBaseForPlayer();
+	}
+}

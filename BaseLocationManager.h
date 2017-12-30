@@ -23,6 +23,11 @@ public:
 	//Returns an array of all other bases you have established.  Will never include your main or natural.  Only
 	//	contains values once a base has been established in a location.
 	std::vector<BaseLocation*> OtherBases();
+	//Returns the location closest to your main that is available for expansion.  WARNING:  This is updated with known 
+	//	map information.  Your enemy may have expanded here since the last time you scouted it.
+	BaseLocation* FindNearestAvailableExpansionLocation();
+	//Claims ownership of a base for the player by position
+	void ClaimBaseByPosition(sc2::Point2D resourceDepotLocation);
 
 private:
 	void InitializeKnownEnemyBase();
@@ -32,8 +37,10 @@ private:
 	BaseLocation* mainBase;
 	BaseLocation* naturalBase;
 	std::vector<BaseLocation*> otherBases;
+	//Returns an array of all neutral bases.  WARNING:  This is updated with known map information.  Your enemy may have
+	//	expanded here since the last time you scouted it.
+	std::vector<BaseLocation*> GetNeutralBases();
 
 	//Evaluation of the map - all possible base locations, whether yours, enemies, or unowned.
 	std::vector<BaseLocation> mapBaseLocations;
-
 };

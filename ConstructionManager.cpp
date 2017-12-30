@@ -159,6 +159,19 @@ void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
 		const Unit* geyser = HandleFindingRefineryTarget(task.GetBuilder()->pos);
 		task.SetGeyserTarget(geyser);
 	}
+	//SPECIAL:  A request to build a command center is a request to expand.  We'll want to find our position from an expansion
+	else if (task.GetBuildingType() == ABILITY_ID::BUILD_COMMANDCENTER) {
+		BaseLocation* winner = bot.BaseLocations().FindNearestAvailableExpansionLocation();
+		if (winner != nullptr) {
+			task.SetBuildPoint(winner->GetResourceDepotLocation());
+		}
+		else {
+			//No bases left?
+			std::cout << "WARNING:  Failed to find a closest base to expand to." << std::endl;
+			//TODO:  We need to abort the build.  As is, this code would just keep getting hit until frame timeout happens for the construction request
+			return;
+		}
+	}
 	else {
 		ConstructionPlacement p;
 		Point2D buildPoint = p.GetBuildPoint(task.GetBuilder());
@@ -237,6 +250,15 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted.buildingPosition2D())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
+
+				//TODO:  More special cases.  Should we set off a callback about confirming build start?  Let someone else
+				//	deal with this?  I'm not sold the construction manager should be the owner.
+				//Or maybe the code that eventually watches for enemy bases will automatically find this one?  Is there something around 
+				//	OnUnitFirstSeen or something like that?
+				//If we've started a command center, we now own this base.  Update the base locations appropriately.
+				if (task.GetBuildingType() == ABILITY_ID::BUILD_COMMANDCENTER) {
+					bot.BaseLocations().ClaimBaseByPosition(task.GetBuildPoint());
+				}
 				return;
 			}
 		}

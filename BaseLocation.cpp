@@ -109,10 +109,15 @@ void BaseLocation::SetEnemyBase()
 	baseOwner = BaseOwner::Enemy;
 }
 
-void BaseLocation::SetMyBase()
+void BaseLocation::SetMyStartingBase()
 {
 	baseOwner = BaseOwner::Self;
 	isStartingPosition = true;
+}
+
+void BaseLocation::ClaimBaseForPlayer()
+{
+	baseOwner = BaseOwner::Self;
 }
 
 void BaseLocation::SetUnownedBase()

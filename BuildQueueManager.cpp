@@ -24,13 +24,13 @@ void BuildQueueManager::OnStep()
 	//	5 arbitrarily, play with this.
 	//Example:  Game starts, first scv queue happens, but by frame 2, we still have 50 minerals 
 	//	and the game attempts to queue a second one - but we really don't have 50 minerals.
-	//Bumped from 5 to 10.  Running into even more issues -- I tell the construction manager (which
+	//Bumped from 5 to 15.  Running into even more issues -- I tell the construction manager (which
 	//	has a lengthy frame-based queue of its own) to build a depot... and before the command can get
 	//	issued, the build order queue builds another worker, eating up the resources that we were 
 	//	going to use.
 	//TODO2:  CCbot saves a 'reserved minerals' and 'reserved gas' flag into its construction manager.  I guess
 	//	I now know why.  We can probably ramp this back down if we implement that.
-	if (bot.Observation()->GetGameLoop() % 10 != 0) {
+	if (bot.Observation()->GetGameLoop() % 15 != 0) {
 		return;
 	}
 
