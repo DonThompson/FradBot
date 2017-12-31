@@ -155,6 +155,7 @@ bool EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
 
 	//Now execute the train command.
 	if (buildFrom != nullptr) {
+		//Handles checking for resources
 		ABILITY_ID abilityID = ABILITY_ID::TRAIN_SCV;
 		if (buildFrom->HasAbilityAvailable(bot, abilityID)) {
 			Actions()->UnitCommand(buildFrom->building, abilityID);
