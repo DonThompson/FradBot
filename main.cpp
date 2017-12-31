@@ -2,7 +2,7 @@
 #include <sc2utils/sc2_manage_process.h>        //Needed for SleepFor only
 #include <iostream>
 using namespace sc2;
-#include "bot.h"
+#include "src/bot.h"
 
 void ParseGameSettings(int argc, char* argv[], sc2::Race &playerRace, sc2::Race &opponentRace, sc2::Difficulty &opponentDifficulty, int32_t &gameMode, std::string &mapPath)
 {
