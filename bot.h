@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
+#include "StrategyManager.h"
 #include "SupplyManager.h"
 #include "EconManager.h"
 #include "ArmyManager.h"
@@ -12,11 +13,13 @@
 #include "UpgradesManager.h"
 #include "DrawingManager.h"
 #include "BaseLocationManager.h"
+#include "BuildQueueManager.h"
 #include "Utils.h"
 
 
 class Bot : public sc2::Agent {
 private:
+	StrategyManager strategyManager;
 	SupplyManager supplyManager;
 	EconManager econManager;
 	ArmyManager armyManager;
@@ -25,6 +28,7 @@ private:
 	UpgradesManager upgradesManager;
 	DrawingManager drawingManager;
 	BaseLocationManager baseLocationManager;
+	BuildQueueManager buildQueueManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -37,11 +41,13 @@ public:
 	//////////////////////////////////////////////
 	ConstructionManager & Construction();
 	StructuresManager & Structures();
-	const SupplyManager & Supply();
-	const ArmyManager & Army();
-	const EconManager & Econ();
+	SupplyManager & Supply();
+	ArmyManager & Army();
+	EconManager & Econ();
 	DrawingManager & Draw();
 	BaseLocationManager & BaseLocations();
+	UpgradesManager & Upgrades();
+	BuildQueueManager & BuildQueue();
 
 
 	std::string GetVersion();

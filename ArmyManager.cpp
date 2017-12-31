@@ -16,11 +16,18 @@ void ArmyManager::OnStep()
 	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
 	if (clock() - lastBalanceClock > rebalanceTime) {
 
-		//Specific logic
-		if (BarracksNeeded()) {
-			BuildBarracks();
+		//Only if we're autonomous
+		if (actAutonomously)
+		{
+
+			//Specific logic
+			if (BarracksNeeded()) {
+				BuildBarracks();
+			}
+
 		}
 
+		//Do these things whether autonomous or not
 		//The whole strategy!
 		TryAttackInGroups();
 
@@ -98,6 +105,10 @@ void ArmyManager::LaunchAttackGroup(Units unitsToAttack)
 
 void ArmyManager::OnBarracksIdle(const Unit* unit)
 {
+	//If we're not autonomous, don't build anything
+	if (!actAutonomously)
+		return;
+
 	//0 = marine, 1 = marauder
 	unsigned int thingToBuild = 0;
 
@@ -132,20 +143,11 @@ void ArmyManager::OnBarracksIdle(const Unit* unit)
 	}
 }
 
-void ArmyManager::OnMarineIdle(const Unit* unit)
-{
-	/* too aggressive
-	const GameInfo& gameInfo = Observation()->GetGameInfo();
-	//What is attack_attack vs attack?
-	Actions()->UnitCommand(unit, ABILITY_ID::ATTACK_ATTACK, gameInfo.enemy_start_locations.front());
-	*/
-}
 
 void ArmyManager::OnUnitIdle(const Unit* unit)
 {
 	switch (unit->unit_type.ToType()) {
 	case UNIT_TYPEID::TERRAN_BARRACKS:      OnBarracksIdle(unit);       break;
-	case UNIT_TYPEID::TERRAN_MARINE:        OnMarineIdle(unit);         break;
 	default:    break;
 	}
 }

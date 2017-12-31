@@ -6,7 +6,8 @@
 using namespace sc2;
 
 Bot::Bot()
-	: supplyManager(*this)
+	: strategyManager(*this)
+	, supplyManager(*this)
 	, econManager(*this)
 	, armyManager(*this)
 	, constructionManager(*this)
@@ -14,6 +15,7 @@ Bot::Bot()
 	, upgradesManager(*this)
 	, drawingManager(*this)
 	, baseLocationManager(*this)
+	, buildQueueManager(*this)
 {
 
 }
@@ -33,17 +35,17 @@ StructuresManager & Bot::Structures()
 	return structuresManager;
 }
 
-const SupplyManager & Bot::Supply()
+SupplyManager & Bot::Supply()
 {
 	return supplyManager;
 }
 
-const ArmyManager & Bot::Army()
+ArmyManager & Bot::Army()
 {
 	return armyManager;
 }
 
-const EconManager & Bot::Econ()
+EconManager & Bot::Econ()
 {
 	return econManager;
 }
@@ -56,6 +58,16 @@ DrawingManager & Bot::Draw()
 BaseLocationManager & Bot::BaseLocations()
 {
 	return baseLocationManager;
+}
+
+UpgradesManager & Bot::Upgrades()
+{
+	return upgradesManager;
+}
+
+BuildQueueManager & Bot::BuildQueue()
+{
+	return buildQueueManager;
 }
 
 void Bot::OnGameFullStart()
@@ -74,6 +86,7 @@ void Bot::OnGameStart()
 	//std::cout << "* Map:  " << GameSettings().map_name << std::endl;
 
 	//Order added is order they'll get notifications and steps
+	managers.push_back(&strategyManager);
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);
 	managers.push_back(&armyManager);
@@ -81,6 +94,7 @@ void Bot::OnGameStart()
 	managers.push_back(&structuresManager);
 	managers.push_back(&upgradesManager);
 	managers.push_back(&baseLocationManager);
+	managers.push_back(&buildQueueManager);
 	//Intentionally not giving the drawing manager game events at this time
 	//managers.push_back(&drawingManager);
 

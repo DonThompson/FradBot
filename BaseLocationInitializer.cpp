@@ -18,7 +18,8 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	//First, create a base where we've spawned.
 	Structure cc = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER).front();
 	BaseLocation locMine(UseNextBaseLocationId(), cc.building->pos);
-	locMine.SetMyBase();
+	locMine.SetMyStartingBase();
+	locMine.SetResourceDepot(cc.building);
 
 	//Now figure out where all the mineral lines are throughout the map.
 	std::vector<const Unit*> mineralPatches;

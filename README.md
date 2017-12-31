@@ -47,9 +47,18 @@ Expansion issues:
 * I need an expansion manager, I think.
 * Almost certainly the construction manager is kicking the tasks from the queue and then re-building because of the long walk (see issues in construction manager).  More reason to go around this.
 
+Build Queue Manager issues:
+* Need to reserve costs for builds.  Even at 15 frame skip I'm still occasionally failing to build in queue.
+* General plan for failed buildings.  Is this a concern?
+* Workers only queue from main
+* Missing units & upgrades
+* Missing morph (orbital) & addons
+* Mule / scan management (not in this class)
+
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
+* Starting SCV split.
 
 
 

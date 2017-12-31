@@ -25,9 +25,17 @@ public:
 	virtual void OnNuclearLaunchDetected() {}
 	virtual void OnUnitEnterVision(const sc2::Unit* unit) {}
 
+	//Enables the economy manager to act autonomously.  Each manager will treat this differently.
+	void EnableAutonomy();
+	//Disables the economy manager to act autonomously.  Each manager will treat this differently.
+	void DisableAutonomy();
+
 protected:
 	//Our working bot
 	Bot& bot;
+
+	//See each manager for implementation
+	bool actAutonomously;
 
 	//Provide access to the bot agent's Observation interface
 	const sc2::ObservationInterface* ManagerBase::Observation();

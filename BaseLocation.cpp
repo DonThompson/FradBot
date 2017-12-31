@@ -9,6 +9,7 @@ BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocat
 	, baseOwner(BaseLocation::BaseOwner::Unowned)
 	, isStartingPosition(false)
 	, naturalExpansionId(0)
+	, resourceDepot(nullptr)
 {
 	resourceDepotLocation = _resourceDepotLocation;
 }
@@ -93,20 +94,45 @@ Point3D BaseLocation::GetResourceDepotLocation()
 	return resourceDepotLocation;
 }
 
+Structure & BaseLocation::GetResourceDepot()
+{
+	return resourceDepot;
+}
+
+void BaseLocation::SetResourceDepot(Structure _depot)
+{
+	resourceDepot = _depot;
+}
+
 void BaseLocation::SetEnemyBase()
 {
 	baseOwner = BaseOwner::Enemy;
 }
 
-void BaseLocation::SetMyBase()
+void BaseLocation::SetMyStartingBase()
 {
 	baseOwner = BaseOwner::Self;
 	isStartingPosition = true;
 }
 
+void BaseLocation::ClaimBaseForPlayer()
+{
+	baseOwner = BaseOwner::Self;
+}
+
 void BaseLocation::SetUnownedBase()
 {
 	baseOwner = BaseOwner::Unowned;
+}
+
+bool BaseLocation::IsMyBase()
+{
+	return baseOwner == BaseOwner::Self;
+}
+
+bool BaseLocation::IsEnemyBase()
+{
+	return baseOwner == BaseOwner::Enemy;
 }
 
 void BaseLocation::SetIsStartingPosition()

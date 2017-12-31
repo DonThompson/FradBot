@@ -12,17 +12,24 @@ EconManager::EconManager(Bot & b)
 
 void EconManager::OnStep()
 {
-	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
-	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
-	if (clock() - lastBalanceClock > rebalanceTime) {
-		BalanceBuilders();
+	//If the economy manager has been asked to run on its own, perform these actions
+	if (actAutonomously) 
+	{
+		//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
+		const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
+		if (clock() - lastBalanceClock > rebalanceTime) {
+			BalanceBuilders();
 
-		if (NeedRefinery()) {
-			BuildRefinery();
+			if (NeedRefinery()) {
+				BuildRefinery();
+			}
+
+			lastBalanceClock = clock();
 		}
-
-		lastBalanceClock = clock();
 	}
+	
+	//Work to do regardless of automony
+
 }
 
 void EconManager::OnUnitIdle(const Unit* unit)
@@ -72,24 +79,91 @@ void EconManager::OnCommandCenterIdle(const Unit* unit)
 
 void EconManager::HandleCommandCenterIdle(Structure cc)
 {
-	//Only build if we're short harvesters
-	bool buildSCV = false;
+	//Only build if we're acting autonomously.  Otherwise let the game strategy handle it.
+	if (actAutonomously)
+	{
+		//Only build if we're short harvesters
+		bool buildSCV = false;
 
-	if (cc.assignedHarvesters() < cc.idealHarvesters()) {
-		buildSCV = true;
+		if (cc.assignedHarvesters() < cc.idealHarvesters()) {
+			buildSCV = true;
+		}
+
+		//Or if we're short gas harvesters
+		std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+		for (Structure r : refineries) {
+			if (r.assignedHarvesters() < r.idealHarvesters()) {
+				buildSCV = true;
+			}
+		}
+
+		if (buildSCV) {
+			TrainWorker(&cc);
+		}
+	}
+}
+
+bool EconManager::NeedsMoreWorkers(Structure& resourceDepot)
+{
+	//TODO:  Consider factoring gas in?
+	if (resourceDepot.assignedHarvesters() < resourceDepot.idealHarvesters())
+		return true;
+	return false;
+}
+
+Structure* EconManager::FindOptimalWorkerBuildLocation()
+{
+	Structure* buildFrom = nullptr;
+
+	//Always try to build at our main first
+	Structure& mainDepot = bot.BaseLocations().Main()->GetResourceDepot();
+	
+	if (NeedsMoreWorkers(mainDepot)) {
+		//Main isn't full, always build here first
+		return &mainDepot;
 	}
 
-	//Or if we're short gas harvesters
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (Structure r : refineries) {
-		if (r.assignedHarvesters() < r.idealHarvesters()) {
-			buildSCV = true;
+	//Nope, try the natural
+	Structure &naturalDepot = bot.BaseLocations().Natural()->GetResourceDepot();
+	//add 6 to account for gas workers
+	if (NeedsMoreWorkers(naturalDepot)) {
+		//We have room for more workers at the natural, use it
+		return &naturalDepot;
+	}
+
+	//Still searching, look at all other bases
+	std::vector<BaseLocation*> bases = bot.BaseLocations().OtherBases();
+	for (BaseLocation* base : bases) {
+		Structure& resourceDepot = base->GetResourceDepot();
+		if (NeedsMoreWorkers(resourceDepot)) {
+			return &resourceDepot;
 		}
 	}
 
-	if (buildSCV) {
-		Actions()->UnitCommand(cc.building, ABILITY_ID::TRAIN_SCV);
+	//None found, the fallback is always main
+	return &mainDepot;
+}
+
+//Returns true if the training structure had the worker available to build and we issued the command.
+//	TODO:  Still possible that it doesn't execute.
+bool EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
+{
+	//If the caller didn't provide one, find the optimal place to build.
+	if (buildFrom == nullptr) {
+		buildFrom = FindOptimalWorkerBuildLocation();
 	}
+
+	//Now execute the train command.
+	if (buildFrom != nullptr) {
+		//Handles checking for resources
+		ABILITY_ID abilityID = ABILITY_ID::TRAIN_SCV;
+		if (buildFrom->HasAbilityAvailable(bot, abilityID)) {
+			Actions()->UnitCommand(buildFrom->building, abilityID);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 //TODO:  Hardcoded

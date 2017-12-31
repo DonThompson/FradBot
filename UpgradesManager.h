@@ -7,6 +7,9 @@
 
 class Bot;
 
+//Autonomy:
+//Enabled:  Gets upgrades in a pre-defined manner automatically when resources allow.  Automatically builds an engineering bay.
+//Disabled:  Does nothing
 class UpgradesManager : public ManagerBase {
 public:
 	UpgradesManager(Bot & b);
