@@ -14,6 +14,7 @@ BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _stru
 	, id(_id)
 	, state(ConstructionTaskState::eQueued)
 	, structureToBuild(_structure)
+	, isReservingResources(true)
 	, builderUnit(nullptr)
 	, buildingPoint()
 	, building(nullptr)
@@ -51,6 +52,11 @@ const Unit* BuildQueueTask::GetGeyserTarget()
 ABILITY_ID BuildQueueTask::GetBuildingType()
 {
 	return structureToBuild;
+}
+
+bool BuildQueueTask::IsReservingResources()
+{
+	return isReservingResources;
 }
 
 Structure BuildQueueTask::GetBuilding()
@@ -101,6 +107,11 @@ void BuildQueueTask::SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn)
 void BuildQueueTask::SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn)
 {
 	callbackFailure = fn;
+}
+
+void BuildQueueTask::StopReservingResources()
+{
+	isReservingResources = false;
 }
 
 bool BuildQueueTask::IsTaskLongRunning(uint32_t currentGameLoop)

@@ -24,13 +24,9 @@ void BuildQueueManager::OnStep()
 	//	5 arbitrarily, play with this.
 	//Example:  Game starts, first scv queue happens, but by frame 2, we still have 50 minerals 
 	//	and the game attempts to queue a second one - but we really don't have 50 minerals.
-	//Bumped from 5 to 15.  Running into even more issues -- I tell the construction manager (which
-	//	has a lengthy frame-based queue of its own) to build a depot... and before the command can get
-	//	issued, the build order queue builds another worker, eating up the resources that we were 
-	//	going to use.
-	//TODO2:  CCbot saves a 'reserved minerals' and 'reserved gas' flag into its construction manager.  I guess
-	//	I now know why.  We can probably ramp this back down if we implement that.
-	if (bot.Observation()->GetGameLoop() % 15 != 0) {
+	//Our resource reservation system for construction helps us keep this reasonably low.
+	//TODO:  It seems like a unit reservation system would be equally useful (and include food too).
+	if (bot.Observation()->GetGameLoop() % 5 != 0) {
 		return;
 	}
 
@@ -153,17 +149,16 @@ bool BuildQueueManager::IsUpgrade(sc2::ABILITY_ID abilityID)
 	return false;
 }
 
-//TODO:  complete hack for now, get rid of this.
 bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 {
-	int32_t currentMinerals = bot.Observation()->GetMinerals();
-	int32_t currentVespene = bot.Observation()->GetVespene();
+	//What do we have currently?  Remove any construction reservation that is currently ongoing
+	int32_t currentMinerals = bot.Observation()->GetMinerals() - bot.Construction().GetReservedMinerals();
+	int32_t currentVespene = bot.Observation()->GetVespene() - bot.Construction().GetReservedVespene();
 	int32_t currentFood = bot.Observation()->GetFoodUsed();
 	int32_t currentFoodCap = bot.Observation()->GetFoodCap();
 
 	//Get the unit data
-	UnitTypes ut = bot.Observation()->GetUnitTypeData();
-	UnitTypeData data = ut[(UnitTypeID)StructuresManager::UnitTypeFromBuildAbility(abilityID)];
+	UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(abilityID));
 
 	//Ensure we have the minerals, gas, and enough supply
 	if (data.mineral_cost <= currentMinerals && data.vespene_cost <= currentVespene && currentFood + data.food_required <= currentFoodCap)

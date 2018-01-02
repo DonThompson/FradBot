@@ -31,6 +31,7 @@ class Bot;
 	[DONE]- refactor and cleanup
 	[DONE]- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
+	- TODO:  Resource reserve might be something we can farm to its own class.  Is there a better way to integrate it with this class?  It has a code smell - feels easily breakable.  Had to find just the right places to copy/paste the function call.  Maybe every step in the process auto updates the resource reservation system?  Then it can handle when to remove and when not.
 */
 
 class ConstructionManager : public ManagerBase
@@ -44,8 +45,10 @@ public:
 	//callbackSuccess - Function to call back on success of the construction
 	//callbackFailure - Function to call back on failure of the construction.
 	uint64_t BuildStructure(sc2::ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
-
 	uint64_t Expand(BaseLocation expandingToLocation, BuildQueueTaskCallbackFunction callbackSuccess = nullptr, BuildQueueTaskCallbackFunction callbackFailure = nullptr);
+
+	uint32_t GetReservedMinerals();
+	uint32_t GetReservedVespene();
 
 	//Called for each step of the game.  Not for public consumption.
 	virtual void OnStep();
@@ -54,6 +57,8 @@ private:
 	uint64_t nextBuildingId;
 	std::map<uint64_t, BuildQueueTask> mapBuildingQueue;
 	uint64_t UseNextIdentifier();
+	uint32_t reservedMinerals;
+	uint32_t reservedVespene;
 
 
 	//Queue management functions
@@ -69,5 +74,5 @@ private:
 	const sc2::Unit* HandleFindingRefineryTarget(sc2::Point2D builderPos);
 	bool DoesBuilderHaveNonHarvestOrders(const sc2::Unit* builder);
 	bool DoBuildingPositionsMatch(sc2::Point2D pt1, sc2::Point2D pt2);
-	
+	void RemoveResourceReserve(BuildQueueTask  &task);
 };

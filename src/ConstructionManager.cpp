@@ -7,6 +7,8 @@ using namespace sc2;
 ConstructionManager::ConstructionManager(Bot & b)
 	: ManagerBase(b)
 	, nextBuildingId(0)
+	, reservedMinerals(0)
+	, reservedVespene(0)
 {
 
 }
@@ -44,6 +46,11 @@ uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, Buil
 {
 	uint64_t id = UseNextIdentifier();
 
+	//Reserve the cost of this until we see it get built
+	UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(structureAbilityId));
+	reservedMinerals += data.mineral_cost;
+	reservedVespene += data.vespene_cost;
+
 	//Queue the request and return
 	BuildQueueTask task(Observation()->GetGameLoop(), id, structureAbilityId, callbackSuccess, callbackFailure);
 	mapBuildingQueue.insert(std::pair<uint64_t, BuildQueueTask>(id, task));
@@ -79,6 +86,8 @@ void ConstructionManager::OnStep()
 			}
 
 			tasksToRemove.push_back(taskId);
+			//If we are reserving resources, we no longer need them.
+			RemoveResourceReserve(task);
 			//Move on to the next task
 			continue;
 		}
@@ -241,6 +250,9 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 			if (DoBuildingPositionsMatch(task.GetGeyserTarget()->pos, buildingStarted.buildingPosition2D())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
+
+				//If we are reserving resources, we no longer need them.
+				RemoveResourceReserve(task);
 				return;
 			}
 		}
@@ -250,6 +262,9 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 			if (DoBuildingPositionsMatch(task.GetBuildPoint(), buildingStarted.buildingPosition2D())) {
 				task.SetBuilding(buildingStarted);
 				task.SetConstructionTaskState(ConstructionTaskState::eConstructionInProgress);
+
+				//If we are reserving resources, we no longer need them.
+				RemoveResourceReserve(task);
 
 				//TODO:  More special cases.  Should we set off a callback about confirming build start?  Let someone else
 				//	deal with this?  I'm not sold the construction manager should be the owner.
@@ -287,6 +302,9 @@ void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<uint6
 		std::invoke(task.GetSuccessCallback(), taskId);
 	}
 	tasksToRemove.push_back(taskId);
+
+	//If we are reserving resources, we no longer need them.
+	RemoveResourceReserve(task);
 }
 
 //Find the appropriate vespene geyser when we're trying to build a refinery
@@ -321,4 +339,24 @@ bool ConstructionManager::DoBuildingPositionsMatch(Point2D pt1, Point2D pt2)
 	}
 
 	return false;
+}
+
+uint32_t ConstructionManager::GetReservedMinerals()
+{
+	return reservedMinerals;
+}
+
+uint32_t ConstructionManager::GetReservedVespene()
+{
+	return reservedVespene;
+}
+
+void ConstructionManager::RemoveResourceReserve(BuildQueueTask &task)
+{
+	if (task.IsReservingResources()) {
+		UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(task.GetBuildingType()));
+		reservedMinerals -= data.mineral_cost;
+		reservedVespene -= data.vespene_cost;
+		task.StopReservingResources();
+	}
 }

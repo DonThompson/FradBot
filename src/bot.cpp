@@ -16,6 +16,7 @@ Bot::Bot()
 	, drawingManager(*this)
 	, baseLocationManager(*this)
 	, buildQueueManager(*this)
+	, dataManager(*this)
 {
 
 }
@@ -70,6 +71,11 @@ BuildQueueManager & Bot::BuildQueue()
 	return buildQueueManager;
 }
 
+DataManager & Bot::Data()
+{
+	return dataManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -95,8 +101,9 @@ void Bot::OnGameStart()
 	managers.push_back(&upgradesManager);
 	managers.push_back(&baseLocationManager);
 	managers.push_back(&buildQueueManager);
-	//Intentionally not giving the drawing manager game events at this time
+	//Intentionally not giving events to these
 	//managers.push_back(&drawingManager);
+	//managers.push_back(&dataManager);
 
 	Timer t;
 	//Let everyone know the game has started
