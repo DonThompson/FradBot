@@ -11,4 +11,9 @@ public:
 
 	sc2::UnitTypeData GetUnitData(sc2::UNIT_TYPEID unitTypeID);
 	sc2::UnitTypeData GetUnitData(sc2::ABILITY_ID abilityID);
+
+private:
+	bool mappedAbilityToUnitData;
+	std::map<sc2::ABILITY_ID, sc2::UNIT_TYPEID> mapAbilityToUnitType;
+	void MapAbilityToUnitData();
 };

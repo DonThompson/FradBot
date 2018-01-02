@@ -15,7 +15,7 @@ Supply manager issues:
 * Supply can't keep up at higher levels.  Ocassionally supply blocked.  Seems happy till about 60-70.
 
 Econ manager issues:
-* SCVs keep going off to natural expansions when they built near the choke.
+* SCVs keep going off to natural expansions when they build near the choke.
 * Lower all depots on build?  SCVs get stuck occasionally.
 
 Army manager issues:
@@ -60,6 +60,9 @@ Suggestions:
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 * Starting SCV split.
 
+ONGOING:
+* Game is really slow.
+* Fix econ manager - quit queueing scvs at all, don't queue them all at main
 
 
 

@@ -373,5 +373,5 @@ void ConstructionManager::OutputDetails()
 	oss << " * Minerals Reserved.. " << GetReservedMinerals() << std::endl;
 	oss << " * Vespene Reserved... " << GetReservedVespene() << std::endl;
 
-	bot.Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8, 0.05));
+	bot.Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8f, 0.05f));
 }
