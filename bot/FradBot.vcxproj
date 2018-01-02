@@ -136,9 +136,10 @@
     <ClCompile Include="..\src\bot.cpp" />
     <ClCompile Include="..\src\BuildQueueItem.cpp" />
     <ClCompile Include="..\src\BuildQueueManager.cpp" />
-    <ClCompile Include="..\src\BuildQueueTask.cpp" />
     <ClCompile Include="..\src\ConstructionManager.cpp" />
     <ClCompile Include="..\src\ConstructionPlacement.cpp" />
+    <ClCompile Include="..\src\ConstructionQueueTask.cpp" />
+    <ClCompile Include="..\src\DataManager.cpp" />
     <ClCompile Include="..\src\DrawingManager.cpp" />
     <ClCompile Include="..\src\EconManager.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
@@ -160,10 +161,11 @@
     <ClInclude Include="..\src\bot.h" />
     <ClInclude Include="..\src\BuildQueueItem.h" />
     <ClInclude Include="..\src\BuildQueueManager.h" />
-    <ClInclude Include="..\src\BuildQueueTask.h" />
     <ClInclude Include="..\src\ConstructionManager.h" />
     <ClInclude Include="..\src\ConstructionPlacement.h" />
+    <ClInclude Include="..\src\ConstructionQueueTask.h" />
     <ClInclude Include="..\src\ConstructionTaskState.h" />
+    <ClInclude Include="..\src\DataManager.h" />
     <ClInclude Include="..\src\DrawingManager.h" />
     <ClInclude Include="..\src\EconManager.h" />
     <ClInclude Include="..\src\ManagerBase.h" />

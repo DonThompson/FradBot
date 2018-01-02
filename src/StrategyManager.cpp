@@ -23,7 +23,6 @@ void StrategyManager::OnGameStart()
 	//Setup our initial build order
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
-bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_REFINERY));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));

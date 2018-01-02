@@ -34,6 +34,9 @@
     <Filter Include="Util">
       <UniqueIdentifier>{4491102a-b20d-4056-8314-6895626c32ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{e9cbe9d6-c7ee-4dc0-b9bb-7178c33e10dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DrawingManager.cpp">
@@ -75,9 +78,6 @@
     <ClCompile Include="..\src\StructuresManager.cpp">
       <Filter>BuildingStructures</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BuildQueueTask.cpp">
-      <Filter>BuildingConstruction</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ConstructionManager.cpp">
       <Filter>BuildingConstruction</Filter>
     </ClCompile>
@@ -98,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="..\src\bot.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
+    <ClCompile Include="..\src\DataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ConstructionQueueTask.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -139,9 +145,6 @@
     <ClInclude Include="..\src\Structure.h">
       <Filter>BuildingStructures</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BuildQueueTask.h">
-      <Filter>BuildingConstruction</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ConstructionManager.h">
       <Filter>BuildingConstruction</Filter>
     </ClInclude>
@@ -165,5 +168,11 @@
     </ClInclude>
     <ClInclude Include="..\src\bot.h" />
     <ClInclude Include="..\src\StrategyManager.h" />
+    <ClInclude Include="..\src\DataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ConstructionQueueTask.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

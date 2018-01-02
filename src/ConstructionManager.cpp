@@ -15,18 +15,18 @@ ConstructionManager::ConstructionManager(Bot & b)
 
 //TODO:  Ugly ugly process.  Maybe expanding should just live outside the standard build process...?
 //	Usage:  bot.Construction().Expand(bot.BaseLocations().GetLocationById(1));
-uint64_t ConstructionManager::Expand(BaseLocation expandingToLocation, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
+uint64_t ConstructionManager::Expand(BaseLocation expandingToLocation, ConstructionQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, ConstructionQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
 	//Use the standard function to create a queued command
 	uint64_t taskId = BuildStructure(ABILITY_ID::BUILD_COMMANDCENTER, callbackSuccess, callbackFailure);
 
 	//Pull the task from the queue
-	std::map<uint64_t, BuildQueueTask>::iterator found = mapBuildingQueue.find(taskId);
+	std::map<uint64_t, ConstructionQueueTask>::iterator found = mapBuildingQueue.find(taskId);
 	if (found == mapBuildingQueue.end()) {
 		//Not found.  Should be impossible.
 		return -1;
 	}
-	BuildQueueTask task = found->second;
+	ConstructionQueueTask task = found->second;
 
 	//Handle the queued state and get a builder.
 	HandledQueuedBuilding(task);
@@ -42,7 +42,7 @@ uint64_t ConstructionManager::Expand(BaseLocation expandingToLocation, BuildQueu
 	return taskId;
 }
 
-uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, BuildQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, BuildQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
+uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, ConstructionQueueTaskCallbackFunction callbackSuccess /*= nullptr*/, ConstructionQueueTaskCallbackFunction callbackFailure /*= nullptr*/)
 {
 	uint64_t id = UseNextIdentifier();
 
@@ -52,8 +52,8 @@ uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, Buil
 	reservedVespene += data.vespene_cost;
 
 	//Queue the request and return
-	BuildQueueTask task(Observation()->GetGameLoop(), id, structureAbilityId, callbackSuccess, callbackFailure);
-	mapBuildingQueue.insert(std::pair<uint64_t, BuildQueueTask>(id, task));
+	ConstructionQueueTask task(Observation()->GetGameLoop(), id, structureAbilityId, callbackSuccess, callbackFailure);
+	mapBuildingQueue.insert(std::pair<uint64_t, ConstructionQueueTask>(id, task));
 	return id;
 }
 
@@ -71,10 +71,10 @@ void ConstructionManager::OnStep()
 	std::vector<uint64_t> tasksToRemove;
 
 	//Process the events in the queue
-	for(std::pair<uint64_t, BuildQueueTask> pair : mapBuildingQueue)
+	for(std::pair<uint64_t, ConstructionQueueTask> pair : mapBuildingQueue)
 	{
 		uint64_t taskId = pair.first;
-		BuildQueueTask task = pair.second;
+		ConstructionQueueTask task = pair.second;
 
 		//Has this specific task been running for too long?  Once it's been in the queue too long, we'll
 		//	have to abort it as something we can't handle right now.  Caller will have to try again.
@@ -145,7 +145,7 @@ const Unit* ConstructionManager::FindConstructionWorker()
 //Pre:  Build task has been queued
 //Post Success:  We found a unit that will perform the build task.
 //Post Fail (repeat):  No suitable builder could be found.  Try again next step.
-void ConstructionManager::HandledQueuedBuilding(BuildQueueTask &task)
+void ConstructionManager::HandledQueuedBuilding(ConstructionQueueTask &task)
 {
 	const Unit* builderUnit = FindConstructionWorker();
 	if (builderUnit == nullptr) {
@@ -161,7 +161,7 @@ void ConstructionManager::HandledQueuedBuilding(BuildQueueTask &task)
 //Pre:  Builder assigned
 //Post Success:  We have a position in which to build.  Note:  This position may be invalid.  If so it'll be caught and re-attempted in the queue.
 //Post Fail:  None at this time, always moves on to next step.
-void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
+void ConstructionManager::HandleFindingPosition(ConstructionQueueTask &task)
 {
 	//SPECIAL!  If we're building a refinery, it needs a vespene structure, not a position
 	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
@@ -193,7 +193,7 @@ void ConstructionManager::HandleFindingPosition(BuildQueueTask &task)
 //Pre:  Builder assigned and position known.
 //Post Success:  Unit command issued to perform a build.  This may or may not succeed, we do not know what happens.
 //Post Fail:  None at this time, always moves on to next step.
-void ConstructionManager::HandleIssuingBuild(BuildQueueTask &task)
+void ConstructionManager::HandleIssuingBuild(ConstructionQueueTask &task)
 {
 	//Geysers require special handling
 	if (task.GetBuildingType() == ABILITY_ID::BUILD_REFINERY) {
@@ -211,7 +211,7 @@ void ConstructionManager::HandleIssuingBuild(BuildQueueTask &task)
 //Pre:  Builder has been issued a command
 //Post Success:  Builder has accepted our orders
 //Post Fail (cancel task):  Builder did not accept our orders.  Entire task is aborted.
-void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
+void ConstructionManager::HandleConfirmingOrders(ConstructionQueueTask &task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
 {
 	const Unit* builder = task.GetBuilder();
 
@@ -233,7 +233,7 @@ void ConstructionManager::HandleConfirmingOrders(BuildQueueTask &task, std::vect
 
 //Pre:  Builder has accepted our orders
 //Post Success:  Builder got the command and actually started the building - it's visible on the map.
-void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
+void ConstructionManager::HandleWaitingOnBuildStart(ConstructionQueueTask &task)
 {
 	//Now we know the builder has the order.
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
@@ -283,7 +283,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(BuildQueueTask &task)
 //Pre:  Building is started, we found it, and we know it's being built.
 //Post Success:  The building finished, progress is complete.
 //Post Fail (repeat):  The building progress is less than complete.
-void ConstructionManager::HandleConstructionInProgress(BuildQueueTask &task)
+void ConstructionManager::HandleConstructionInProgress(ConstructionQueueTask &task)
 {
 	Structure s(task.GetBuilding());
 	if(s.IsBuildingComplete()) {
@@ -294,7 +294,7 @@ void ConstructionManager::HandleConstructionInProgress(BuildQueueTask &task)
 
 //Pre:  Building detected at 100% complete
 //Post Success:  Building is completed, remove it from our queue.
-void ConstructionManager::HandleCompleted(BuildQueueTask task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
+void ConstructionManager::HandleCompleted(ConstructionQueueTask task, std::vector<uint64_t> &tasksToRemove, const uint64_t taskId)
 {
 	//Done.  Clean it up, no need to monitor it in our queue any longer.
 	if (task.GetSuccessCallback() != nullptr) {
@@ -351,7 +351,7 @@ uint32_t ConstructionManager::GetReservedVespene()
 	return reservedVespene;
 }
 
-void ConstructionManager::RemoveResourceReserve(BuildQueueTask &task)
+void ConstructionManager::RemoveResourceReserve(ConstructionQueueTask &task)
 {
 	if (task.IsReservingResources()) {
 		UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(task.GetBuildingType()));
