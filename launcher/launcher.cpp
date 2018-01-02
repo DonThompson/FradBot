@@ -78,6 +78,10 @@ void ParseGameSettings(int argc, char* argv[], sc2::Race &playerRace, sc2::Race 
 	}
 }
 
+#define DllImport   __declspec( dllimport )  
+void DllImport *CreateNewAgent();
+int DllImport GetAgentRace();
+
 
 int main(int argc, char* argv[])
 {
@@ -101,9 +105,9 @@ int main(int argc, char* argv[])
 	Coordinator coordinator;
 	coordinator.LoadSettings(argc, argv);
 
-	sc2::Agent *bot = nullptr;
-
-	//TODO:  Load bot from dll
+	//Load the bot from the dll.
+	sc2::Agent* bot = static_cast<sc2::Agent*>(CreateNewAgent());
+	sc2::Race race = static_cast<sc2::Race>(GetAgentRace());
 
 	coordinator.SetParticipants({
 		CreateParticipant(playerRace, bot),
