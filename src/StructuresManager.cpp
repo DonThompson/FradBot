@@ -88,6 +88,8 @@ void StructuresManager::OnStep()
 		return UNIT_TYPEID::TERRAN_STARPORTTECHLAB;
 		break;
 
+
+		//TODO:  We need to pre-generate a map of these
 	}
 
 	return type;

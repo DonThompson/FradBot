@@ -33,6 +33,11 @@ void BuildQueueManager::OnStep()
 	//Work on the first item
 	BuildQueueItem& item = buildQueue[0];
 
+	//Ensure we have enough resources available to train this item
+	if (!HasResourcesFor(item.abilityToTrain)) {
+		return;
+	}
+
 	//For now, we break down into 3 types of things to build:  Worker, Building, any other unit
 	if (IsWorker(item.abilityToTrain)) {
 		if (bot.Econ().TrainWorker()) {
@@ -43,16 +48,14 @@ void BuildQueueManager::OnStep()
 	else if (IsBuilding(item.abilityToTrain)) {
 		//TODO:  We should move the item to a "building" state or hold it in a separate queue -- if it fails, re-queue it at the top, 
 		//	if it succeeds, fully remove it then.
-		if (HasResourcesFor(item.abilityToTrain)) {
-			//The construction manager will do its best to make sure this building gets constructed.
-			uint64_t queueId = bot.Construction().BuildStructure(item.abilityToTrain,
-				std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
-				std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
+		//The construction manager will do its best to make sure this building gets constructed.
+		uint64_t queueId = bot.Construction().BuildStructure(item.abilityToTrain,
+			std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
+			std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
 
-			std::cout << "Starting new building(" << AbilityTypeToName(item.abilityToTrain) << "), task id:  " << queueId << std::endl;
+		std::cout << "Starting new building(" << AbilityTypeToName(item.abilityToTrain) << "), task id:  " << queueId << std::endl;
 
-			buildQueue.erase(buildQueue.begin());
-		}
+		buildQueue.erase(buildQueue.begin());
 	}
 	else if (IsUnit(item.abilityToTrain)) {
 		//TODO
@@ -158,7 +161,7 @@ bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 	int32_t currentFoodCap = bot.Observation()->GetFoodCap();
 
 	//Get the unit data
-	UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(abilityID));
+	UnitTypeData data = bot.Data().GetUnitData(abilityID);
 
 	//Ensure we have the minerals, gas, and enough supply
 	if (data.mineral_cost <= currentMinerals && data.vespene_cost <= currentVespene && currentFood + data.food_required <= currentFoodCap)

@@ -10,4 +10,5 @@ public:
 	virtual void OnStep();
 
 	sc2::UnitTypeData GetUnitData(sc2::UNIT_TYPEID unitTypeID);
+	sc2::UnitTypeData GetUnitData(sc2::ABILITY_ID abilityID);
 };
