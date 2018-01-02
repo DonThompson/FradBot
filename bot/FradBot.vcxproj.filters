@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="BaseManagement">
+      <UniqueIdentifier>{7c8a32cd-de1d-4d3a-9040-0be5c4e966c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BuildingConstruction">
+      <UniqueIdentifier>{de02f2b5-769d-4954-a64d-7eec264333e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BuildingStructures">
+      <UniqueIdentifier>{00be4339-a013-437c-a832-92cf09672662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BuildQueue">
+      <UniqueIdentifier>{3b73836a-3216-448e-b314-683b20af42bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Economy">
+      <UniqueIdentifier>{3eddc513-0ee9-4a17-8b5c-2ab27a437faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Military">
+      <UniqueIdentifier>{632ef1de-98f8-4f81-8199-4a16393970d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{4491102a-b20d-4056-8314-6895626c32ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\DrawingManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ManagerBase.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Utils.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Timer.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ArmyManager.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\UpgradeList.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\UpgradesManager.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EconManager.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SupplyManager.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildQueueItem.cpp">
+      <Filter>BuildQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildQueueManager.cpp">
+      <Filter>BuildQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Structure.cpp">
+      <Filter>BuildingStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\StructuresManager.cpp">
+      <Filter>BuildingStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildQueueTask.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ConstructionManager.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ConstructionPlacement.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BaseLocation.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BaseLocationInitializer.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BaseLocationManager.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MineralLine.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bot.cpp" />
+    <ClCompile Include="..\src\StrategyManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\DrawingManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ManagerBase.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Timer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Utils.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ArmyManager.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\UpgradesManager.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\UpgradeList.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EconManager.h">
+      <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SupplyManager.h">
+      <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BuildQueueItem.h">
+      <Filter>BuildQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BuildQueueManager.h">
+      <Filter>BuildQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\StructuresManager.h">
+      <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Structure.h">
+      <Filter>BuildingStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BuildQueueTask.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ConstructionManager.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ConstructionPlacement.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ConstructionTaskState.h">
+      <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BaseLocationInitializer.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BaseLocationManager.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BaseLocation.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MineralLine.h">
+      <Filter>BaseManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bot.h" />
+    <ClInclude Include="..\src\StrategyManager.h" />
+  </ItemGroup>
+</Project>

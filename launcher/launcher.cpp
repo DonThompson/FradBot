@@ -2,7 +2,6 @@
 #include <sc2utils/sc2_manage_process.h>        //Needed for SleepFor only
 #include <iostream>
 using namespace sc2;
-#include "src/bot.h"
 
 void ParseGameSettings(int argc, char* argv[], sc2::Race &playerRace, sc2::Race &opponentRace, sc2::Difficulty &opponentDifficulty, int32_t &gameMode, std::string &mapPath)
 {
@@ -79,6 +78,10 @@ void ParseGameSettings(int argc, char* argv[], sc2::Race &playerRace, sc2::Race 
 	}
 }
 
+#define DllImport   __declspec( dllimport )  
+void DllImport *CreateNewAgent();
+int DllImport GetAgentRace();
+
 
 int main(int argc, char* argv[])
 {
@@ -102,9 +105,12 @@ int main(int argc, char* argv[])
 	Coordinator coordinator;
 	coordinator.LoadSettings(argc, argv);
 
-	Bot bot;
+	//Load the bot from the dll.
+	sc2::Agent* bot = static_cast<sc2::Agent*>(CreateNewAgent());
+	sc2::Race race = static_cast<sc2::Race>(GetAgentRace());
+
 	coordinator.SetParticipants({
-		CreateParticipant(playerRace, &bot),
+		CreateParticipant(playerRace, bot),
 		CreateComputer(opponentRace, opponentDifficulty)
 	});
 

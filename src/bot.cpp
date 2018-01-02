@@ -191,3 +191,22 @@ std::string Bot::GetVersion()
 {
 	return "0.1.0";
 }
+
+// Returns a pointer to a class deriving from sc2::Agent
+void *CreateNewAgent(void)
+{
+	return new Bot();
+}
+
+// Returns a string identifier for the agent name
+const char *GetAgentName(void)
+{
+	return "FradBot";
+}
+
+// Returns the agents prefered race.  should be sc2::Race cast to int.
+int GetAgentRace(void)
+{
+	//Hardcoded for now
+	return static_cast<int>(sc2::Race::Terran);
+}
