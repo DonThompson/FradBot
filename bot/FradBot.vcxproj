@@ -149,6 +149,7 @@
     <ClCompile Include="..\src\StructuresManager.cpp" />
     <ClCompile Include="..\src\SupplyManager.cpp" />
     <ClCompile Include="..\src\Timer.cpp" />
+    <ClCompile Include="..\src\UnitData.cpp" />
     <ClCompile Include="..\src\UpgradeList.cpp" />
     <ClCompile Include="..\src\UpgradesManager.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="..\src\StructuresManager.h" />
     <ClInclude Include="..\src\SupplyManager.h" />
     <ClInclude Include="..\src\Timer.h" />
+    <ClInclude Include="..\src\UnitData.h" />
     <ClInclude Include="..\src\UpgradeList.h" />
     <ClInclude Include="..\src\UpgradesManager.h" />
     <ClInclude Include="..\src\Utils.h" />

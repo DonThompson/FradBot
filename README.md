@@ -59,9 +59,9 @@ Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 * Starting SCV split.
+* Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
 
 ONGOING:
-* Game is really slow.
 * Fix econ manager - quit queueing scvs at all, don't queue them all at main
 
 
