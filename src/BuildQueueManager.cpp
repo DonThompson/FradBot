@@ -158,7 +158,7 @@ bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 	int32_t currentFoodCap = bot.Observation()->GetFoodCap();
 
 	//Get the unit data
-	UnitTypeData data = bot.Data().GetUnitData(abilityID);
+	UnitData data = bot.Data().GetUnitData(abilityID);
 
 	//Ensure we have the minerals, gas, and enough supply
 	if (data.mineral_cost <= currentMinerals && data.vespene_cost <= currentVespene && currentFood + data.food_required <= currentFoodCap)
