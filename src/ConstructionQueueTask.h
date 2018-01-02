@@ -7,7 +7,6 @@
 
 typedef std::function<void(int64_t)> ConstructionQueueTaskCallbackFunction;
 
-//TODO:  We renamed 'build' to 'construction'.  This is confusing against 'BuildQueueManager' and 'BuildQueueItem'.  Needs renamed!
 class ConstructionQueueTask
 {
 public:
