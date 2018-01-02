@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 	Coordinator coordinator;
 	coordinator.LoadSettings(argc, argv);
 
-	sc2::Agent *bot;
+	sc2::Agent *bot = nullptr;
 
 	//TODO:  Load bot from dll
 

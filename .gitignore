@@ -3,3 +3,4 @@
 /.vs
 /launcher/FradBotLauncher/x64/Debug
 /launcher/FradBotLauncher/*.user
+/launcher/*.user

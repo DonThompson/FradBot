@@ -109,4 +109,15 @@ private:
 	const int64_t stepWarningThresholdMs = 85;
 };
 
+#define DllExport   __declspec( dllexport )
+
+// Returns a pointer to a class deriving from sc2::Agent
+void DllExport *CreateNewAgent(void);
+
+// Returns a string identifier for the agent name
+const char  DllExport *GetAgentName(void);
+
+// Returns the agents prefered race.  should be sc2::Race cast to int.
+int DllExport GetAgentRace(void);
+
 #endif //__BOT_H

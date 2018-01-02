@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBot", "FradBot.vcxproj", "{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBotLauncher", "launcher\FradBotLauncher.vcxproj", "{17CCBE3C-7740-4171-B978-F3F19D130E68}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBotLauncher", "launcher\FradBotLauncher\FradBotLauncher.vcxproj", "{17CCBE3C-7740-4171-B978-F3F19D130E68}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBot", "bot\FradBot.vcxproj", "{76B4E376-0294-4A9C-95A3-D8F9D821F41D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,14 +15,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Debug|x64.ActiveCfg = Debug|x64
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Debug|x64.Build.0 = Debug|x64
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Debug|x86.ActiveCfg = Debug|Win32
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Debug|x86.Build.0 = Debug|Win32
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Release|x64.ActiveCfg = Release|x64
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Release|x64.Build.0 = Release|x64
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Release|x86.ActiveCfg = Release|Win32
-		{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}.Release|x86.Build.0 = Release|Win32
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Debug|x64.ActiveCfg = Debug|x64
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Debug|x64.Build.0 = Debug|x64
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Debug|x86.ActiveCfg = Debug|Win32
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Debug|x86.Build.0 = Debug|Win32
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x64.ActiveCfg = Release|x64
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x64.Build.0 = Release|x64
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x86.ActiveCfg = Release|Win32
+		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x86.Build.0 = Release|Win32
 		{17CCBE3C-7740-4171-B978-F3F19D130E68}.Debug|x64.ActiveCfg = Debug|x64
 		{17CCBE3C-7740-4171-B978-F3F19D130E68}.Debug|x64.Build.0 = Debug|x64
 		{17CCBE3C-7740-4171-B978-F3F19D130E68}.Debug|x86.ActiveCfg = Debug|Win32

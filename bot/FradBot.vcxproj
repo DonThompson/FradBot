@@ -20,14 +20,14 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{59A1A504-22E3-4655-AFE7-0F5ADE0C9FA3}</ProjectGuid>
-    <RootNamespace>bot</RootNamespace>
+    <ProjectGuid>{76B4E376-0294-4A9C-95A3-D8F9D821F41D}</ProjectGuid>
+    <RootNamespace>FradBotDll</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <ProjectName>FradBot</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -40,13 +40,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,38 +70,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <CodeAnalysisRuleSet>D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>sc2api.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../sc2api-precompiled/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>../sc2api-precompiled/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>civetweb.lib;libprotobufd.lib;sc2apid.lib;sc2libd.lib;sc2protocold.lib;sc2rendererd.lib;sc2utilsd.lib;SDL2.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;dinput8.lib;kernel32.lib;winspool.lib;shell32.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
-      <AdditionalOptions> /ignore:4099
- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>../../sc2api-manualcompiled/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>civetweb.lib;libprotobufd.lib;sc2apid.lib;sc2libd.lib;sc2protocold.lib;sc2rendererd.lib;sc2utilsd.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../../sc2api-precompiled/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>../../sc2api-precompiled/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>civetweb.lib;libprotobufd.lib;sc2apid.lib;sc2libd.lib;sc2protocold.lib;sc2rendererd.lib;sc2utilsd.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,66 +118,64 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>civetweb.lib;libprotobuf.lib;sc2api.lib;sc2lib.lib;sc2protocol.lib;sc2renderer.lib;sc2utils.lib;SDL2.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;dinput8.lib;kernel32.lib;winspool.lib;shell32.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../sc2api-manualcompiled/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sc2api.lib;sc2lib.lib;sc2utils.lib;sc2protocol.lib;libprotobuf.lib;civetweb.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BaseLocation.cpp" />
-    <ClCompile Include="src\BaseLocationInitializer.cpp" />
-    <ClCompile Include="src\BaseLocationManager.cpp" />
-    <ClCompile Include="src\bot.cpp" />
-    <ClCompile Include="src\BuildQueueItem.cpp" />
-    <ClCompile Include="src\BuildQueueManager.cpp" />
-    <ClCompile Include="src\DrawingManager.cpp" />
-    <ClCompile Include="src\MineralLine.cpp" />
-    <ClCompile Include="src\StrategyManager.cpp" />
-    <ClCompile Include="src\Structure.cpp" />
-    <ClCompile Include="src\StructuresManager.cpp" />
-    <ClCompile Include="src\ConstructionPlacement.cpp" />
-    <ClCompile Include="src\BuildQueueTask.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\ArmyManager.cpp" />
-    <ClCompile Include="src\ConstructionManager.cpp" />
-    <ClCompile Include="src\EconManager.cpp" />
-    <ClCompile Include="src\ManagerBase.cpp" />
-    <ClCompile Include="src\SupplyManager.cpp" />
-    <ClCompile Include="src\Timer.cpp" />
-    <ClCompile Include="src\UpgradeList.cpp" />
-    <ClCompile Include="src\UpgradesManager.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="..\src\ArmyManager.cpp" />
+    <ClCompile Include="..\src\BaseLocation.cpp" />
+    <ClCompile Include="..\src\BaseLocationInitializer.cpp" />
+    <ClCompile Include="..\src\BaseLocationManager.cpp" />
+    <ClCompile Include="..\src\bot.cpp" />
+    <ClCompile Include="..\src\BuildQueueItem.cpp" />
+    <ClCompile Include="..\src\BuildQueueManager.cpp" />
+    <ClCompile Include="..\src\BuildQueueTask.cpp" />
+    <ClCompile Include="..\src\ConstructionManager.cpp" />
+    <ClCompile Include="..\src\ConstructionPlacement.cpp" />
+    <ClCompile Include="..\src\DrawingManager.cpp" />
+    <ClCompile Include="..\src\EconManager.cpp" />
+    <ClCompile Include="..\src\ManagerBase.cpp" />
+    <ClCompile Include="..\src\MineralLine.cpp" />
+    <ClCompile Include="..\src\StrategyManager.cpp" />
+    <ClCompile Include="..\src\Structure.cpp" />
+    <ClCompile Include="..\src\StructuresManager.cpp" />
+    <ClCompile Include="..\src\SupplyManager.cpp" />
+    <ClCompile Include="..\src\Timer.cpp" />
+    <ClCompile Include="..\src\UpgradeList.cpp" />
+    <ClCompile Include="..\src\UpgradesManager.cpp" />
+    <ClCompile Include="..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BaseLocation.h" />
-    <ClInclude Include="src\BaseLocationInitializer.h" />
-    <ClInclude Include="src\BaseLocationManager.h" />
-    <ClInclude Include="src\bot.h" />
-    <ClInclude Include="src\BuildQueueItem.h" />
-    <ClInclude Include="src\BuildQueueManager.h" />
-    <ClInclude Include="src\DrawingManager.h" />
-    <ClInclude Include="src\MineralLine.h" />
-    <ClInclude Include="src\StrategyManager.h" />
-    <ClInclude Include="src\Structure.h" />
-    <ClInclude Include="src\StructuresManager.h" />
-    <ClInclude Include="src\ConstructionPlacement.h" />
-    <ClInclude Include="src\ConstructionTaskState.h" />
-    <ClInclude Include="src\BuildQueueTask.h" />
-    <ClInclude Include="src\ArmyManager.h" />
-    <ClInclude Include="src\ConstructionManager.h" />
-    <ClInclude Include="src\EconManager.h" />
-    <ClInclude Include="src\ManagerBase.h" />
-    <ClInclude Include="src\SupplyManager.h" />
-    <ClInclude Include="src\Timer.h" />
-    <ClInclude Include="src\UpgradeList.h" />
-    <ClInclude Include="src\UpgradesManager.h" />
-    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="..\src\ArmyManager.h" />
+    <ClInclude Include="..\src\BaseLocation.h" />
+    <ClInclude Include="..\src\BaseLocationInitializer.h" />
+    <ClInclude Include="..\src\BaseLocationManager.h" />
+    <ClInclude Include="..\src\bot.h" />
+    <ClInclude Include="..\src\BuildQueueItem.h" />
+    <ClInclude Include="..\src\BuildQueueManager.h" />
+    <ClInclude Include="..\src\BuildQueueTask.h" />
+    <ClInclude Include="..\src\ConstructionManager.h" />
+    <ClInclude Include="..\src\ConstructionPlacement.h" />
+    <ClInclude Include="..\src\ConstructionTaskState.h" />
+    <ClInclude Include="..\src\DrawingManager.h" />
+    <ClInclude Include="..\src\EconManager.h" />
+    <ClInclude Include="..\src\ManagerBase.h" />
+    <ClInclude Include="..\src\MineralLine.h" />
+    <ClInclude Include="..\src\StrategyManager.h" />
+    <ClInclude Include="..\src\Structure.h" />
+    <ClInclude Include="..\src\StructuresManager.h" />
+    <ClInclude Include="..\src\SupplyManager.h" />
+    <ClInclude Include="..\src\Timer.h" />
+    <ClInclude Include="..\src\UpgradeList.h" />
+    <ClInclude Include="..\src\UpgradesManager.h" />
+    <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
