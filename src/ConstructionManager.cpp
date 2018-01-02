@@ -48,7 +48,7 @@ uint64_t ConstructionManager::BuildStructure(ABILITY_ID structureAbilityId, Cons
 	uint64_t id = UseNextIdentifier();
 
 	//Reserve the cost of this until we see it get built
-	UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(structureAbilityId));
+	UnitTypeData data = bot.Data().GetUnitData(structureAbilityId);
 	reservedMinerals += data.mineral_cost;
 	reservedVespene += data.vespene_cost;
 
@@ -241,7 +241,8 @@ void ConstructionManager::HandleWaitingOnBuildStart(ConstructionQueueTask &task)
 	//Now we know the builder has the order.
 	//Only way to confirm it actually started building is to search all buildings, see which are being constructed, then see
 	//	which one has a position that closely matches our suggested build position.  Note that positions are NOT identical.
-	std::vector<Structure> structures = bot.Structures().GetStructuresByBuildAbility(task.GetBuildingType());
+	UnitTypeData data = bot.Data().GetUnitData(task.GetBuildingType());
+	std::vector<Structure> structures = bot.Structures().GetStructuresByType(data.unit_type_id);
 	for (Structure buildingStarted : structures) {
 		if (!buildingStarted.IsBuildingInProgress()) {
 			//Building is either unstarted (might be us, we'll check again next loop), or done.  We want in progress.
@@ -357,7 +358,7 @@ uint32_t ConstructionManager::GetReservedVespene()
 void ConstructionManager::RemoveResourceReserve(ConstructionQueueTask &task)
 {
 	if (task.IsReservingResources()) {
-		UnitTypeData data = bot.Data().GetUnitData(StructuresManager::UnitTypeFromBuildAbility(task.GetBuildingType()));
+		UnitTypeData data = bot.Data().GetUnitData(task.GetBuildingType());
 		reservedMinerals -= data.mineral_cost;
 		reservedVespene -= data.vespene_cost;
 		task.StopReservingResources();

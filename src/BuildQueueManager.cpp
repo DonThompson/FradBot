@@ -92,11 +92,8 @@ bool BuildQueueManager::IsWorker(sc2::ABILITY_ID abilityID)
 
 bool BuildQueueManager::IsBuilding(sc2::ABILITY_ID abilityID)
 {
-	//Leverage our structures manager - if it knows the unit type, it's a building.  otherwise it must not be.
-	UNIT_TYPEID u = StructuresManager::UnitTypeFromBuildAbility(abilityID);
-	if (u == UNIT_TYPEID::INVALID)
-		return false;
-	return true;
+	//Leverage our structures manager - it knows all
+	return StructuresManager::IsBuilding(abilityID);
 }
 
 bool BuildQueueManager::IsUnit(sc2::ABILITY_ID abilityID)

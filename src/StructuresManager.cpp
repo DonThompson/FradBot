@@ -1,5 +1,6 @@
 #include "StructuresManager.h"
 #include "Utils.h"
+#include "bot.h"
 using namespace sc2;
 
 StructuresManager::StructuresManager(Bot & b)
@@ -12,88 +13,34 @@ void StructuresManager::OnStep()
 
 }
 
-//We are queueing buildings based on an ability -- but we want to evaluate buildings based on
-//	the unit ID.  No mapping exists, so we must do this manually.  I found the big chunk of
-//	defines in sc2_typeenums.h and ripped out the build ones only.
-//TODO:  Only supporting terran for now.
-/*static*/UNIT_TYPEID StructuresManager::UnitTypeFromBuildAbility(ABILITY_ID abilityID)
+bool StructuresManager::IsBuilding(sc2::ABILITY_ID abilityID)
 {
-
-	//TODO:  This is all found in bot.Observation()->GetUnitTypeData!  get rid of this.
-	//TODO:  Except BuildQueueManager::IsBuilding is expecting this list, so it might need it.
-
-	UNIT_TYPEID type = UNIT_TYPEID::INVALID;
-
 	switch (abilityID)
 	{
 	case ABILITY_ID::BUILD_ARMORY:
-		return UNIT_TYPEID::TERRAN_ARMORY;
-		break;
 	case ABILITY_ID::BUILD_BARRACKS:
-		return UNIT_TYPEID::TERRAN_BARRACKS;
-		break;
 	case ABILITY_ID::BUILD_BUNKER:
-		return UNIT_TYPEID::TERRAN_BUNKER;
-		break;
 	case ABILITY_ID::BUILD_COMMANDCENTER:
-		return UNIT_TYPEID::TERRAN_COMMANDCENTER;
-		break;
 	case ABILITY_ID::BUILD_ENGINEERINGBAY:
-		return UNIT_TYPEID::TERRAN_ENGINEERINGBAY;
-		break;
 	case ABILITY_ID::BUILD_FACTORY:
-		return UNIT_TYPEID::TERRAN_FACTORY;
-		break;
 	case ABILITY_ID::BUILD_GHOSTACADEMY:
-		return UNIT_TYPEID::TERRAN_GHOSTACADEMY;
-		break;
 	case ABILITY_ID::BUILD_MISSILETURRET:
-		return UNIT_TYPEID::TERRAN_MISSILETURRET;
-		break;
-		//	BUILD_NUKE = 710,   // Target: None.
 	case ABILITY_ID::BUILD_REACTOR:
-		return UNIT_TYPEID::TERRAN_REACTOR;
-		break;
 	case ABILITY_ID::BUILD_REACTOR_BARRACKS:
-		return UNIT_TYPEID::TERRAN_BARRACKSREACTOR;
-		break;
 	case ABILITY_ID::BUILD_REACTOR_FACTORY:
-		return UNIT_TYPEID::TERRAN_FACTORYREACTOR;
-		break;
 	case ABILITY_ID::BUILD_REACTOR_STARPORT:
-		return UNIT_TYPEID::TERRAN_STARPORTREACTOR;
-		break;
 	case ABILITY_ID::BUILD_REFINERY:
-		return UNIT_TYPEID::TERRAN_REFINERY;
-		break;
 	case ABILITY_ID::BUILD_SENSORTOWER:
-		return UNIT_TYPEID::TERRAN_SENSORTOWER;
-		break;
 	case ABILITY_ID::BUILD_STARPORT:
-		return UNIT_TYPEID::TERRAN_STARPORT;
-		break;
 	case ABILITY_ID::BUILD_SUPPLYDEPOT:
-		return UNIT_TYPEID::TERRAN_SUPPLYDEPOT;
-		break;
 	case ABILITY_ID::BUILD_TECHLAB:
-		return UNIT_TYPEID::TERRAN_TECHLAB;
-		break;
 	case ABILITY_ID::BUILD_TECHLAB_BARRACKS:
-		return UNIT_TYPEID::TERRAN_BARRACKSTECHLAB;
-		break;
 	case ABILITY_ID::BUILD_TECHLAB_FACTORY:
-		return UNIT_TYPEID::TERRAN_FACTORYTECHLAB;
-		break;
 	case ABILITY_ID::BUILD_TECHLAB_STARPORT:
-		return UNIT_TYPEID::TERRAN_STARPORTTECHLAB;
-		break;
-
-
-		//TODO:  We need to pre-generate a map of these
+		return true;
 	}
 
-	return type;
-
+	return false;
 	/*
 	BUILD_ASSIMILATOR = 882,   // Target: Unit.
 	BUILD_BANELINGNEST = 1162,  // Target: Point.
@@ -132,7 +79,6 @@ void StructuresManager::OnStep()
 	*/
 }
 
-
 //Called when workers, army units are destroyed.
 //Also called when buildings are destroyed by violence.
 //Also called when buildings are canceled during construction
@@ -157,15 +103,6 @@ std::vector<Structure> StructuresManager::GetStructuresByType(UNIT_TYPEID unitTy
 	}
 
 	return matchingStructures;
-}
-
-//We may need to find a building but only know what we requested to build - the ability ID.  In that case, we 
-//	need to map over to the real structure by ability ID.  For example, ABILITY_ID::BUILD_SUPPLYDEPOT maps to
-//	UNIT_TYPEID::TERRAN_SUPPLYDEPOT
-std::vector<Structure> StructuresManager::GetStructuresByBuildAbility(ABILITY_ID abilityID)
-{
-	//Just do the lookup then let our standard GetStructures* handle the work
-	return GetStructuresByType(StructuresManager::UnitTypeFromBuildAbility(abilityID));
 }
 
 int32_t StructuresManager::CountStructuresByType(UNIT_TYPEID unitTypeID)
