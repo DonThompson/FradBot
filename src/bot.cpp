@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "Timer.h"
 #include <queue>
+#include <sstream>
 using namespace sc2;
 
 Bot::Bot()
@@ -17,6 +18,7 @@ Bot::Bot()
 	, baseLocationManager(*this)
 	, buildQueueManager(*this)
 	, dataManager(*this)
+	, last20GameLoopsTotalTimeMs(0)
 {
 
 }
@@ -129,6 +131,11 @@ void Bot::OnStep() {
 		m->OnStep();
 	}
 
+	//Output avg frame time
+	std::ostringstream oss;
+	oss << "Last 20 Frames Avg:  " << last20GameLoopsAvgTimeMs << std::endl;
+	Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8f, 0.04f));
+
 	//Sends all batched debug commands for all managers
 	Debug()->SendDebug();
 
@@ -136,7 +143,13 @@ void Bot::OnStep() {
 	if (msElapsed > stepWarningThresholdMs) {
 		std::cout << "WARNING:  Step exceeds warning threshold @ " << msElapsed << "ms" << std::endl;
 	}
+
 	//FUTURE:  track avg speed over time.
+	last20GameLoopsTotalTimeMs += msElapsed;
+	if (Observation()->GetGameLoop() % 20 == 0) {
+		last20GameLoopsAvgTimeMs = static_cast<int64_t>(last20GameLoopsTotalTimeMs / 20.0); 
+		last20GameLoopsTotalTimeMs = 0;
+	}
 }
 
 void Bot::OnUnitDestroyed(const Unit* unit)

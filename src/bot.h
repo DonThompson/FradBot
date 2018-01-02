@@ -110,6 +110,10 @@ private:
 	//If a single step takes over this threshold, print out a warning.
 	//	85ms comes from the student AI competition rules settings.
 	const int64_t stepWarningThresholdMs = 85;
+
+	//Track the last 20 loops then show the avg
+	int64_t last20GameLoopsTotalTimeMs;
+	int64_t last20GameLoopsAvgTimeMs;
 };
 
 #define DllExport   __declspec( dllexport )
