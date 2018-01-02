@@ -2,6 +2,7 @@
 #include "EconManager.h"
 #include "ConstructionPlacement.h"
 #include "bot.h"
+#include <sstream>
 using namespace sc2;
 
 ConstructionManager::ConstructionManager(Bot & b)
@@ -131,6 +132,8 @@ void ConstructionManager::OnStep()
 	for (uint64_t removeMe : tasksToRemove) {
 		mapBuildingQueue.erase(removeMe);
 	}
+
+	OutputDetails();
 }
 
 //Handles all logic around finding the available worker to perform construction.
@@ -359,4 +362,15 @@ void ConstructionManager::RemoveResourceReserve(ConstructionQueueTask &task)
 		reservedVespene -= data.vespene_cost;
 		task.StopReservingResources();
 	}
+}
+
+void ConstructionManager::OutputDetails()
+{
+	std::ostringstream oss;
+	oss << "Construction Manager:" << std::endl;
+	oss << " * Queue Items........ " << mapBuildingQueue.size() << std::endl;
+	oss << " * Minerals Reserved.. " << GetReservedMinerals() << std::endl;
+	oss << " * Vespene Reserved... " << GetReservedVespene() << std::endl;
+
+	bot.Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8, 0.05));
 }

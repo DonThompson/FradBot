@@ -73,7 +73,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 
 	std::ostringstream oss;
 	oss << "Base location " << baseLocationId << flags << std::endl;
-	bot.Draw().DrawText(oss.str(), resourceDepotLocation, color);
+	bot.Draw().DrawTextOnMap(oss.str(), resourceDepotLocation, color);
 
 	for (const Unit* patch : mineralPatches) {
 		bot.Draw().DrawCircle(patch->pos, patch->radius, color);

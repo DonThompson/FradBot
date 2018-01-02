@@ -31,7 +31,17 @@ void DrawingManager::DrawBox(Point3D pt1, float_t width, float_t height, sc2::Co
 	bot.Debug()->DebugBoxOut(pt1, pt2, color);
 }
 
-void DrawingManager::DrawText(std::string text, Point3D pt, Color color/*= Colors::White*/)
+void DrawingManager::DrawTextOnMap(std::string text, Point3D pt, Color color/*= Colors::White*/)
 {
 	bot.Debug()->DebugTextOut(text, pt, color);
+}
+
+void DrawingManager::DrawTextAtScreenPosition(std::string text, sc2::Point2D pt, sc2::Color color/*= sc2::Colors::White*/)
+{
+	bot.Debug()->DebugTextOut(text, pt, color);
+}
+
+void DrawingManager::DrawNoticeText(std::string text, sc2::Color color/*= sc2::Colors::White*/)
+{
+	bot.Debug()->DebugTextOut(text, color);
 }

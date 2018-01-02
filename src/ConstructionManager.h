@@ -13,12 +13,7 @@ class Bot;
 	ConstructionManager currently will attempt to create your building, but will abort the task for any invalid build
 	attempts (not enough resources, invalid position, etc.).  If this happens, it will never re-attempt.  caller must do so.
 
-	TODO:  callback event on success
-	callback on fail
-	never lose a request
-	Logging/status:  Output status of the queue every few seconds.
-
-	Progress:
+	TODO Progress:
 	[DONE] - callback functions (done.  tested as null)
 	[DONE] - test callbacks non-null
 	[DONE] - fix the step to go backwards instead of aborting.  remove this failure callback.  Note:  Current code will probably then be queued to build hundreds of depots.
@@ -32,6 +27,8 @@ class Bot;
 	[DONE]- rename to construction manager?  ongoing confusion between "constructing buildings" manager and manager of "existing buildings"  construction/structure instead?  bot.Construction() and bot.Structures().  I am liking these.
 	- TODO:  maybe put a cap on how many items in the queue get processed?  the game really starts to slow down at least at 100, and at 300 it's barely moving.  safety check.
 	- TODO:  Resource reserve might be something we can farm to its own class.  Is there a better way to integrate it with this class?  It has a code smell - feels easily breakable.  Had to find just the right places to copy/paste the function call.  Maybe every step in the process auto updates the resource reservation system?  Then it can handle when to remove and when not.
+	[DONE]- Logging/status:  Output status of the queue every few seconds.
+
 */
 
 class ConstructionManager : public ManagerBase
@@ -75,4 +72,5 @@ private:
 	bool DoesBuilderHaveNonHarvestOrders(const sc2::Unit* builder);
 	bool DoBuildingPositionsMatch(sc2::Point2D pt1, sc2::Point2D pt2);
 	void RemoveResourceReserve(ConstructionQueueTask  &task);
+	void OutputDetails();
 };
