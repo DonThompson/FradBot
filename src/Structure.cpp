@@ -64,3 +64,12 @@ bool Structure::HasAbilityAvailable(Bot & bot, sc2::AbilityID abilityID)
 
 	return false;
 }
+
+bool Structure::IsTrainingUnit(sc2::ABILITY_ID abilityID)
+{
+	if (building == nullptr)
+		return false;
+
+	return std::find_if(building->orders.begin(), building->orders.end(),
+		[=](UnitOrder o) -> bool { return o.ability_id == abilityID; }) != building->orders.end();
+}

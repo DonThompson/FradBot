@@ -276,7 +276,7 @@ void ConstructionManager::HandleWaitingOnBuildStart(ConstructionQueueTask &task)
 				//	OnUnitFirstSeen or something like that?
 				//If we've started a command center, we now own this base.  Update the base locations appropriately.
 				if (task.GetBuildingType() == ABILITY_ID::BUILD_COMMANDCENTER) {
-					bot.BaseLocations().ClaimBaseByPosition(task.GetBuildPoint());
+					bot.BaseLocations().ClaimBaseByPosition(task.GetBuildPoint(), task.GetBuilding());
 				}
 				return;
 			}

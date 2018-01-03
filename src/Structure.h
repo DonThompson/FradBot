@@ -25,6 +25,8 @@ public:
 	//Can the building perform this action right now?
 	//TODO:  Bleh, don't like having to load the bot here
 	bool HasAbilityAvailable(Bot & bot, sc2::AbilityID abilityID);
+	//Is the building currently training this ability?
+	bool IsTrainingUnit(sc2::ABILITY_ID abilityID);
 
 public:
 	//TODO:  and make this private.  Lots of use like Actions()->UnitCommand(.... structure)

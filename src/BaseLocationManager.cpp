@@ -160,10 +160,11 @@ BaseLocation* BaseLocationManager::FindNearestAvailableExpansionLocation()
 	return winner;
 }
 
-void BaseLocationManager::ClaimBaseByPosition(Point2D resourceDepotLocation)
+void BaseLocationManager::ClaimBaseByPosition(Point2D resourceDepotLocation, Structure & resourceDepot)
 {
 	BaseLocation* loc = GetLocationByPosition(resourceDepotLocation);
 	if (loc) {
 		loc->ClaimBaseForPlayer();
+		loc->SetResourceDepot(resourceDepot);
 	}
 }
