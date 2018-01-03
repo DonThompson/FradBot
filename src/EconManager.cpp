@@ -1,5 +1,6 @@
 #include "EconManager.h"
 #include "bot.h"
+#include "WorkerProducerSearch.h"
 using namespace sc2;
 
 EconManager::EconManager(Bot & b)
@@ -103,72 +104,14 @@ void EconManager::HandleCommandCenterIdle(Structure cc)
 	}
 }
 
-bool EconManager::NeedsMoreWorkers(Structure& resourceDepot)
-{
-	//TODO:  Consider factoring gas in?
-	if (resourceDepot.assignedHarvesters() < resourceDepot.idealHarvesters())
-		return true;
-	return false;
-}
-
-//Rules:  Provide your own base if you want to guarantee a spawn.
-//	Always start with main, then natural, then all other bases.
-//	Never queue units, build them as others finish.  Utilize our super APM!
-//TODO:  Class this:  WorkerProducerSearch
-Structure* EconManager::FindOptimalWorkerBuildLocation()
-{
-	Structure* buildFrom = nullptr;
-
-	//Always try to build at our main first
-	Structure& mainDepot = bot.BaseLocations().Main()->GetResourceDepot();
-	
-	if (NeedsMoreWorkers(mainDepot)) {
-		//Main isn't full, always build here first
-		buildFrom = &mainDepot;
-	}
-	else {
-		//Nope, try the natural
-		Structure &naturalDepot = bot.BaseLocations().Natural()->GetResourceDepot();
-		//add 6 to account for gas workers
-		if (NeedsMoreWorkers(naturalDepot)) {
-			//We have room for more workers at the natural, use it
-			buildFrom = &naturalDepot;
-		}
-		else {
-			//Still searching, look at all other bases
-			std::vector<BaseLocation*> bases = bot.BaseLocations().OtherBases();
-			for (BaseLocation* base : bases) {
-				Structure& resourceDepot = base->GetResourceDepot();
-				if (NeedsMoreWorkers(resourceDepot)) {
-					buildFrom = &resourceDepot;
-					break;
-				}
-			}
-
-			//If still not found, go back to main
-			if(buildFrom == nullptr)
-				buildFrom = &mainDepot;
-		}
-	}
-
-	//Now, make sure there's no queue
-	if (buildFrom != nullptr) {
-		//If we're already building one, don't do it again.  Wait until the queue is empty.
-		if (buildFrom->IsTrainingUnit(ABILITY_ID::TRAIN_SCV))
-			return nullptr;
-	}
-
-	//None found, the fallback is always main
-	return buildFrom;
-}
-
 //Returns true if the training structure had the worker available to build and we issued the command.
 //	TODO:  Still possible that it doesn't execute.
 bool EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
 {
 	//If the caller didn't provide one, find the optimal place to build.
 	if (buildFrom == nullptr) {
-		buildFrom = FindOptimalWorkerBuildLocation();
+		WorkerProducerSearch search(bot);
+		buildFrom = search.SearchForProducer();
 	}
 
 	//Now execute the train command.

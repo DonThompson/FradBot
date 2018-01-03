@@ -153,6 +153,7 @@
     <ClCompile Include="..\src\UpgradeList.cpp" />
     <ClCompile Include="..\src\UpgradesManager.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
+    <ClCompile Include="..\src\WorkerProducerSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\src\UpgradeList.h" />
     <ClInclude Include="..\src\UpgradesManager.h" />
     <ClInclude Include="..\src\Utils.h" />
+    <ClInclude Include="..\src\WorkerProducerSearch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

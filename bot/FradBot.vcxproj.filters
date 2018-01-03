@@ -107,6 +107,9 @@
     <ClCompile Include="..\src\UnitData.cpp">
       <Filter>Data</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WorkerProducerSearch.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="..\src\UnitData.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WorkerProducerSearch.h">
+      <Filter>Economy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

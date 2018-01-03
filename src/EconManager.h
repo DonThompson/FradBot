@@ -38,8 +38,6 @@ private:
 	
 	const sc2::Unit* FindNearestMineralPatch(const sc2::Point2D& start);
 	void HandleCommandCenterIdle(Structure cc);
-	Structure* FindOptimalWorkerBuildLocation();
-	bool NeedsMoreWorkers(Structure& resourceDepot);
 
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;
