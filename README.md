@@ -34,7 +34,10 @@ BuildingPlacement issues:
 * Query()->Placement(sc2::ABILITY_ID::BUILD_CREEPTUMOR, location) looks promising too.
 
 Upgrades issues:
-* None
+* No absolute guarantee of build here.  If the resources are stolen at the same time, we'll fail and not try again.
+* Should we queue upgrades?  They're lengthy and maybe we want to just get them out of the request pipeline
+* Maybe return an enum?  Success/WaitingOnQueue/CantBuildThisRightNow
+* Might also want overrides for callers to choose - queue or don't.
 
 Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
@@ -50,7 +53,6 @@ Expansion issues:
 Build Queue Manager issues:
 * General plan for failed buildings.  Is this a concern?
 * Missing units
-* Missing upgrades
 * Missing morph (orbital) & addons
 * Mule / scan management (not in this class)
 
@@ -61,6 +63,9 @@ Suggestions:
 * Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
 * Move workers to natural when it completes.
 
+ONGOING ISSUES:
+* I built upgrades... but we aren't shifting workers, so I never have gas.  I also haven't gotten techlab addons working well.  If there isn't one, the upgrade will block the queue forever.
+* Opens up the option that we might need to boot failing commands.
 
 
 # Setup

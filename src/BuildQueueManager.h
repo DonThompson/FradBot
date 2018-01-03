@@ -23,6 +23,5 @@ private:
 	bool IsWorker(sc2::ABILITY_ID abilityID);
 	bool IsBuilding(sc2::ABILITY_ID abilityID);
 	bool IsUnit(sc2::ABILITY_ID abilityID);
-	bool IsUpgrade(sc2::ABILITY_ID abilityID);
 	bool HasResourcesFor(sc2::ABILITY_ID abilityID);
 };

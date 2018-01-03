@@ -2,6 +2,128 @@
 #include "bot.h"
 using namespace sc2;
 
+//TODO:  Better way to do this?  copy/pasted values out of typeenums
+//TODO:  Put in upgrade manager?  Data()?
+/*static */bool UpgradesManager::IsUpgrade(sc2::ABILITY_ID abilityID)
+{
+	switch (abilityID) {
+	case ABILITY_ID::BUILD_NUKE:		//Trained as an 'upgrade' at the ghost academy
+	case ABILITY_ID::RESEARCH_ADVANCEDBALLISTICS:
+	case ABILITY_ID::RESEARCH_BANSHEECLOAKINGFIELD:
+	case ABILITY_ID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
+	case ABILITY_ID::RESEARCH_BATTLECRUISERWEAPONREFIT:
+	case ABILITY_ID::RESEARCH_COMBATSHIELD:
+	case ABILITY_ID::RESEARCH_CONCUSSIVESHELLS:
+	case ABILITY_ID::RESEARCH_DRILLINGCLAWS:
+	case ABILITY_ID::RESEARCH_HIGHCAPACITYFUELTANKS:
+	case ABILITY_ID::RESEARCH_HISECAUTOTRACKING:
+	case ABILITY_ID::RESEARCH_INFERNALPREIGNITER:
+	case ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
+	case ABILITY_ID::RESEARCH_NEOSTEELFRAME:
+	case ABILITY_ID::RESEARCH_PERSONALCLOAKING:
+	case ABILITY_ID::RESEARCH_RAVENCORVIDREACTOR:
+	case ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
+	case ABILITY_ID::RESEARCH_STIMPACK:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANSTRUCTUREARMORUPGRADE:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATING:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
+		return true;
+	}
+	return false;
+}
+
+//TODO:  Refactor elsewhere?  Can this get built into UnitData?
+/*static */sc2::UNIT_TYPEID UpgradesManager::GetUpgradeProducerType(sc2::ABILITY_ID abilityID)
+{
+	switch (abilityID) {
+		//Engineering Bay
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL3:
+	case ABILITY_ID::RESEARCH_HISECAUTOTRACKING:
+	case ABILITY_ID::RESEARCH_NEOSTEELFRAME:
+	case ABILITY_ID::RESEARCH_TERRANSTRUCTUREARMORUPGRADE:
+		return UNIT_TYPEID::TERRAN_ENGINEERINGBAY;
+
+		//Barracks tech lab
+	case ABILITY_ID::RESEARCH_COMBATSHIELD:
+	case ABILITY_ID::RESEARCH_CONCUSSIVESHELLS:
+	case ABILITY_ID::RESEARCH_STIMPACK:
+		return UNIT_TYPEID::TERRAN_BARRACKSTECHLAB;
+
+		//Factory tech lab
+	case ABILITY_ID::RESEARCH_INFERNALPREIGNITER:
+		//TODO:  rapid fire launchers?  cyclone
+	case ABILITY_ID::RESEARCH_DRILLINGCLAWS:
+		//TODO:  smart servos?  transform mode
+		return UNIT_TYPEID::TERRAN_FACTORYTECHLAB;
+
+		//Starport tech lab
+	case ABILITY_ID::RESEARCH_HIGHCAPACITYFUELTANKS:
+		//Enhanced munitions?  raven
+	case ABILITY_ID::RESEARCH_RAVENCORVIDREACTOR:
+	case ABILITY_ID::RESEARCH_BANSHEECLOAKINGFIELD:
+	case ABILITY_ID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
+	case ABILITY_ID::RESEARCH_ADVANCEDBALLISTICS:
+		return UNIT_TYPEID::TERRAN_STARPORTTECHLAB;
+
+		//Armory
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATING:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL3:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONS:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL1:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
+	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
+		return UNIT_TYPEID::TERRAN_ARMORY;
+
+		//Ghosts
+	case ABILITY_ID::RESEARCH_PERSONALCLOAKING:
+	case ABILITY_ID::BUILD_NUKE:
+		return UNIT_TYPEID::TERRAN_GHOSTACADEMY;
+
+		//Battlecruisers
+	case ABILITY_ID::RESEARCH_BATTLECRUISERWEAPONREFIT:
+		return UNIT_TYPEID::TERRAN_FUSIONCORE;
+
+		//Removed?  According to http://liquipedia.net/starcraft2/Tech_Lab_(Legacy_of_the_Void)
+	case ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
+	case ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
+		//Behemoth reactor
+	default:
+		break;
+	}
+	return UNIT_TYPEID::INVALID;
+}
+
 UpgradesManager::UpgradesManager(Bot & b)
 	: ManagerBase(b)
 	, lastBalanceClock(clock_t())
@@ -31,6 +153,7 @@ void UpgradesManager::OnStep()
 	//Do these things regardless
 }
 
+//TODO:  Temporarily used, only covers infantry upgrades
 void UpgradesManager::OnUpgradeCompleted(UpgradeID upgradeID)
 {
 	std::cout << "Upgrade complete:  " << sc2::UpgradeIDToName(upgradeID) << std::endl;
@@ -55,6 +178,41 @@ void UpgradesManager::OnUpgradeCompleted(UpgradeID upgradeID)
 		upgrades.hasStim = true;
 		break;
 	}
+}
+
+//Performs an upgrade for the given ability.  Rules:
+//	Find producer (can fail if we don't have one)
+//	See if it's already producing something (we never queue)
+//	See if it can produce this upgrade (pre-requisites may not be met)
+//	Perform the action
+//TODO:  No absolute guarantee of build here.  If the resources are stolen at the same time, we'll fail and not try again.
+//TODO:  Should we queue upgrades?  They're lengthy and maybe we want to just get them out of the request pipeline
+bool UpgradesManager::PerformUpgrade(sc2::ABILITY_ID abilityID)
+{
+	//What produces this upgrade?
+	UnitData data = bot.Data().GetUnitData(abilityID);
+	UNIT_TYPEID producerType = UpgradesManager::GetUpgradeProducerType(abilityID);
+
+	//Find producers
+	std::vector<Structure> structures = bot.Structures().GetStructuresByType(producerType);
+	for (Structure s : structures) {
+		//is producing?
+		if (s.getOrderCount() == 0) {
+			//can it do this now? (pre-reqs)
+			if (s.HasAbilityAvailable(bot, abilityID)) {
+				//do it!
+				Actions()->UnitCommand(s.building, abilityID);
+				return true;
+			}
+			else {
+				//Can't perform this upgrade, not available.
+			}
+		}
+		else {
+			//Has existing orders, skip it
+		}
+	}
+	return false;
 }
 
 void UpgradesManager::BuildEngBaysAsNeeded()
