@@ -76,14 +76,14 @@ using namespace sc2;
 
 		//Factory tech lab
 	case ABILITY_ID::RESEARCH_INFERNALPREIGNITER:
-		//TODO:  rapid fire launchers?  cyclone
+	case ABILITY_ID::RESEARCH_RAPIDFIRELAUNCHERS:
 	case ABILITY_ID::RESEARCH_DRILLINGCLAWS:
-		//TODO:  smart servos?  transform mode
+	case ABILITY_ID::RESEARCH_SMARTSERVOS:
 		return UNIT_TYPEID::TERRAN_FACTORYTECHLAB;
 
 		//Starport tech lab
 	case ABILITY_ID::RESEARCH_HIGHCAPACITYFUELTANKS:
-		//Enhanced munitions?  raven
+	case ABILITY_ID::RESEARCH_ENHANCEDMUNITIONS:
 	case ABILITY_ID::RESEARCH_RAVENCORVIDREACTOR:
 	case ABILITY_ID::RESEARCH_BANSHEECLOAKINGFIELD:
 	case ABILITY_ID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
@@ -115,9 +115,9 @@ using namespace sc2;
 		return UNIT_TYPEID::TERRAN_FUSIONCORE;
 
 		//Removed?  According to http://liquipedia.net/starcraft2/Tech_Lab_(Legacy_of_the_Void)
-	case ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
-	case ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
-		//Behemoth reactor
+		//case ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
+		//case ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
+		//Behemoth reactor (not defined)
 	default:
 		break;
 	}
