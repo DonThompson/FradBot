@@ -18,6 +18,7 @@ Bot::Bot()
 	, baseLocationManager(*this)
 	, buildQueueManager(*this)
 	, dataManager(*this)
+	, morphManager(*this)
 	, last20GameLoopsTotalTimeMs(0)
 {
 
@@ -76,6 +77,11 @@ BuildQueueManager & Bot::BuildQueue()
 DataManager & Bot::Data()
 {
 	return dataManager;
+}
+
+MorphManager & Bot::Morph()
+{
+	return morphManager;
 }
 
 void Bot::OnGameFullStart()

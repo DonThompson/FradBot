@@ -15,6 +15,7 @@
 #include "BaseLocationManager.h"
 #include "BuildQueueManager.h"
 #include "DataManager.h"
+#include "MorphManager.h"
 #include "Utils.h"
 
 
@@ -31,6 +32,7 @@ private:
 	BaseLocationManager baseLocationManager;
 	BuildQueueManager buildQueueManager;
 	DataManager dataManager;
+	MorphManager morphManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -51,6 +53,7 @@ public:
 	UpgradesManager & Upgrades();
 	BuildQueueManager & BuildQueue();
 	DataManager & Data();
+	MorphManager & Morph();
 
 
 	std::string GetVersion();

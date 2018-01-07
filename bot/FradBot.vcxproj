@@ -144,6 +144,7 @@
     <ClCompile Include="..\src\EconManager.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
+    <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
     <ClCompile Include="..\src\Structure.cpp" />
     <ClCompile Include="..\src\StructuresManager.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\src\EconManager.h" />
     <ClInclude Include="..\src\ManagerBase.h" />
     <ClInclude Include="..\src\MineralLine.h" />
+    <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\StrategyManager.h" />
     <ClInclude Include="..\src\Structure.h" />
     <ClInclude Include="..\src\StructuresManager.h" />

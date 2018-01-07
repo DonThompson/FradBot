@@ -110,6 +110,9 @@
     <ClCompile Include="..\src\WorkerProducerSearch.cpp">
       <Filter>Economy</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MorphManager.cpp">
+      <Filter>BuildingConstruction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -185,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="..\src\WorkerProducerSearch.h">
       <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MorphManager.h">
+      <Filter>BuildingConstruction</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

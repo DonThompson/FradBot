@@ -55,6 +55,7 @@ Build Queue Manager issues:
 * Missing morph (orbital)  [this comes through as a Unit right now]
 * Mule / scan management (not in this class)
 * Tech labs & reactors go through "building", but can't be built as buildings by a worker.
+* Morph shouldn't live here.  Move it elsewhere.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2

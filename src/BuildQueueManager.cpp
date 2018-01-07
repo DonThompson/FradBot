@@ -81,6 +81,12 @@ void BuildQueueManager::OnStep()
 			buildQueue.erase(buildQueue.begin());
 		}
 	}
+	else if (MorphManager::IsMorph(item.abilityToTrain)) {
+		if (bot.Morph().PerformMorph(item.abilityToTrain)) {
+			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
+	}
 	else {
 		//We must have missed one
 		std::cout << "Unknown build queue item:  " << sc2::AbilityTypeToName(item.abilityToTrain) << ".  DEQUEUEING" << std::endl;
@@ -112,8 +118,10 @@ bool BuildQueueManager::IsBuilding(sc2::ABILITY_ID abilityID)
 
 bool BuildQueueManager::IsUnit(sc2::ABILITY_ID abilityID)
 {
-	//If it's not the other 3, must be us.
-	if (!IsWorker(abilityID) && !IsBuilding(abilityID) && !UpgradesManager::IsUpgrade(abilityID))
+	//TODO:  Needs redone.  Requires we keep remembering to update this
+
+	//If it's not the others, must be us.
+	if (!IsWorker(abilityID) && !IsBuilding(abilityID) && !UpgradesManager::IsUpgrade(abilityID) && !MorphManager::IsMorph(abilityID))
 		return true;
 	return false;
 }

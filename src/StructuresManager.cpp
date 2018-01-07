@@ -13,7 +13,7 @@ void StructuresManager::OnStep()
 
 }
 
-bool StructuresManager::IsBuilding(sc2::ABILITY_ID abilityID)
+/*static*/bool StructuresManager::IsBuilding(sc2::ABILITY_ID abilityID)
 {
 	switch (abilityID)
 	{
@@ -25,20 +25,24 @@ bool StructuresManager::IsBuilding(sc2::ABILITY_ID abilityID)
 	case ABILITY_ID::BUILD_FACTORY:
 	case ABILITY_ID::BUILD_GHOSTACADEMY:
 	case ABILITY_ID::BUILD_MISSILETURRET:
-	case ABILITY_ID::BUILD_REACTOR:
-	case ABILITY_ID::BUILD_REACTOR_BARRACKS:
-	case ABILITY_ID::BUILD_REACTOR_FACTORY:
-	case ABILITY_ID::BUILD_REACTOR_STARPORT:
 	case ABILITY_ID::BUILD_REFINERY:
 	case ABILITY_ID::BUILD_SENSORTOWER:
 	case ABILITY_ID::BUILD_STARPORT:
 	case ABILITY_ID::BUILD_SUPPLYDEPOT:
+		return true;
+	}
+
+	/*Took out addons for now.
+
+	case ABILITY_ID::BUILD_REACTOR:
+	case ABILITY_ID::BUILD_REACTOR_BARRACKS:
+	case ABILITY_ID::BUILD_REACTOR_FACTORY:
+	case ABILITY_ID::BUILD_REACTOR_STARPORT:
 	case ABILITY_ID::BUILD_TECHLAB:
 	case ABILITY_ID::BUILD_TECHLAB_BARRACKS:
 	case ABILITY_ID::BUILD_TECHLAB_FACTORY:
 	case ABILITY_ID::BUILD_TECHLAB_STARPORT:
-		return true;
-	}
+	*/
 
 	return false;
 	/*
