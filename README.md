@@ -52,7 +52,6 @@ Expansion issues:
 
 Build Queue Manager issues:
 * General plan for failed buildings.  Is this a concern?
-* Missing units
 * Missing morph (orbital)  [this comes through as a Unit right now]
 * Mule / scan management (not in this class)
 * Tech labs & reactors go through "building", but can't be built as buildings by a worker.
@@ -66,7 +65,6 @@ Suggestions:
 * Set build positions when evaluating map.
 
 ONGOING ISSUES:
-* I built upgrades... but we aren't shifting workers, so I never have gas.  I also haven't gotten techlab addons working well.
 
 
 # Setup

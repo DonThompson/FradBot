@@ -31,6 +31,7 @@ public:
 
 private:
 	void BalanceBuilders();
+	void BalanceGasWorkers();
 	void OnCommandCenterIdle(const sc2::Unit* unit);
 	bool NeedRefinery();
 	int32_t GetRefineryCount();
