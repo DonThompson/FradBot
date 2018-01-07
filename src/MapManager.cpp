@@ -44,7 +44,6 @@ std::vector<sc2::Point2D> MapManager::GetRegionChokePoints(size_t regionId)
 {
 	std::vector<sc2::Point2D> allChokePoints;
 
-	Region* region = overseerMapImpl->getRegion(regionId);
 	std::vector<ChokePoint> chokes = overseerMapImpl->getGraph().getChokePoints();
 	for (ChokePoint choke : chokes) {
 		const std::pair<const Region *, const Region *> regions = choke.getRegions();
