@@ -6,10 +6,18 @@ class BuildQueueItem
 {
 public:
 	BuildQueueItem(sc2::AbilityID _abilityID);
-	~BuildQueueItem();
+
+	bool CheckTimeout(uint32_t currentGameLoop);
 
 	//TODO:  Should these by private?  do we want to bother with setter/getters?
 public:
 	sc2::AbilityID abilityToTrain;
-};
 
+	//Timeout behavior
+	//Game loop when this build queue item was first seen
+	uint32_t firstSeenGameLoop;
+	//How many game loops until we should just quit this item?  Needs to be reasonably high
+	//	for real things (I want to expand as my first building), but low enough that something
+	//	isn't stuck forever making the bot do nothing.
+	uint32_t timeoutLoops;
+};

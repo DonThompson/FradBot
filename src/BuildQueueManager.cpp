@@ -26,12 +26,25 @@ void BuildQueueManager::OnStep()
 	//	and the game attempts to queue a second one - but we really don't have 50 minerals.
 	//Our resource reservation system for construction helps us keep this reasonably low.
 	//TODO:  It seems like a unit reservation system would be equally useful (and include food too).
-	if (bot.Observation()->GetGameLoop() % 5 != 0) {
+	uint32_t gameLoop = bot.Observation()->GetGameLoop();
+	if (gameLoop % 5 != 0) {
 		return;
 	}
 
 	//Work on the first item
 	BuildQueueItem& item = buildQueue[0];
+
+	//First, we put a safety check for timeout.  Don't want items stuck in the build queue forever that we can never
+	//	build for some reason.  Early in dev, this handles unforeseen situations and things not yet build into the
+	//	manager.  Later, this should be a catch against edge cases... for exampleyou lose all your gas workers and 
+	//	the upgrade queued for 200 gas keeps anything else from building.
+	if (item.CheckTimeout(gameLoop)) {
+		//It timed out, dequeue this request
+		std::cout << "WARNING:  ITEM TIMED OUT.  REMOVING FROM QUEUE.  (" << AbilityTypeToName(item.abilityToTrain) << ")" << std::endl;
+		buildQueue.erase(buildQueue.begin());
+		return;
+	}
+
 
 	//Ensure we have enough resources available to train this item
 	if (!HasResourcesFor(item.abilityToTrain)) {

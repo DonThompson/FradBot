@@ -55,6 +55,7 @@ Build Queue Manager issues:
 * Missing units
 * Missing morph (orbital) & addons
 * Mule / scan management (not in this class)
+* Tech labs & reactors go through "building", but can't be built as buildings by a worker.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
@@ -64,8 +65,7 @@ Suggestions:
 * Move workers to natural when it completes.
 
 ONGOING ISSUES:
-* I built upgrades... but we aren't shifting workers, so I never have gas.  I also haven't gotten techlab addons working well.  If there isn't one, the upgrade will block the queue forever.
-* Opens up the option that we might need to boot failing commands.
+* I built upgrades... but we aren't shifting workers, so I never have gas.  I also haven't gotten techlab addons working well.
 
 
 # Setup
