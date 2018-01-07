@@ -1,6 +1,8 @@
 #include "UnitData.h"
+using namespace sc2;
 
 UnitData::UnitData()
+	: producingBuilding(UNIT_TYPEID::INVALID)
 {
 
 }

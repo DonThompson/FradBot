@@ -23,6 +23,7 @@ public:
 	virtual void OnUnitIdle(const sc2::Unit* unit);
 	void OnBarracksSuccess(int64_t taskId);
 	void OnBarracksFailed(int64_t taskId);
+	bool TrainUnit(sc2::ABILITY_ID abilityID);
 
 private:
 	clock_t lastBalanceClock;

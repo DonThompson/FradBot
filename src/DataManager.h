@@ -21,4 +21,7 @@ private:
 	bool mappedUnitData;
 	std::map<sc2::UNIT_TYPEID, UnitData> gameUnitData;
 	void MapUnitData();
+
+	//Manual hardcoded additions
+	void AddProducingBuildings(UnitData& data);
 };

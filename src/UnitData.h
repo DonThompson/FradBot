@@ -38,6 +38,10 @@ public:
 	bool require_attached;
 
 
+	//Manual additions
+	sc2::UnitTypeID producingBuilding;
+
+
 	//Hide stuff we aren't (yet) using here in case we want it in the future
 private:
 	//! Whether the unit can have minerals (mineral patches).

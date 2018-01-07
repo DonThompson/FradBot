@@ -45,7 +45,6 @@ void BuildQueueManager::OnStep()
 		return;
 	}
 
-
 	//Ensure we have enough resources available to train this item
 	if (!HasResourcesFor(item.abilityToTrain)) {
 		return;
@@ -71,18 +70,15 @@ void BuildQueueManager::OnStep()
 		buildQueue.erase(buildQueue.begin());
 	}
 	else if (IsUnit(item.abilityToTrain)) {
-		//TODO
-		std::cout << "UNSUPPORTED:  " << sc2::AbilityTypeToName(item.abilityToTrain) << ".  DEQUEUEING" << std::endl;
-		buildQueue.erase(buildQueue.begin());
+		if (bot.Army().TrainUnit(item.abilityToTrain)) {
+			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
 	}
 	else if (UpgradesManager::IsUpgrade(item.abilityToTrain)) {
 		if (bot.Upgrades().PerformUpgrade(item.abilityToTrain)) {
 			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
 			buildQueue.erase(buildQueue.begin());
-		}
-		else
-		{
-
 		}
 	}
 	else {

@@ -53,7 +53,7 @@ Expansion issues:
 Build Queue Manager issues:
 * General plan for failed buildings.  Is this a concern?
 * Missing units
-* Missing morph (orbital) & addons
+* Missing morph (orbital)  [this comes through as a Unit right now]
 * Mule / scan management (not in this class)
 * Tech labs & reactors go through "building", but can't be built as buildings by a worker.
 
@@ -63,6 +63,7 @@ Suggestions:
 * Starting SCV split.
 * Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
 * Move workers to natural when it completes.
+* Set build positions when evaluating map.
 
 ONGOING ISSUES:
 * I built upgrades... but we aren't shifting workers, so I never have gas.  I also haven't gotten techlab addons working well.
