@@ -37,6 +37,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{e9cbe9d6-c7ee-4dc0-b9bb-7178c33e10dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{c2a3bfc9-ac85-4550-855e-f6225a7da7cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DrawingManager.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="..\src\MorphManager.cpp">
       <Filter>BuildingConstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MapManager.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="..\src\MorphManager.h">
       <Filter>BuildingConstruction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MapManager.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

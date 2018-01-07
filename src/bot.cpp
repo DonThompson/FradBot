@@ -19,6 +19,7 @@ Bot::Bot()
 	, buildQueueManager(*this)
 	, dataManager(*this)
 	, morphManager(*this)
+	, mapManager(*this)
 	, last20GameLoopsTotalTimeMs(0)
 {
 
@@ -84,6 +85,11 @@ MorphManager & Bot::Morph()
 	return morphManager;
 }
 
+MapManager & Bot::Map()
+{
+	return mapManager;
+}
+
 void Bot::OnGameFullStart()
 {
 }
@@ -112,6 +118,8 @@ void Bot::OnGameStart()
 	//Intentionally not giving events to these
 	//managers.push_back(&drawingManager);
 	//managers.push_back(&dataManager);
+	//managers.push_back(&morphManager);
+	//managers.push_back(&mapManager);
 
 	Timer t;
 	//Let everyone know the game has started

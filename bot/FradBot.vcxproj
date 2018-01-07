@@ -76,7 +76,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include;../../Overseer</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -143,6 +143,7 @@
     <ClCompile Include="..\src\DrawingManager.cpp" />
     <ClCompile Include="..\src\EconManager.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
+    <ClCompile Include="..\src\MapManager.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\src\DrawingManager.h" />
     <ClInclude Include="..\src\EconManager.h" />
     <ClInclude Include="..\src\ManagerBase.h" />
+    <ClInclude Include="..\src\MapManager.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\StrategyManager.h" />

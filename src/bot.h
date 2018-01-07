@@ -16,6 +16,7 @@
 #include "BuildQueueManager.h"
 #include "DataManager.h"
 #include "MorphManager.h"
+#include "MapManager.h"
 #include "Utils.h"
 
 
@@ -33,6 +34,7 @@ private:
 	BuildQueueManager buildQueueManager;
 	DataManager dataManager;
 	MorphManager morphManager;
+	MapManager mapManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -54,6 +56,7 @@ public:
 	BuildQueueManager & BuildQueue();
 	DataManager & Data();
 	MorphManager & Morph();
+	MapManager & Map();
 
 
 	std::string GetVersion();
