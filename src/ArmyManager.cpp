@@ -151,3 +151,38 @@ void ArmyManager::OnUnitIdle(const Unit* unit)
 	default:    break;
 	}
 }
+
+bool ArmyManager::TrainUnit(sc2::ABILITY_ID abilityID)
+{
+	//TODO:  This could be way better:
+	//	* Keep an ordered set of buildings where we should build based on game state (advanced)
+	//	* Only build marines from non-lab/reactors, not techlabs.  same for hellions/etc
+	//	* Use the tech_requirement to determine need
+	//	* Know about reactors
+	//	* lots of stuff for other building types too
+
+	//What produces this unit?
+	UnitData data = bot.Data().GetUnitData(abilityID);
+	UNIT_TYPEID producer = data.producingBuilding;
+
+	//////////////////////////////////////////////////////////
+	//V1:  Jump through all producing buildings that match	//
+	//////////////////////////////////////////////////////////
+
+	//Iterate through all the producers of this unit type
+	for (const Unit* u : Utils::GetOwnUnits(Observation(), producer)) {
+		//Can it handle the request?  A factory requires a tech lab to build a siege tank, for example
+		Structure s(u);
+		if (s.HasAbilityAvailable(bot, abilityID)) {
+			//Is it doing something else?  We never want to queue anything, just wait until it clears
+			if (s.getOrderCount() == 0) {
+				//Yay, let's build here
+				Actions()->UnitCommand(u, abilityID);
+				return true;
+			}
+		}
+	}
+
+	//failed to find a spot.  Try again later.
+	return false;
+}

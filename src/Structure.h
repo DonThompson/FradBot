@@ -3,6 +3,11 @@
 #include <sc2api/sc2_api.h>
 class Bot;
 
+//TODO
+//* Should "needs more workers" include gas?  Right now it's purely a mineral count.  For now we'll exclude it -- if there's no other base, we'll
+//		just build at this one anyways, making enough.  If we start to move workers, we can rebuild them.
+
+
 class Structure
 {
 public:
@@ -25,6 +30,10 @@ public:
 	//Can the building perform this action right now?
 	//TODO:  Bleh, don't like having to load the bot here
 	bool HasAbilityAvailable(Bot & bot, sc2::AbilityID abilityID);
+	//Is the building currently training this ability?
+	bool IsTrainingUnit(sc2::ABILITY_ID abilityID);
+	//Only applies to resource worker producers
+	bool NeedsMoreWorkers();
 
 public:
 	//TODO:  and make this private.  Lots of use like Actions()->UnitCommand(.... structure)

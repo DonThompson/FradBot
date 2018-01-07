@@ -14,7 +14,12 @@ public:
 
 	void DrawCircle(sc2::Point3D pt, float_t radius, sc2::Color color = sc2::Colors::White);
 	void DrawBox(sc2::Point3D pt1, float_t width, float_t height, sc2::Color color = sc2::Colors::White);
-	void DrawText(std::string text, sc2::Point3D pt, sc2::Color color = sc2::Colors::White);
+	//! Outputs text at any 3D point in the game world. Map coordinates are used.
+	void DrawTextOnMap(std::string text, sc2::Point3D pt, sc2::Color color = sc2::Colors::White);
+	//! Outputs text at any 2D point on the screen. Coordinate ranges are 0..1 in X and Y.
+	void DrawTextAtScreenPosition(std::string text, sc2::Point2D pt, sc2::Color color = sc2::Colors::White);
+	//! Outputs text at the top, left of the screen.
+	void DrawNoticeText(std::string text, sc2::Color color = sc2::Colors::White);
 
 private:
 	const float_t BonusCircleDrawingHeight = 1.05f;

@@ -14,6 +14,8 @@
 #include "DrawingManager.h"
 #include "BaseLocationManager.h"
 #include "BuildQueueManager.h"
+#include "DataManager.h"
+#include "MorphManager.h"
 #include "Utils.h"
 
 
@@ -29,6 +31,8 @@ private:
 	DrawingManager drawingManager;
 	BaseLocationManager baseLocationManager;
 	BuildQueueManager buildQueueManager;
+	DataManager dataManager;
+	MorphManager morphManager;
 
 	std::vector<ManagerBase*> managers;
 
@@ -48,6 +52,8 @@ public:
 	BaseLocationManager & BaseLocations();
 	UpgradesManager & Upgrades();
 	BuildQueueManager & BuildQueue();
+	DataManager & Data();
+	MorphManager & Morph();
 
 
 	std::string GetVersion();
@@ -107,6 +113,10 @@ private:
 	//If a single step takes over this threshold, print out a warning.
 	//	85ms comes from the student AI competition rules settings.
 	const int64_t stepWarningThresholdMs = 85;
+
+	//Track the last 20 loops then show the avg
+	int64_t last20GameLoopsTotalTimeMs;
+	int64_t last20GameLoopsAvgTimeMs;
 };
 
 #define DllExport   __declspec( dllexport )

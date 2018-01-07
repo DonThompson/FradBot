@@ -15,7 +15,7 @@ Supply manager issues:
 * Supply can't keep up at higher levels.  Ocassionally supply blocked.  Seems happy till about 60-70.
 
 Econ manager issues:
-* SCVs keep going off to natural expansions when they built near the choke.
+* SCVs keep going off to natural expansions when they build near the choke.
 * Lower all depots on build?  SCVs get stuck occasionally.
 
 Army manager issues:
@@ -34,7 +34,10 @@ BuildingPlacement issues:
 * Query()->Placement(sc2::ABILITY_ID::BUILD_CREEPTUMOR, location) looks promising too.
 
 Upgrades issues:
-* None
+* No absolute guarantee of build here.  If the resources are stolen at the same time, we'll fail and not try again.
+* Should we queue upgrades?  They're lengthy and maybe we want to just get them out of the request pipeline
+* Maybe return an enum?  Success/WaitingOnQueue/CantBuildThisRightNow
+* Might also want overrides for callers to choose - queue or don't.
 
 Structures manager issues:
 * How to manage Utils::Get...Units()?  Should we copy these out to the appropriate managers for Structures, Workers, Army? (latter 2 don't exist yet).  For now they live in utils.  Leaning toward copying them 3x.
@@ -48,19 +51,21 @@ Expansion issues:
 * Almost certainly the construction manager is kicking the tasks from the queue and then re-building because of the long walk (see issues in construction manager).  More reason to go around this.
 
 Build Queue Manager issues:
-* Need to reserve costs for builds.  Even at 15 frame skip I'm still occasionally failing to build in queue.
 * General plan for failed buildings.  Is this a concern?
-* Workers only queue from main
-* Missing units & upgrades
-* Missing morph (orbital) & addons
+* Missing morph (orbital)  [this comes through as a Unit right now]
 * Mule / scan management (not in this class)
+* Tech labs & reactors go through "building", but can't be built as buildings by a worker.
+* Morph shouldn't live here.  Move it elsewhere.
 
 Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 * Starting SCV split.
+* Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
+* Move workers to natural when it completes.
+* Set build positions when evaluating map.
 
-
+ONGOING ISSUES:
 
 
 # Setup

@@ -1,5 +1,6 @@
 #include "EconManager.h"
 #include "bot.h"
+#include "WorkerProducerSearch.h"
 using namespace sc2;
 
 EconManager::EconManager(Bot & b)
@@ -12,23 +13,26 @@ EconManager::EconManager(Bot & b)
 
 void EconManager::OnStep()
 {
-	//If the economy manager has been asked to run on its own, perform these actions
-	if (actAutonomously) 
-	{
-		//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
-		const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
-		if (clock() - lastBalanceClock > rebalanceTime) {
+	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
+	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
+	if (clock() - lastBalanceClock > rebalanceTime) {
+		//If the economy manager has been asked to run on its own, perform these actions
+		if (actAutonomously)
+		{
 			BalanceBuilders();
 
 			if (NeedRefinery()) {
 				BuildRefinery();
 			}
-
-			lastBalanceClock = clock();
 		}
+
+		//Work to do regardless of automony (inside time limiting)
+		BalanceGasWorkers();
+
+		lastBalanceClock = clock();
 	}
-	
-	//Work to do regardless of automony
+
+	//Work to do regardless of automony (outside time limiting)
 
 }
 
@@ -52,16 +56,6 @@ void EconManager::OnUnitIdle(const Unit* unit)
 
 void EconManager::BalanceBuilders()
 {
-	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (Structure r : refineries) {
-		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
-			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
-			const Unit* unit = Utils::GetRandomHarvester(Observation());
-			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
-		}
-	}
-
 	//Make sure command centers have enough units - we might have just stolen some to bring them below threshold
 	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
 	for (Structure cc : ccs) {
@@ -103,54 +97,14 @@ void EconManager::HandleCommandCenterIdle(Structure cc)
 	}
 }
 
-bool EconManager::NeedsMoreWorkers(Structure& resourceDepot)
-{
-	//TODO:  Consider factoring gas in?
-	if (resourceDepot.assignedHarvesters() < resourceDepot.idealHarvesters())
-		return true;
-	return false;
-}
-
-Structure* EconManager::FindOptimalWorkerBuildLocation()
-{
-	Structure* buildFrom = nullptr;
-
-	//Always try to build at our main first
-	Structure& mainDepot = bot.BaseLocations().Main()->GetResourceDepot();
-	
-	if (NeedsMoreWorkers(mainDepot)) {
-		//Main isn't full, always build here first
-		return &mainDepot;
-	}
-
-	//Nope, try the natural
-	Structure &naturalDepot = bot.BaseLocations().Natural()->GetResourceDepot();
-	//add 6 to account for gas workers
-	if (NeedsMoreWorkers(naturalDepot)) {
-		//We have room for more workers at the natural, use it
-		return &naturalDepot;
-	}
-
-	//Still searching, look at all other bases
-	std::vector<BaseLocation*> bases = bot.BaseLocations().OtherBases();
-	for (BaseLocation* base : bases) {
-		Structure& resourceDepot = base->GetResourceDepot();
-		if (NeedsMoreWorkers(resourceDepot)) {
-			return &resourceDepot;
-		}
-	}
-
-	//None found, the fallback is always main
-	return &mainDepot;
-}
-
 //Returns true if the training structure had the worker available to build and we issued the command.
 //	TODO:  Still possible that it doesn't execute.
 bool EconManager::TrainWorker(Structure* buildFrom/*= nullptr*/)
 {
 	//If the caller didn't provide one, find the optimal place to build.
 	if (buildFrom == nullptr) {
-		buildFrom = FindOptimalWorkerBuildLocation();
+		WorkerProducerSearch search(bot);
+		buildFrom = search.SearchForProducer();
 	}
 
 	//Now execute the train command.
@@ -250,4 +204,19 @@ const Unit* EconManager::FindNearestMineralPatch(const Point2D& start)
 		}
 	}
 	return target;
+}
+
+//"Always On" behavior
+void EconManager::BalanceGasWorkers()
+{
+	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
+	//	TODO:  Needs to pull from base location
+	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+	for (Structure r : refineries) {
+		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
+			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
+			const Unit* unit = Utils::GetRandomHarvester(Observation());
+			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
+		}
+	}
 }

@@ -27,7 +27,7 @@ public:
 	//	map information.  Your enemy may have expanded here since the last time you scouted it.
 	BaseLocation* FindNearestAvailableExpansionLocation();
 	//Claims ownership of a base for the player by position
-	void ClaimBaseByPosition(sc2::Point2D resourceDepotLocation);
+	void ClaimBaseByPosition(sc2::Point2D resourceDepotLocation, Structure & resourceDepot);
 
 private:
 	void InitializeKnownEnemyBase();

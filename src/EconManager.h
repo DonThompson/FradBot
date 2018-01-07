@@ -31,6 +31,7 @@ public:
 
 private:
 	void BalanceBuilders();
+	void BalanceGasWorkers();
 	void OnCommandCenterIdle(const sc2::Unit* unit);
 	bool NeedRefinery();
 	int32_t GetRefineryCount();
@@ -38,8 +39,6 @@ private:
 	
 	const sc2::Unit* FindNearestMineralPatch(const sc2::Point2D& start);
 	void HandleCommandCenterIdle(Structure cc);
-	Structure* FindOptimalWorkerBuildLocation();
-	bool NeedsMoreWorkers(Structure& resourceDepot);
 
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;

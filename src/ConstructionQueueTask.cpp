@@ -1,19 +1,20 @@
-#include "BuildQueueTask.h"
+#include "ConstructionQueueTask.h"
 using namespace sc2;
 
 //Base constructor, builds a queue task with no values.  Not recommended for use.
-BuildQueueTask::BuildQueueTask()
+ConstructionQueueTask::ConstructionQueueTask()
 {
 	//Just use the expected constructor with some predefined values
-	BuildQueueTask(0, 0, ABILITY_ID::INVALID, nullptr, nullptr);
+	ConstructionQueueTask(0, 0, ABILITY_ID::INVALID, nullptr, nullptr);
 }
 
 //Common default constructor, use this one.
-BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn)
+ConstructionQueueTask::ConstructionQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _structure, ConstructionQueueTaskCallbackFunction _successFn, ConstructionQueueTaskCallbackFunction _failFn)
 	: startingGameLoop(_gameLoop)
 	, id(_id)
 	, state(ConstructionTaskState::eQueued)
 	, structureToBuild(_structure)
+	, isReservingResources(true)
 	, builderUnit(nullptr)
 	, buildingPoint()
 	, building(nullptr)
@@ -23,87 +24,97 @@ BuildQueueTask::BuildQueueTask(uint32_t _gameLoop, int64_t _id, ABILITY_ID _stru
 {
 }
 
-uint32_t BuildQueueTask::GetStartingGameLoop()
+uint32_t ConstructionQueueTask::GetStartingGameLoop()
 {
 	return startingGameLoop;
 }
 
-ConstructionTaskState BuildQueueTask::GetConstructionTaskState()
+ConstructionTaskState ConstructionQueueTask::GetConstructionTaskState()
 {
 	return state;
 }
 
-const Unit* BuildQueueTask::GetBuilder()
+const Unit* ConstructionQueueTask::GetBuilder()
 {
 	return builderUnit;
 }
 
-Point2D BuildQueueTask::GetBuildPoint()
+Point2D ConstructionQueueTask::GetBuildPoint()
 {
 	return buildingPoint;
 }
 
-const Unit* BuildQueueTask::GetGeyserTarget()
+const Unit* ConstructionQueueTask::GetGeyserTarget()
 {
 	return geyserTarget;
 }
 
-ABILITY_ID BuildQueueTask::GetBuildingType()
+ABILITY_ID ConstructionQueueTask::GetBuildingType()
 {
 	return structureToBuild;
 }
 
-Structure BuildQueueTask::GetBuilding()
+bool ConstructionQueueTask::IsReservingResources()
+{
+	return isReservingResources;
+}
+
+Structure ConstructionQueueTask::GetBuilding()
 {
 	return building;
 }
 
-BuildQueueTaskCallbackFunction BuildQueueTask::GetSuccessCallback()
+ConstructionQueueTaskCallbackFunction ConstructionQueueTask::GetSuccessCallback()
 {
 	return callbackSuccess;
 }
 
-BuildQueueTaskCallbackFunction BuildQueueTask::GetFailureCallback()
+ConstructionQueueTaskCallbackFunction ConstructionQueueTask::GetFailureCallback()
 {
 	return callbackFailure;
 }
 
-void BuildQueueTask::SetConstructionTaskState(ConstructionTaskState newState)
+void ConstructionQueueTask::SetConstructionTaskState(ConstructionTaskState newState)
 {
 	state = newState;
 }
 
-void BuildQueueTask::AssignBuilder(const Unit* builder)
+void ConstructionQueueTask::AssignBuilder(const Unit* builder)
 {
 	builderUnit = builder;
 }
 
-void BuildQueueTask::SetBuildPoint(Point2D _pt)
+void ConstructionQueueTask::SetBuildPoint(Point2D _pt)
 {
 	buildingPoint = _pt;
 }
 
-void BuildQueueTask::SetGeyserTarget(const Unit* _geyser)
+void ConstructionQueueTask::SetGeyserTarget(const Unit* _geyser)
 {
 	geyserTarget = _geyser;
 }
 
-void BuildQueueTask::SetBuilding(Structure _building)
+void ConstructionQueueTask::SetBuilding(Structure _building)
 {
 	building = _building;
 }
 
-void BuildQueueTask::SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn)
+void ConstructionQueueTask::SetCallbackOnSuccess(ConstructionQueueTaskCallbackFunction fn)
 {
 	callbackSuccess = fn;
 }
 
-void BuildQueueTask::SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn)
+void ConstructionQueueTask::SetCallbackOnFailure(ConstructionQueueTaskCallbackFunction fn)
 {
 	callbackFailure = fn;
 }
 
-bool BuildQueueTask::IsTaskLongRunning(uint32_t currentGameLoop)
+void ConstructionQueueTask::StopReservingResources()
+{
+	isReservingResources = false;
+}
+
+bool ConstructionQueueTask::IsTaskLongRunning(uint32_t currentGameLoop)
 {
 	//TODO:  Where should this logic be?  Does it make sense inside BuildQueueTask?  That's a bit of a POCO class.
 	//TODO:  Here's some documentation to put ... somewhere.

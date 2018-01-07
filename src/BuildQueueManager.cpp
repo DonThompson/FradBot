@@ -24,20 +24,33 @@ void BuildQueueManager::OnStep()
 	//	5 arbitrarily, play with this.
 	//Example:  Game starts, first scv queue happens, but by frame 2, we still have 50 minerals 
 	//	and the game attempts to queue a second one - but we really don't have 50 minerals.
-	//Bumped from 5 to 15.  Running into even more issues -- I tell the construction manager (which
-	//	has a lengthy frame-based queue of its own) to build a depot... and before the command can get
-	//	issued, the build order queue builds another worker, eating up the resources that we were 
-	//	going to use.
-	//TODO2:  CCbot saves a 'reserved minerals' and 'reserved gas' flag into its construction manager.  I guess
-	//	I now know why.  We can probably ramp this back down if we implement that.
-	if (bot.Observation()->GetGameLoop() % 15 != 0) {
+	//Our resource reservation system for construction helps us keep this reasonably low.
+	//TODO:  It seems like a unit reservation system would be equally useful (and include food too).
+	uint32_t gameLoop = bot.Observation()->GetGameLoop();
+	if (gameLoop % 5 != 0) {
 		return;
 	}
 
 	//Work on the first item
 	BuildQueueItem& item = buildQueue[0];
 
-	//For now, we break down into 3 types of things to build:  Worker, Building, any other unit
+	//First, we put a safety check for timeout.  Don't want items stuck in the build queue forever that we can never
+	//	build for some reason.  Early in dev, this handles unforeseen situations and things not yet build into the
+	//	manager.  Later, this should be a catch against edge cases... for exampleyou lose all your gas workers and 
+	//	the upgrade queued for 200 gas keeps anything else from building.
+	if (item.CheckTimeout(gameLoop)) {
+		//It timed out, dequeue this request
+		std::cout << "WARNING:  ITEM TIMED OUT.  REMOVING FROM QUEUE.  (" << AbilityTypeToName(item.abilityToTrain) << ")" << std::endl;
+		buildQueue.erase(buildQueue.begin());
+		return;
+	}
+
+	//Ensure we have enough resources available to train this item
+	if (!HasResourcesFor(item.abilityToTrain)) {
+		return;
+	}
+
+	//For now, we break down into types of things to build:  Worker, Building, any other unit, Upgrades, morph, etc.
 	if (IsWorker(item.abilityToTrain)) {
 		if (bot.Econ().TrainWorker()) {
 			buildQueue.erase(buildQueue.begin());
@@ -47,26 +60,32 @@ void BuildQueueManager::OnStep()
 	else if (IsBuilding(item.abilityToTrain)) {
 		//TODO:  We should move the item to a "building" state or hold it in a separate queue -- if it fails, re-queue it at the top, 
 		//	if it succeeds, fully remove it then.
-		if (HasResourcesFor(item.abilityToTrain)) {
-			//The construction manager will do its best to make sure this building gets constructed.
-			uint64_t queueId = bot.Construction().BuildStructure(item.abilityToTrain,
-				std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
-				std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
+		//The construction manager will do its best to make sure this building gets constructed.
+		uint64_t queueId = bot.Construction().BuildStructure(item.abilityToTrain,
+			std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
+			std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
 
-			std::cout << "Starting new building(" << AbilityTypeToName(item.abilityToTrain) << "), task id:  " << queueId << std::endl;
+		std::cout << "Starting new building(" << AbilityTypeToName(item.abilityToTrain) << "), task id:  " << queueId << std::endl;
 
+		buildQueue.erase(buildQueue.begin());
+	}
+	else if (IsUnit(item.abilityToTrain)) {
+		if (bot.Army().TrainUnit(item.abilityToTrain)) {
+			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
 			buildQueue.erase(buildQueue.begin());
 		}
 	}
-	else if (IsUnit(item.abilityToTrain)) {
-		//TODO
-		std::cout << "UNSUPPORTED:  " << sc2::AbilityTypeToName(item.abilityToTrain) << ".  DEQUEUEING" << std::endl;
-		buildQueue.erase(buildQueue.begin());
+	else if (UpgradesManager::IsUpgrade(item.abilityToTrain)) {
+		if (bot.Upgrades().PerformUpgrade(item.abilityToTrain)) {
+			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
 	}
-	else if (IsUpgrade(item.abilityToTrain)) {
-		//TODO
-		std::cout << "UNSUPPORTED:  " << sc2::AbilityTypeToName(item.abilityToTrain) << ".  DEQUEUEING" << std::endl;
-		buildQueue.erase(buildQueue.begin());
+	else if (MorphManager::IsMorph(item.abilityToTrain)) {
+		if (bot.Morph().PerformMorph(item.abilityToTrain)) {
+			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
 	}
 	else {
 		//We must have missed one
@@ -93,77 +112,30 @@ bool BuildQueueManager::IsWorker(sc2::ABILITY_ID abilityID)
 
 bool BuildQueueManager::IsBuilding(sc2::ABILITY_ID abilityID)
 {
-	//Leverage our structures manager - if it knows the unit type, it's a building.  otherwise it must not be.
-	UNIT_TYPEID u = StructuresManager::UnitTypeFromBuildAbility(abilityID);
-	if (u == UNIT_TYPEID::INVALID)
-		return false;
-	return true;
+	//Leverage our structures manager - it knows all
+	return StructuresManager::IsBuilding(abilityID);
 }
 
 bool BuildQueueManager::IsUnit(sc2::ABILITY_ID abilityID)
 {
-	//If it's not the other 3, must be us.
-	if (!IsWorker(abilityID) && !IsBuilding(abilityID) && !IsUpgrade(abilityID))
+	//TODO:  Needs redone.  Requires we keep remembering to update this
+
+	//If it's not the others, must be us.
+	if (!IsWorker(abilityID) && !IsBuilding(abilityID) && !UpgradesManager::IsUpgrade(abilityID) && !MorphManager::IsMorph(abilityID))
 		return true;
 	return false;
 }
 
-bool BuildQueueManager::IsUpgrade(sc2::ABILITY_ID abilityID)
-{
-	//TODO:  Better way to do this?  copy/pasted values out of typeenums
-	switch (abilityID) {
-	case ABILITY_ID::RESEARCH_ADVANCEDBALLISTICS:
-	case ABILITY_ID::RESEARCH_BANSHEECLOAKINGFIELD:
-	case ABILITY_ID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
-	case ABILITY_ID::RESEARCH_BATTLECRUISERWEAPONREFIT:
-	case ABILITY_ID::RESEARCH_COMBATSHIELD:
-	case ABILITY_ID::RESEARCH_CONCUSSIVESHELLS:
-	case ABILITY_ID::RESEARCH_HIGHCAPACITYFUELTANKS:
-	case ABILITY_ID::RESEARCH_HISECAUTOTRACKING:
-	case ABILITY_ID::RESEARCH_INFERNALPREIGNITER:
-	case ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
-	case ABILITY_ID::RESEARCH_NEOSTEELFRAME:
-	case ABILITY_ID::RESEARCH_PERSONALCLOAKING:
-	case ABILITY_ID::RESEARCH_RAVENCORVIDREACTOR:
-	case ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
-	case ABILITY_ID::RESEARCH_STIMPACK:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL1:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL2:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL3:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL1:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL2:
-	case ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL3:
-	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONS:
-	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL1:
-	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL2:
-	case ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL3:
-	case ABILITY_ID::RESEARCH_TERRANSTRUCTUREARMORUPGRADE:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATING:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL1:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL2:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL3:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONS:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL1:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
-	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
-		return true;
-	}
-	return false;
-}
-
-//TODO:  complete hack for now, get rid of this.
 bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 {
-	int32_t currentMinerals = bot.Observation()->GetMinerals();
-	int32_t currentVespene = bot.Observation()->GetVespene();
+	//What do we have currently?  Remove any construction reservation that is currently ongoing
+	int32_t currentMinerals = bot.Observation()->GetMinerals() - bot.Construction().GetReservedMinerals();
+	int32_t currentVespene = bot.Observation()->GetVespene() - bot.Construction().GetReservedVespene();
 	int32_t currentFood = bot.Observation()->GetFoodUsed();
 	int32_t currentFoodCap = bot.Observation()->GetFoodCap();
 
 	//Get the unit data
-	UnitTypes ut = bot.Observation()->GetUnitTypeData();
-	UnitTypeData data = ut[(UnitTypeID)StructuresManager::UnitTypeFromBuildAbility(abilityID)];
+	UnitData data = bot.Data().GetUnitData(abilityID);
 
 	//Ensure we have the minerals, gas, and enough supply
 	if (data.mineral_cost <= currentMinerals && data.vespene_cost <= currentVespene && currentFood + data.food_required <= currentFoodCap)

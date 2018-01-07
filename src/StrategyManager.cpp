@@ -85,7 +85,7 @@ void StrategyManager::OnGameStart()
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 52 supply
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS));
-	//TODO:  SCV TO GAS- auto?  3x
+	//Econ manager will auto handle moving SCVs to gas
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
@@ -129,7 +129,7 @@ void StrategyManager::OnGameStart()
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::RESEARCH_CONCUSSIVESHELLS));
-	//TODO:  SCV TO GAS- auto?  3x
+	//Econ manager will auto handle moving SCVs to gas
 	//TODO:  Scanner sweep auto?
 
 	//END OF BUILD ORDER

@@ -5,14 +5,14 @@
 #include "ConstructionTaskState.h"
 #include "Structure.h"
 
-typedef std::function<void(int64_t)> BuildQueueTaskCallbackFunction;
+typedef std::function<void(int64_t)> ConstructionQueueTaskCallbackFunction;
 
-class BuildQueueTask
+class ConstructionQueueTask
 {
 public:
 	//Initialization
-	BuildQueueTask();
-	BuildQueueTask(uint32_t _gameLoop, int64_t _id, sc2::ABILITY_ID _structure, BuildQueueTaskCallbackFunction _successFn, BuildQueueTaskCallbackFunction _failFn);
+	ConstructionQueueTask();
+	ConstructionQueueTask(uint32_t _gameLoop, int64_t _id, sc2::ABILITY_ID _structure, ConstructionQueueTaskCallbackFunction _successFn, ConstructionQueueTaskCallbackFunction _failFn);
 
 	//Getters
 	uint32_t GetStartingGameLoop();
@@ -21,9 +21,10 @@ public:
 	sc2::Point2D GetBuildPoint();
 	const sc2::Unit* GetGeyserTarget();
 	sc2::ABILITY_ID GetBuildingType();
+	bool IsReservingResources();
 	Structure GetBuilding();
-	BuildQueueTaskCallbackFunction GetSuccessCallback();
-	BuildQueueTaskCallbackFunction GetFailureCallback();
+	ConstructionQueueTaskCallbackFunction GetSuccessCallback();
+	ConstructionQueueTaskCallbackFunction GetFailureCallback();
 
 	//Setters
 	void SetConstructionTaskState(ConstructionTaskState newState);
@@ -31,8 +32,9 @@ public:
 	void SetBuildPoint(sc2::Point2D _pt);
 	void SetGeyserTarget(const sc2::Unit* _geyser);
 	void SetBuilding(Structure _building);
-	void SetCallbackOnSuccess(BuildQueueTaskCallbackFunction fn);
-	void SetCallbackOnFailure(BuildQueueTaskCallbackFunction fn);
+	void SetCallbackOnSuccess(ConstructionQueueTaskCallbackFunction fn);
+	void SetCallbackOnFailure(ConstructionQueueTaskCallbackFunction fn);
+	void StopReservingResources();
 
 	//Task management
 	bool IsTaskLongRunning(uint32_t currentGameLoop);
@@ -42,13 +44,16 @@ private:
 	int64_t id;
 	ConstructionTaskState state;
 	sc2::ABILITY_ID structureToBuild;
+	//Assumed all tasks are reserving minerals before being created.
+	//TODO:  Kinda weird... constructionmanager owns resource reservation, but we flag it here?
+	bool isReservingResources;
 	const sc2::Unit* builderUnit;
 	sc2::Point2D buildingPoint;
 	//TODO:  derive class instead of if/else statements
 	const sc2::Unit* geyserTarget;	//alt to buildingPoint
 	Structure building;
-	BuildQueueTaskCallbackFunction callbackSuccess;
-	BuildQueueTaskCallbackFunction callbackFailure;
+	ConstructionQueueTaskCallbackFunction callbackSuccess;
+	ConstructionQueueTaskCallbackFunction callbackFailure;
 };
 
 #endif //__BUILDQUEUETASK_H
