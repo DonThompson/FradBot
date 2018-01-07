@@ -20,6 +20,8 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	BaseLocation locMine(UseNextBaseLocationId(), cc.building->pos);
 	locMine.SetMyStartingBase();
 	locMine.SetResourceDepot(cc.building);
+	locMine.SetRegionId(bot.Map().GetRegionIdFromPoint(cc.building->pos));
+	locMine.SetChokePoints(bot.Map().GetRegionChokePoints(locMine.GetRegionId()));
 
 	//Now figure out where all the mineral lines are throughout the map.
 	std::vector<const Unit*> mineralPatches;
@@ -173,6 +175,11 @@ BaseLocation BaseLocationInitializer::SetupNewBaseLocation(MineralLine mineralLi
 	for (const Unit* patch : mineralLine.GetMineralPatches()) {
 		loc.AddMineralPatch(patch);
 	}
+
+	//What region is it in?
+	//TODO:  region stuff is getting clunky
+	loc.SetRegionId(bot.Map().GetRegionIdFromPoint(startingPoint));
+	loc.SetChokePoints(bot.Map().GetRegionChokePoints(loc.GetRegionId()));
 
 	return loc;
 }

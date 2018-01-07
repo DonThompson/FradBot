@@ -58,6 +58,35 @@ void BaseLocation::DrawSelf(Bot & bot)
 	//And set a radius around the whole base location
 	bot.Draw().DrawCircle(resourceDepotLocation, baseRadius, color);
 
+	/*draw all tiles in each base region - crazy slow
+	for (TilePosition tile : bot.Map().GetRegionTiles(regionId)) {
+		Point2D pt = tile.first;
+		Point3D usablePt(pt.x, pt.y, resourceDepotLocation.z);
+		//std::shared_ptr<Tile> t = tile.second;
+		bot.Draw().DrawBox(usablePt, 1, 1, color);
+	}
+	*/
+
+	/*draw all edges - NOT IMPLEMENTED IN OVERSEER
+	for (RegionEdge edge : bot.Map().GetRegionEdges(regionId)) {
+		//EdgeType t = edge.getEdgeType();
+		//edge.getRegions();
+		std::vector<TilePosition> positions = edge.getPoints();
+		for (TilePosition tilePosition : positions) {
+			Point2D pt = tilePosition.first;
+			Point3D usablePt(pt.x, pt.y, resourceDepotLocation.z);
+			//std::shared_ptr<Tile> t = tile.second;
+			bot.Draw().DrawBox(usablePt, 1, 1, color);
+		}
+	}
+	*/
+
+	//Draw all choke points of this base
+	for (Point2D pt : chokePoints) {
+		Point3D ptUsable(pt.x, pt.y, resourceDepotLocation.z);
+		bot.Draw().DrawCircle(ptUsable, 1.0f, color);
+	}
+
 	//Flags for start and naturals
 	std::string flags;
 	if (isStartingPosition) {
@@ -72,7 +101,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 	}
 
 	std::ostringstream oss;
-	oss << "Base location " << baseLocationId << flags << std::endl;
+	oss << "Base location " << baseLocationId << flags << " Region " << regionId << std::endl;
 	bot.Draw().DrawTextOnMap(oss.str(), resourceDepotLocation, color);
 
 	for (const Unit* patch : mineralPatches) {
@@ -145,6 +174,16 @@ bool BaseLocation::IsStartingPosition()
 	return isStartingPosition;
 }
 
+size_t BaseLocation::GetRegionId()
+{
+	return regionId;
+}
+
+std::vector<Point2D> BaseLocation::GetChokePoints()
+{
+	return chokePoints;
+}
+
 void BaseLocation::SetNaturalExpansionId(uint32_t _naturalId)
 {
 	naturalExpansionId = _naturalId;
@@ -163,6 +202,16 @@ uint32_t BaseLocation::GetParentOfNaturalId()
 void BaseLocation::SetParentOfNaturalId(uint32_t _parentId)
 {
 	parentOfNaturalId = _parentId;
+}
+
+void BaseLocation::SetRegionId(size_t _regionId)
+{
+	regionId = _regionId;
+}
+
+void BaseLocation::SetChokePoints(std::vector<Point2D> _points)
+{
+	chokePoints = _points;
 }
 
 bool BaseLocation::operator ==(BaseLocation rhs)

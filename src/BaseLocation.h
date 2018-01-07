@@ -30,6 +30,8 @@ public:
 	void SetUnownedBase();
 	bool IsMyBase();
 	bool IsEnemyBase();
+	size_t GetRegionId();
+	std::vector<sc2::Point2D> GetChokePoints();
 
 	//One of the starting positions on the map?  Player or enemy
 	bool IsStartingPosition();
@@ -42,6 +44,10 @@ public:
 	uint32_t GetParentOfNaturalId();
 	//If this base is a natural expansion, of what base?  This should only be set for naturals of starting bases.
 	void SetParentOfNaturalId(uint32_t _parentId);
+	//What map region is this base in?
+	void SetRegionId(size_t _regionId);
+	//List of choke points in/out
+	void SetChokePoints(std::vector<sc2::Point2D> _points);
 
 	bool operator ==(BaseLocation rhs);
 	bool operator !=(BaseLocation rhs);
@@ -67,6 +73,10 @@ private:
 	uint32_t naturalExpansionId;
 	//If this base is a natural expansion, of what base?  Only applied to naturals of starting bases, 0 otherwise.
 	uint32_t parentOfNaturalId;
+	//MapManager regionId
+	size_t regionId;
+	//list of choke points in/out of the base
+	std::vector<sc2::Point2D> chokePoints;
 
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?

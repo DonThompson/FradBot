@@ -28,6 +28,7 @@ void DrawingManager::DrawCircle(Point3D pt, float_t radius, sc2::Color color /*=
 void DrawingManager::DrawBox(Point3D pt1, float_t width, float_t height, sc2::Color color /*= Colors::White*/)
 {
 	Point3D pt2(pt1.x + width, pt1.y + height, pt1.z);
+	pt2.z *= BonusCircleDrawingHeight;	//raise it up slightly so it doesn't get stuck in nearby ground
 	bot.Debug()->DebugBoxOut(pt1, pt2, color);
 }
 

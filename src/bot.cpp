@@ -106,6 +106,8 @@ void Bot::OnGameStart()
 	//std::cout << "* Map:  " << GameSettings().map_name << std::endl;
 
 	//Order added is order they'll get notifications and steps
+	managers.push_back(&mapManager);			//only needs start.  Initialize this first!
+	managers.push_back(&baseLocationManager);	//only needs start.  Initialize this second
 	managers.push_back(&strategyManager);
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);
@@ -113,13 +115,11 @@ void Bot::OnGameStart()
 	managers.push_back(&constructionManager);
 	managers.push_back(&structuresManager);
 	managers.push_back(&upgradesManager);
-	managers.push_back(&baseLocationManager);
 	managers.push_back(&buildQueueManager);
 	//Intentionally not giving events to these
 	//managers.push_back(&drawingManager);
 	//managers.push_back(&dataManager);
 	//managers.push_back(&morphManager);
-	//managers.push_back(&mapManager);
 
 	Timer t;
 	//Let everyone know the game has started
@@ -150,8 +150,11 @@ void Bot::OnStep() {
 	oss << "Last 20 Frames Avg:  " << last20GameLoopsAvgTimeMs << std::endl;
 	Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8f, 0.04f));
 
-	//Sends all batched debug commands for all managers
+	//Sends all batched debug commands for all managers.  ONLY executed in debug mode.
+	//	If this doesn't happen (release mode), all drawing commands will be ignored.
+#ifdef _DEBUG
 	Debug()->SendDebug();
+#endif
 
 	int64_t msElapsed = t.ElapsedMs();
 	if (msElapsed > stepWarningThresholdMs) {
