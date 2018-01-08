@@ -19,12 +19,10 @@ void ArmyManager::OnStep()
 		//Only if we're autonomous
 		if (actAutonomously)
 		{
-
 			//Specific logic
 			if (BarracksNeeded()) {
 				BuildBarracks();
 			}
-
 		}
 
 		//Do these things whether autonomous or not
