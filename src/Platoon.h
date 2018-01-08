@@ -11,16 +11,30 @@
 
 class Platoon
 {
+//TODO.  Move elsewhere?  Class'ify it?  Something.
+public:
+	enum PLATOON_ORDERS {
+		GATHER = 0,
+		ATTACK,
+		DEFEND,
+	};
+
 public:
 	Platoon();
-
+	size_t GetTotalPlatoonUnitCount();
 	bool AddUnit(const sc2::Unit* unit);
+	void SetOrders(PLATOON_ORDERS orders, sc2::Point2D targetPoint);
+
+	void OnStep();
 
 	std::string GetDebugSummaryString();
 
 private:
 	std::vector<Squad> squads;
 	size_t maxSquadCount;
+
+	PLATOON_ORDERS currentOrders;
+	sc2::Point2D currentTargetPoint;
 
 	size_t GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID);
 };

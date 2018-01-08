@@ -31,12 +31,17 @@ public:
 	void OnBarracksSuccess(int64_t taskId);
 	void OnBarracksFailed(int64_t taskId);
 	bool TrainUnit(sc2::ABILITY_ID abilityID);
-
+	void ManageMilitary();
 	void AddUnitToPlatoon(const sc2::Unit* unit);
+	size_t GetTotalArmyUnitCount();
 
 private:
 	clock_t lastBalanceClock;
 	uint32_t raxInProgress;
+
+	//TODO:  Should the strategy manage this?
+	//TODO:  enum?
+	uint32_t currentStrategy;
 
 	//Unit management
 	std::vector<Platoon> armyPlatoons;

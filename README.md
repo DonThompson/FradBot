@@ -67,7 +67,7 @@ Suggestions:
 * Random map selection.  Going to end up too dependent on bel'shir knowledge
 
 ONGOING ISSUES:
-
+* parent squad in armyunit.
 
 # Setup
 

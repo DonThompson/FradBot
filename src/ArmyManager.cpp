@@ -37,6 +37,7 @@ ArmyManager::ArmyManager(Bot & b)
 	: ManagerBase(b)
 	, lastBalanceClock(clock_t())
 	, raxInProgress(0)
+	, currentStrategy(0)
 {
 }
 
@@ -56,11 +57,15 @@ void ArmyManager::OnStep()
 			}
 		}
 
-		//Do these things whether autonomous or not
-		//The whole strategy!
-		TryAttackInGroups();
+		//Do these things whether autonomous or not, under timer
+		ManageMilitary();
 
 		lastBalanceClock = clock();
+	}
+
+	//Do these things whether autonomous or not, w/o timer
+	for (Platoon & platoon : armyPlatoons) {
+		platoon.OnStep();
 	}
 }
 
@@ -92,7 +97,8 @@ void ArmyManager::AddUnitToPlatoon(const sc2::Unit* unit)
 
 void ArmyManager::OnUnitDestroyed(const sc2::Unit* unit)
 {
-
+	//TODO:  Not sure if we should remove the units or not when they die?
+	//	Make sure we aren't making assumptions on army sizes that don't exist.
 }
 
 bool ArmyManager::BarracksNeeded()
@@ -146,6 +152,7 @@ void ArmyManager::OnBarracksFailed(int64_t taskId)
 	std::cout << "Barracks build failed, task:  " << taskId << std::endl;
 }
 
+//TODO:  DELETE
 void ArmyManager::TryAttackInGroups()
 {
 	const ObservationInterface* observation = Observation();
@@ -156,6 +163,7 @@ void ArmyManager::TryAttackInGroups()
 	}
 }
 
+//TODO:  DELETE
 void ArmyManager::LaunchAttackGroup(Units unitsToAttack)
 {
 	const GameInfo& gameInfo = Observation()->GetGameInfo();
@@ -256,4 +264,71 @@ std::string ArmyManager::GetDebugSummaryString()
 	}
 
 	return oss.str();
+}
+
+void ArmyManager::ManageMilitary()
+{
+	//V1:  Replicate the old terrible strategy with platoons.
+	switch (currentStrategy) {
+	case 0:	//Game initialization, build shit and don't do anything.
+		{
+			size_t armyUnitCount = GetTotalArmyUnitCount();
+			if (armyUnitCount > 0) {
+				//Move to defend
+				currentStrategy = 1;
+
+				//TODO:  Position.  Picking the natural choke for now
+				Point2D targetPoint;
+				std::vector<Point2D> chokes = bot.Map().GetRegionChokePoints(bot.BaseLocations().Natural()->GetRegionId());
+				if (chokes.size() > 0) {
+					targetPoint = chokes[0];
+				}
+				else {
+					//TODO
+					std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
+				}
+
+				//Tell each platoon to defend
+				for (Platoon & platoon : armyPlatoons) {
+					platoon.SetOrders(Platoon::PLATOON_ORDERS::DEFEND, targetPoint);
+				}
+
+				//TODO:  New platoons
+			}
+		}
+		break;
+	case 1:	//Defend the base!
+		{
+			size_t armyUnitCount = GetTotalArmyUnitCount();
+			if (armyUnitCount > 20) {
+				//Move to offense
+				currentStrategy = 2;
+
+				//TODO:  Position.  Picking the enemy start for now
+				Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
+
+				//Tell each platoon to attack
+				for (Platoon & platoon : armyPlatoons) {
+					platoon.SetOrders(Platoon::PLATOON_ORDERS::ATTACK, targetPoint);
+				}
+
+				//TODO:  New platoons
+			}
+		}
+		break;
+	case 2:	//Offense, defeat the enemy
+		{
+			//TODO:  Come back to defend?
+		}
+		break;
+	}
+}
+
+size_t ArmyManager::GetTotalArmyUnitCount()
+{
+	size_t size = 0;
+	for (Platoon & platoon : armyPlatoons) {
+		size += platoon.GetTotalPlatoonUnitCount();
+	}
+	return size;
 }

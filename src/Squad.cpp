@@ -22,6 +22,15 @@ size_t Squad::CountUnitsByType(sc2::UNIT_TYPEID unitTypeID)
 	return squadUnitCounts[unitTypeID];
 }
 
+size_t Squad::GetTotalSquadUnitCount()
+{
+	size_t size = 0;
+	for (std::pair<sc2::UNIT_TYPEID, size_t> unitTypes : squadUnitCounts) {
+		size += unitTypes.second;
+	}
+	return size;
+}
+
 std::string Squad::GetDebugSummaryString()
 {
 	//TODO:  Names
@@ -34,4 +43,12 @@ std::string Squad::GetDebugSummaryString()
 	}
 
 	return oss.str();
+}
+
+//Called each game step
+void Squad::OnStep()
+{
+	for (ArmyUnit & au : squadUnits) {
+		au.OnStep();
+	}
 }

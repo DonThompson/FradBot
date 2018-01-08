@@ -6,6 +6,7 @@ class ArmyUnit
 public:
 	ArmyUnit();
 	ArmyUnit(const sc2::Unit* _unit);
+	void OnStep();
 
 //TODO:  Make private?
 public:

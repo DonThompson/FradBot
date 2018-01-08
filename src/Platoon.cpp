@@ -11,7 +11,17 @@ size_t maxSquadsPerPlatoon = 3;
 
 Platoon::Platoon()
 	: maxSquadCount(maxSquadsPerPlatoon)
+	, currentOrders(PLATOON_ORDERS::GATHER)
 {
+}
+
+size_t Platoon::GetTotalPlatoonUnitCount()
+{
+	size_t size = 0;
+	for (Squad & squad : squads) {
+		size += squad.GetTotalSquadUnitCount();
+	}
+	return size;
 }
 
 //Return true if the unit was accepted.  False if there is no room.
@@ -92,4 +102,18 @@ std::string Platoon::GetDebugSummaryString()
 	}
 
 	return oss.str();
+}
+
+void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
+{
+	currentOrders = orders;
+	currentTargetPoint = targetPoint;
+}
+
+//Called each game step
+void Platoon::OnStep()
+{
+	for (Squad & squad : squads) {
+		squad.OnStep();
+	}
 }
