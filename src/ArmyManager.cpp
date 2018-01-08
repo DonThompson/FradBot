@@ -2,6 +2,36 @@
 #include "bot.h"
 using namespace sc2;
 
+/*static */bool ArmyManager::IsMilitaryUnit(const sc2::Unit* unit)
+{
+	switch (static_cast<UNIT_TYPEID>(unit->unit_type)) {
+	case UNIT_TYPEID::TERRAN_BANSHEE:
+	case UNIT_TYPEID::TERRAN_BATTLECRUISER:
+	case UNIT_TYPEID::TERRAN_CYCLONE:
+	case UNIT_TYPEID::TERRAN_GHOST:
+	case UNIT_TYPEID::TERRAN_HELLION:
+	case UNIT_TYPEID::TERRAN_HELLIONTANK:
+	case UNIT_TYPEID::TERRAN_LIBERATOR:
+	case UNIT_TYPEID::TERRAN_LIBERATORAG:
+	case UNIT_TYPEID::TERRAN_MARAUDER:
+	case UNIT_TYPEID::TERRAN_MARINE:
+	case UNIT_TYPEID::TERRAN_MEDIVAC:
+	case UNIT_TYPEID::TERRAN_RAVEN:
+	case UNIT_TYPEID::TERRAN_REAPER:
+	case UNIT_TYPEID::TERRAN_SIEGETANK:
+	case UNIT_TYPEID::TERRAN_SIEGETANKSIEGED:
+	case UNIT_TYPEID::TERRAN_THOR:
+	case UNIT_TYPEID::TERRAN_THORAP:
+	case UNIT_TYPEID::TERRAN_VIKINGASSAULT:
+	case UNIT_TYPEID::TERRAN_VIKINGFIGHTER:
+	case UNIT_TYPEID::TERRAN_WIDOWMINE:
+	case UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
+		return true;
+	}
+
+	return false;
+}
+
 ArmyManager::ArmyManager(Bot & b)
 	: ManagerBase(b)
 	, lastBalanceClock(clock_t())
@@ -31,6 +61,37 @@ void ArmyManager::OnStep()
 
 		lastBalanceClock = clock();
 	}
+}
+
+void ArmyManager::OnUnitCreated(const sc2::Unit* unit)
+{
+	//Ignore anything non-military
+	if (!ArmyManager::IsMilitaryUnit(unit))
+		return;
+
+	//Add it to a platoon
+	AddUnitToPlatoon(unit);
+}
+
+void ArmyManager::AddUnitToPlatoon(const sc2::Unit* unit)
+{
+	//Iterate through all platoons and try to add the unit
+	for (Platoon & platoon : armyPlatoons) {
+		if (platoon.AddUnit(unit)) {
+			//Met our goal
+			return;
+		}
+	}
+
+	//No room in that platoon, we'll have to create a new one.
+	Platoon newPlatoon;
+	newPlatoon.AddUnit(unit);
+	armyPlatoons.push_back(newPlatoon);
+}
+
+void ArmyManager::OnUnitDestroyed(const sc2::Unit* unit)
+{
+
 }
 
 bool ArmyManager::BarracksNeeded()
