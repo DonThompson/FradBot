@@ -1,5 +1,6 @@
 #include "ArmyManager.h"
 #include "bot.h"
+#include <sstream>
 using namespace sc2;
 
 /*static */bool ArmyManager::IsMilitaryUnit(const sc2::Unit* unit)
@@ -244,4 +245,15 @@ bool ArmyManager::TrainUnit(sc2::ABILITY_ID abilityID)
 
 	//failed to find a spot.  Try again later.
 	return false;
+}
+
+std::string ArmyManager::GetDebugSummaryString()
+{
+	std::ostringstream oss;
+	oss << "Army Summary.  Platoons:  " << armyPlatoons.size() << std::endl;
+	for (Platoon & platoon : armyPlatoons) {
+		oss << platoon.GetDebugSummaryString() << std::endl;
+	}
+
+	return oss.str();
 }

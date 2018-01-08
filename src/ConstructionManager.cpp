@@ -132,8 +132,6 @@ void ConstructionManager::OnStep()
 	for (uint64_t removeMe : tasksToRemove) {
 		mapBuildingQueue.erase(removeMe);
 	}
-
-	OutputDetails();
 }
 
 //Handles all logic around finding the available worker to perform construction.
@@ -365,13 +363,13 @@ void ConstructionManager::RemoveResourceReserve(ConstructionQueueTask &task)
 	}
 }
 
-void ConstructionManager::OutputDetails()
+std::string ConstructionManager::GetDebugSummaryString()
 {
 	std::ostringstream oss;
 	oss << "Construction Manager:" << std::endl;
 	oss << " * Queue Items........ " << mapBuildingQueue.size() << std::endl;
 	oss << " * Minerals Reserved.. " << GetReservedMinerals() << std::endl;
 	oss << " * Vespene Reserved... " << GetReservedVespene() << std::endl;
-
-	bot.Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8f, 0.07f));
+	oss << std::endl;
+	return oss.str();
 }

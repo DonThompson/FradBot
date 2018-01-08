@@ -1,4 +1,5 @@
 #include "Platoon.h"
+#include <sstream>
 using namespace sc2;
 
 //Hardcoded limits to work with for now
@@ -77,4 +78,18 @@ size_t Platoon::GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID)
 	}
 
 	return 200;
+}
+
+std::string Platoon::GetDebugSummaryString()
+{
+	//TODO:  Name these
+	std::string _name = "(TODO: Name)";
+
+	std::ostringstream oss;
+	oss << "* Platoon " << _name << std::endl;
+	for (Squad & squad : squads) {
+		oss << squad.GetDebugSummaryString() << std::endl;
+	}
+
+	return oss.str();
 }

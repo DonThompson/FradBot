@@ -16,6 +16,8 @@ public:
 
 	bool AddUnit(const sc2::Unit* unit);
 
+	std::string GetDebugSummaryString();
+
 private:
 	std::vector<Squad> squads;
 	size_t maxSquadCount;

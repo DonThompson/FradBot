@@ -12,6 +12,8 @@ public:
 	void AddUnit(const sc2::Unit* unit);
 	size_t CountUnitsByType(sc2::UNIT_TYPEID unitTypeID);
 
+	std::string GetDebugSummaryString();
+
 private:
 	Platoon* parentPlatoon;
 	//All units

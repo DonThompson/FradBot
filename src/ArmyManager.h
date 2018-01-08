@@ -20,6 +20,7 @@ public:
 	virtual void OnStep();
 	virtual void OnUnitCreated(const sc2::Unit* unit);
 	virtual void OnUnitDestroyed(const sc2::Unit* unit);
+	virtual std::string GetDebugSummaryString();
 
 	bool BarracksNeeded();
 	void BuildBarracks();

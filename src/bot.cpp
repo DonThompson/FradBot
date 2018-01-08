@@ -146,9 +146,16 @@ void Bot::OnStep() {
 	}
 
 	//Output avg frame time
-	std::ostringstream oss;
-	oss << "Last 20 Frames Avg:  " << last20GameLoopsAvgTimeMs << std::endl;
-	Draw().DrawTextAtScreenPosition(oss.str(), Point2D(0.8f, 0.04f));
+	std::ostringstream ossFrames;
+	ossFrames << "Last 20 Frames Avg:  " << last20GameLoopsAvgTimeMs << std::endl;
+	Draw().DrawTextAtScreenPosition(ossFrames.str(), Point2D(0.8f, 0.04f));
+
+	//Get text from each manager
+	std::ostringstream ossManagers;
+	for (ManagerBase* m : managers) {
+		ossManagers << m->GetDebugSummaryString();
+	}
+	Draw().DrawTextAtScreenPosition(ossManagers.str(), Point2D(0.8f, 0.06f));
 
 	//Sends all batched debug commands for all managers.  ONLY executed in debug mode.
 	//	If this doesn't happen (release mode), all drawing commands will be ignored.

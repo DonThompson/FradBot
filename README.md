@@ -61,10 +61,10 @@ Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 * Starting SCV split.
-* Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
 * Move workers to natural when it completes.
 * Set build positions when evaluating map.
 * Redefine bot components.  Managers should have autonomy.  "Accessors" (naming?) should be just access.  Could use this to remove the ones commented out managers.push_back and avoid defining functions that can't be reached.
+* Random map selection.  Going to end up too dependent on bel'shir knowledge
 
 ONGOING ISSUES:
 
@@ -79,6 +79,11 @@ https://github.com/Blizzard/s2client-api#coding-standard
 
 Unzip, put the lib & include folders in a folder called 'sc2api-precompiled'.
 Sibling to that, create your folder for this project -- 'FradBot'
+
+## Get the Overseer library
+https://github.com/pimmen89/Overseer
+
+Clone the library repo at the same root as the bot (c:\xxx\FradBot and c:\xxx\Overseer).
 
 ## One time configuration
 Project Settings -> C++ -> General - Additional Include Directories should point to ../sc2api-precompiled/include  (or wherever you load these files)
