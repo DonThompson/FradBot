@@ -51,9 +51,19 @@ std::string Squad::GetDebugSummaryString()
 //Called each game step
 void Squad::OnStep()
 {
+	//TODO:  throttle this?
+
+	//Have we reached our target? If so the orders should be cleared.
+	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 1.0f) {
+		//We've arrived!
+		ClearOrders();
+	}
+
+	/*
 	for (ArmyUnit & au : squadUnits) {
 		au.OnStep();
 	}
+	*/
 }
 
 //TODO:  Needs to be super fast.Worth duplicating tracking.  Is this fast enough?
@@ -75,7 +85,7 @@ void Squad::SetOrders(SquadOrders newOrders)
 {
 	squadOrders = newOrders;
 
-	//bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+	bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
 
 void Squad::ClearOrders()

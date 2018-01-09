@@ -300,7 +300,7 @@ void ArmyManager::ManageMilitary()
 	case 1:	//Defend the base!
 		{
 			size_t armyUnitCount = GetTotalArmyUnitCount();
-			if (armyUnitCount > 20) {
+			if (armyUnitCount > 5) {
 				//Move to offense
 				currentStrategy = 2;
 

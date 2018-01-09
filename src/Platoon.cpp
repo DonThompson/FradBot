@@ -128,9 +128,12 @@ void Platoon::OnStep()
 		Point3D currentPos = squad.GetCurrentPosition();
 
 		//this is bunk.
-		Point2D interimPoint = currentTargetPoint - currentPos;
+		Point2D interimPoint = currentPos - currentTargetPoint;
+		interimPoint.x = fabs(interimPoint.x);
+		interimPoint.y = fabs(interimPoint.y);
+
 		//draw stuff
-		Point3D interimPt3d(interimPoint.x, interimPoint.y, currentPos.z);
+		Point3D interimPt3d(fabs(interimPoint.x), fabs(interimPoint.y), fabs(currentPos.z));
 		bot.Draw().DrawLine(currentPos, interimPt3d);
 
 		//execute orders.  TODO:  who should issue attack command?
@@ -151,10 +154,9 @@ void Platoon::OnStep()
 
 
 	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
-	/*
 	for (Squad & squad : squads) {
 		squad.OnStep();
 	}
-	*/
+	
 
 }
