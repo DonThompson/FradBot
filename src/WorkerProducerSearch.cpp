@@ -17,7 +17,9 @@ Structure* WorkerProducerSearch::SearchForProducer()
 	//Use an ordered set of bases
 	std::vector<Structure*> structures;
 	structures.push_back(&mainDepot);
-	structures.push_back(&(bot.BaseLocations().Natural()->GetResourceDepot()));
+	if (bot.BaseLocations().Natural() != nullptr) {
+		structures.push_back(&(bot.BaseLocations().Natural()->GetResourceDepot()));
+	}
 	for (BaseLocation* base : bot.BaseLocations().OtherBases()) {
 		structures.push_back(&(base->GetResourceDepot()));
 	}
