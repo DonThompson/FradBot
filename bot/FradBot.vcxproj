@@ -149,6 +149,7 @@
     <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\Platoon.cpp" />
     <ClCompile Include="..\src\Squad.cpp" />
+    <ClCompile Include="..\src\SquadOrders.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
     <ClCompile Include="..\src\Structure.cpp" />
     <ClCompile Include="..\src\StructuresManager.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\Platoon.h" />
     <ClInclude Include="..\src\Squad.h" />
+    <ClInclude Include="..\src\SquadOrders.h" />
     <ClInclude Include="..\src\StrategyManager.h" />
     <ClInclude Include="..\src\Structure.h" />
     <ClInclude Include="..\src\StructuresManager.h" />

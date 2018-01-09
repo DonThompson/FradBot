@@ -1,7 +1,7 @@
 #pragma once
 #include <sc2api/sc2_api.h>
 #include "Squad.h"
-
+class Bot;
 
 //Presently hardcoding the size parameters.
 //	One platoon is up to three squads
@@ -20,7 +20,7 @@ public:
 	};
 
 public:
-	Platoon();
+	Platoon(Bot & b);
 	size_t GetTotalPlatoonUnitCount();
 	bool AddUnit(const sc2::Unit* unit);
 	void SetOrders(PLATOON_ORDERS orders, sc2::Point2D targetPoint);
@@ -30,6 +30,7 @@ public:
 	std::string GetDebugSummaryString();
 
 private:
+	Bot & bot;
 	std::vector<Squad> squads;
 	size_t maxSquadCount;
 

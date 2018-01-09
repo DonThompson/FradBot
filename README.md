@@ -76,6 +76,7 @@ ONGOING ISSUES:
 * defense... needs more thought
 * offense, attack move in small gaps.  say 10% of distance to target point at a time?
 * what about a queue (or just 1?) of orders.  tell a unit to go to pt x, he does it.  when he has no orders, he asks for new orders.  maybe at the squad level?
+* Squad & Platoon names
 
 # Setup
 

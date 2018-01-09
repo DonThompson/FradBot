@@ -1,10 +1,13 @@
 #include "Squad.h"
 #include "Platoon.h"
+#include "bot.h"
 #include <sstream>
 using namespace sc2;
 
-Squad::Squad(Platoon* _parent)
-	: parentPlatoon(_parent)
+Squad::Squad(Bot & b, Platoon* _parent)
+	: bot(b)
+	, parentPlatoon(_parent)
+	, squadOrders(SquadOrders::Empty())
 {
 }
 
@@ -51,4 +54,42 @@ void Squad::OnStep()
 	for (ArmyUnit & au : squadUnits) {
 		au.OnStep();
 	}
+}
+
+//TODO:  Needs to be super fast.Worth duplicating tracking.  Is this fast enough?
+Squad::operator const sc2::Units()
+{
+	sc2::Units units;
+	for (ArmyUnit unit : squadUnits) {
+		units.push_back(unit.unit);
+	}
+	return units;
+}
+
+bool Squad::HasOrders()
+{
+	return (squadOrders != SquadOrders::Empty());
+}
+
+void Squad::SetOrders(SquadOrders newOrders)
+{
+	squadOrders = newOrders;
+
+	//bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+}
+
+void Squad::ClearOrders()
+{
+	squadOrders = SquadOrders::Empty();
+}
+
+//TODO:  Define/manage this.  For now, we just grab the first member
+sc2::Point3D Squad::GetCurrentPosition()
+{
+	if (squadUnits.size() > 0) {
+		return squadUnits.front().unit->pos;
+	}
+
+	//TODO:  Not sure this is a good idea either
+	return Point3D(0, 0, 0);
 }

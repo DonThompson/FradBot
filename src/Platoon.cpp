@@ -1,4 +1,5 @@
 #include "Platoon.h"
+#include "bot.h"
 #include <sstream>
 using namespace sc2;
 
@@ -9,9 +10,10 @@ size_t maxSquadGhosts = 1;
 size_t maxSquadMedivacs = 1;
 size_t maxSquadsPerPlatoon = 3;
 
-Platoon::Platoon()
+Platoon::Platoon(Bot & b)
 	: maxSquadCount(maxSquadsPerPlatoon)
 	, currentOrders(PLATOON_ORDERS::GATHER)
+	, bot(b)
 {
 }
 
@@ -44,7 +46,7 @@ bool Platoon::AddUnit(const sc2::Unit* unit)
 	//No room available in our current squads.  Do we have room to add another squad in this platoon?
 	if (squads.size() < maxSquadCount) {
 		//Make a new squad
-		Squad newSquad(this);
+		Squad newSquad(bot, this);
 		newSquad.AddUnit(unit);
 		squads.push_back(newSquad);
 		return true;
@@ -108,12 +110,51 @@ void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
 {
 	currentOrders = orders;
 	currentTargetPoint = targetPoint;
+
+	//TODO:  Clear all squad orders?
 }
 
 //Called each game step
 void Platoon::OnStep()
 {
+	//TODO:  Should we throttle the speed here?
+
+	for (Squad & squad : squads) {
+		//If the squad already has orders, let them continue them
+		if (squad.HasOrders())
+			continue;
+
+		//Only move a short distance toward that target.  We'll work our way their slowly.
+		Point3D currentPos = squad.GetCurrentPosition();
+
+		//this is bunk.
+		Point2D interimPoint = currentTargetPoint - currentPos;
+		//draw stuff
+		Point3D interimPt3d(interimPoint.x, interimPoint.y, currentPos.z);
+		bot.Draw().DrawLine(currentPos, interimPt3d);
+
+		//execute orders.  TODO:  who should issue attack command?
+		SquadOrders orders(interimPoint);
+		squad.SetOrders(orders);
+		
+		/* order type kinda useless?
+		if (currentOrders == PLATOON_ORDERS::ATTACK) {
+			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
+		}
+		else if (currentOrders == PLATOON_ORDERS::DEFEND) {
+			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
+		}
+		else if (currentOrders == PLATOON_ORDERS::GATHER) {
+			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
+		}*/
+	}
+
+
+	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
+	/*
 	for (Squad & squad : squads) {
 		squad.OnStep();
 	}
+	*/
+
 }

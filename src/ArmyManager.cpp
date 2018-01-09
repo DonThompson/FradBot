@@ -90,7 +90,7 @@ void ArmyManager::AddUnitToPlatoon(const sc2::Unit* unit)
 	}
 
 	//No room in that platoon, we'll have to create a new one.
-	Platoon newPlatoon;
+	Platoon newPlatoon(bot);
 	newPlatoon.AddUnit(unit);
 	armyPlatoons.push_back(newPlatoon);
 }
