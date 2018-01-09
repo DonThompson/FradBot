@@ -67,7 +67,6 @@ Suggestions:
 * Random map selection.  Going to end up too dependent on bel'shir knowledge
 
 ONGOING ISSUES:
-* parent squad in armyunit.
 * So much work on orders...
 * move up to strategy manager
 * new platoons should request upon creation

@@ -10,7 +10,7 @@ Squad::Squad(Platoon* _parent)
 
 void Squad::AddUnit(const sc2::Unit* unit)
 {
-	ArmyUnit au(unit);
+	ArmyUnit au(this, unit);
 	squadUnits.push_back(au);
 
 	//Update our counts appropriately

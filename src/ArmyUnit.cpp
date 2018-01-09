@@ -1,13 +1,16 @@
 #include "ArmyUnit.h"
+#include "Squad.h"
 using namespace sc2;
 
-ArmyUnit::ArmyUnit()
+ArmyUnit::ArmyUnit(Squad* _parentSquad)
+	: ArmyUnit(_parentSquad, (const sc2::Unit*)nullptr)
 {
 	
 }
 
-ArmyUnit::ArmyUnit(const sc2::Unit* _unit)
-	: unit(_unit)
+ArmyUnit::ArmyUnit(Squad* _parentSquad, const sc2::Unit* _unit)
+	: parentSquad(_parentSquad)
+	, unit(_unit)
 {
 }
 
