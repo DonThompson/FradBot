@@ -46,3 +46,8 @@ void DrawingManager::DrawNoticeText(std::string text, sc2::Color color/*= sc2::C
 {
 	bot.Debug()->DebugTextOut(text, color);
 }
+
+void DrawingManager::DrawLine(sc2::Point3D pt1, sc2::Point3D pt2, sc2::Color color/*= sc2::Colors::White*/)
+{
+	bot.Debug()->DebugLineOut(pt1, pt2, color);
+}
