@@ -14,8 +14,9 @@ Platoon::Platoon(Bot & b)
 	: maxSquadCount(maxSquadsPerPlatoon)
 	, currentOrders(PLATOON_ORDERS::GATHER)
 	, bot(b)
-	, hasOrders(false)
 {
+	hasOrders = false;
+	checkForSquadOrdersAchieved = false;
 }
 
 size_t Platoon::GetTotalPlatoonUnitCount()
@@ -165,10 +166,52 @@ void Platoon::OnStep()
 	}
 
 
+	//TODO:  hack because we can't iterate over squads in the callback because it's already iterating squads
+	if (checkForSquadOrdersAchieved) {
+		//TODO:  functionify
+
+		//See if all squads have reached our target point.
+
+		//Within 2 tiles is fine.
+		//TODO:  can we go higher?  Just how far is 2 tiles?  We may have a clumping of units.  More range gives us
+		//	more flexibility.
+		float winRange = 2.0f;
+
+		//TODO:  maybe we keep another vector of squads "working on" the target.  if 2 finish and 3rd isn't yet, we'll keep re-tasking the first 2.
+		//TODO:  we're already iterating through squads -- this callback is probably in OnStep()
+		bool oneFailed = false;
+		for (Squad squad : squads) {
+			float currentDistance = sc2::Distance2D(squad.GetCurrentPosition(), currentTargetPoint);
+			if (currentDistance > winRange) {
+				//At least squad is not there yet, so keep issuing orders
+				oneFailed = true;
+			}
+		}
+
+		if (!oneFailed) {
+			//If we got here, all squads are within range.  We can clear our orders
+			hasOrders = false;
+			currentOrders = PLATOON_ORDERS::GATHER;
+			currentTargetPoint = Point2D(0, 0);
+		}
+	}
+
+
+
+
 	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
 	for (Squad & squad : squads) {
 		squad.OnStep();
 	}
 	
+
+}
+
+//Called when a squad achieves their orders
+void Platoon::OnSquadOrdersAchieved()
+{
+	//TODO:  hack because we can't iterate over squads in the callback because it's already iterating squads
+	checkForSquadOrdersAchieved = true;
+
 
 }

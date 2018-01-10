@@ -78,6 +78,10 @@ ONGOING ISSUES:
 * what about a queue (or just 1?) of orders.  tell a unit to go to pt x, he does it.  when he has no orders, he asks for new orders.  maybe at the squad level?
 * Squad & Platoon names
 * Reactors aren't handled - we see an order and skip it.
+* squad should notify platoon when it's dead
+* squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?
+* checkForSquadOrdersAchieved and hasOrders keep getting set to insane values (205????).  wth?
+* platoon order clearing doesn't work.  missing something with references/pointers/etc.
 
 # Setup
 

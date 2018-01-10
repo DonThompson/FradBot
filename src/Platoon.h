@@ -24,7 +24,7 @@ public:
 	size_t GetTotalPlatoonUnitCount();
 	bool AddUnit(const sc2::Unit* unit);
 	void SetOrders(PLATOON_ORDERS orders, sc2::Point2D targetPoint);
-
+	void OnSquadOrdersAchieved();
 	void OnStep();
 
 	std::string GetDebugSummaryString();
@@ -38,6 +38,7 @@ private:
 	//order point
 	sc2::Point2D currentTargetPoint;
 	bool hasOrders;
+	bool checkForSquadOrdersAchieved;	//TEMP
 
 	size_t GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID);
 };

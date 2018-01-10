@@ -57,6 +57,11 @@ void Squad::OnStep()
 	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 1.0f) {
 		//We've arrived!
 		ClearOrders();
+
+		//Let our parent platoon know
+		if (parentPlatoon) {
+			parentPlatoon->OnSquadOrdersAchieved();
+		}
 	}
 
 	/*
