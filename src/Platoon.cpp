@@ -14,6 +14,7 @@ Platoon::Platoon(Bot & b)
 	: maxSquadCount(maxSquadsPerPlatoon)
 	, currentOrders(PLATOON_ORDERS::GATHER)
 	, bot(b)
+	, hasOrders(false)
 {
 }
 
@@ -108,16 +109,27 @@ std::string Platoon::GetDebugSummaryString()
 
 void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
 {
+	hasOrders = true;
 	currentOrders = orders;
 	currentTargetPoint = targetPoint;
 
-	//TODO:  Clear all squad orders?
+	//Clear all squad orders
+	for (Squad & squad : squads) {
+		squad.ClearOrders();
+	}
 }
 
 //Called each game step
 void Platoon::OnStep()
 {
 	//TODO:  Should we throttle the speed here?
+
+	//Ensure the platoon has orders.  If it doesn't, we can't pass to the squads.
+	if (!hasOrders)
+		return;
+
+	//TODO:  if no squads have orders, we've accomplished our orders.  need to flag that as not having orders anymore
+	//	Maybe each squad should message back up the parent that they've finished?
 
 	for (Squad & squad : squads) {
 		//If the squad already has orders, let them continue them
@@ -127,17 +139,17 @@ void Platoon::OnStep()
 		//Only move a short distance toward that target.  We'll work our way their slowly.
 		Point3D currentPos = squad.GetCurrentPosition();
 
-		//this is bunk.
-		Point2D interimPoint = currentPos - currentTargetPoint;
-		interimPoint.x = fabs(interimPoint.x);
-		interimPoint.y = fabs(interimPoint.y);
+		//50% of the way between points.
+		//	TODO:  this will keep shrinking to crazy small values?
+		Point2D partialPoint((currentPos.x + currentTargetPoint.x) / 2, (currentPos.y + currentTargetPoint.y) / 2);
 
+		//TODO:  this doesn't seem to work
 		//draw stuff
-		Point3D interimPt3d(fabs(interimPoint.x), fabs(interimPoint.y), fabs(currentPos.z));
+		Point3D interimPt3d(partialPoint.x, partialPoint.y, currentPos.z);
 		bot.Draw().DrawLine(currentPos, interimPt3d);
 
 		//execute orders.  TODO:  who should issue attack command?
-		SquadOrders orders(interimPoint);
+		SquadOrders orders(partialPoint);
 		squad.SetOrders(orders);
 		
 		/* order type kinda useless?

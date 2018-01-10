@@ -35,7 +35,9 @@ private:
 	size_t maxSquadCount;
 
 	PLATOON_ORDERS currentOrders;
+	//order point
 	sc2::Point2D currentTargetPoint;
+	bool hasOrders;
 
 	size_t GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID);
 };
