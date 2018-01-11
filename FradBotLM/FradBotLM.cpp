@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	// Add the custom bot, it will control the players.
 	Bot bot;
 	coordinator.SetParticipants({
-		CreateParticipant(sc2::Race::Protoss, &bot),
+		CreateParticipant(sc2::Race::Terran, &bot),
 	});
 
 	// Start the game.

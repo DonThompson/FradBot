@@ -9,3 +9,4 @@
 /x64
 /FradBotLM/x64
 /FradBotLM/*.user
+/bot/*.user
