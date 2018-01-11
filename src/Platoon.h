@@ -9,7 +9,7 @@ class Bot;
 //Aim to keep this logic entirely inside platoon for ease of changing it later.
 
 
-class Platoon
+class Platoon : public std::enable_shared_from_this<Platoon>
 {
 //TODO.  Move elsewhere?  Class'ify it?  Something.
 public:

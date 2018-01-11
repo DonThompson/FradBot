@@ -7,10 +7,10 @@ class Platoon;
 
 //TODO:  Flag to lock down the squad when it moves out.  Don't want to be adding units to a squad that's across the map
 
-class Squad
+class Squad : public std::enable_shared_from_this<Squad>
 {
 public:
-	Squad(Bot & b, Platoon & _parent);
+	Squad(Bot & b, std::shared_ptr<Platoon> _parent);
 
 	void AddUnit(const sc2::Unit* unit);
 	size_t CountUnitsByType(sc2::UNIT_TYPEID unitTypeID);
@@ -25,7 +25,7 @@ public:
 
 private:
 	Bot & bot;
-	Platoon & parentPlatoon;
+	std::weak_ptr<Platoon> parentPlatoon;
 	//All units
 	std::vector<std::shared_ptr<ArmyUnit>> squadUnits;
 	//Track squad unit counts for fast access

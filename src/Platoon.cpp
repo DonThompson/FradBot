@@ -49,7 +49,7 @@ bool Platoon::AddUnit(const sc2::Unit* unit)
 	//No room available in our current squads.  Do we have room to add another squad in this platoon?
 	if (squads.size() < maxSquadCount) {
 		//Make a new squad
-		shared_ptr<Squad> newSquad = make_shared<Squad>(bot, *this);
+		shared_ptr<Squad> newSquad = make_shared<Squad>(bot, shared_from_this());
 		newSquad->AddUnit(unit);
 		squads.push_back(newSquad);
 		return true;
@@ -134,6 +134,8 @@ void Platoon::OnStep()
 
 	//TODO:  hack because we can't iterate over squads in the callback because it's already iterating squads
 	if (checkForSquadOrdersAchieved) {
+		//One time check, don't do it again
+		checkForSquadOrdersAchieved = false;
 		//TODO:  functionify
 
 		//See if all squads have reached our target point.

@@ -5,7 +5,7 @@
 using namespace sc2;
 using namespace std;
 
-Squad::Squad(Bot & b, Platoon & _parent)
+Squad::Squad(Bot & b, std::shared_ptr<Platoon> _parent)
 	: bot(b)
 	, parentPlatoon(_parent)
 	, squadOrders(SquadOrders::Empty())
@@ -14,7 +14,7 @@ Squad::Squad(Bot & b, Platoon & _parent)
 
 void Squad::AddUnit(const sc2::Unit* unit)
 {
-	shared_ptr<ArmyUnit> au = make_shared<ArmyUnit>(*this, unit);
+	shared_ptr<ArmyUnit> au = make_shared<ArmyUnit>(shared_from_this(), unit);
 	squadUnits.push_back(au);
 
 	//Update our counts appropriately
@@ -60,7 +60,10 @@ void Squad::OnStep()
 		ClearOrders();
 
 		//Let our parent platoon know
-		parentPlatoon.OnSquadOrdersAchieved();
+		shared_ptr<Platoon> p = parentPlatoon.lock();
+		if (p) {
+			p->OnSquadOrdersAchieved();
+		}
 	}
 
 	/*
