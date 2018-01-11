@@ -80,7 +80,10 @@ ONGOING ISSUES:
 * squad should notify platoon when it's dead
 * squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?
 * one squad in the platoon seems to give up 2/3 of the way to the target and gets stuck.  seems to be the first -- i think they're reaching the target, clearing orders, and never getting more
-* Somehow the squad is near the point but not at it.  There's some level of unit push going on -- he's about 2.5 distance away from the point.
+* Somehow the squad is near the point but not at it.  There's some level of unit push going on -- he's about 2.5 distance away from the point.  HACK:  increased distance to 3.0f and solved it (for now)
+* Platoons need to work together, squads are fairly independent - they run off w/o each other.
+* New platoons still need to get orders, similar to additions to squad.  follow that model.
+* Late add-on units to a squad run off by themselves, to easily die.  Lock squads when they take off?  Or wait until full?  or until some point.
 
 # Setup
 
