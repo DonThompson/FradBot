@@ -32,5 +32,7 @@ private:
 	std::map<sc2::UNIT_TYPEID, size_t> squadUnitCounts;
 	//Current squad orders
 	SquadOrders squadOrders;
+	void ExecuteOrdersActionOnSquad();
+	void ExecuteOrdersActionOnArmyUnit(std::shared_ptr<ArmyUnit> u);
 	
 };

@@ -19,6 +19,15 @@ void Squad::AddUnit(const sc2::Unit* unit)
 
 	//Update our counts appropriately
 	squadUnitCounts[unit->unit_type]++;
+
+	//This unit needs to follow any squad target orders.  If we don't have orders, he should
+	//	try to group up with the rest of his squad.
+	if(HasOrders())
+		ExecuteOrdersActionOnArmyUnit(au);
+	else {
+		//TODO:  better way to handle this?  First unit in the squad will just move to themselves
+		bot.Actions()->UnitCommand(unit, ABILITY_ID::ATTACK_ATTACK, GetCurrentPosition());
+	}
 }
 
 size_t Squad::CountUnitsByType(sc2::UNIT_TYPEID unitTypeID)
@@ -92,7 +101,7 @@ void Squad::SetOrders(SquadOrders newOrders)
 {
 	squadOrders = newOrders;
 
-	bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+	ExecuteOrdersActionOnSquad();
 }
 
 void Squad::ClearOrders()
@@ -110,3 +119,22 @@ sc2::Point3D Squad::GetCurrentPosition()
 	//TODO:  Not sure this is a good idea either
 	return Point3D(0, 0, 0);
 }
+
+void Squad::ExecuteOrdersActionOnSquad()
+{
+	//Don't execute if we don't have orders
+	if (!HasOrders())
+		return;
+
+	bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+}
+
+void Squad::ExecuteOrdersActionOnArmyUnit(shared_ptr<ArmyUnit> u)
+{
+	//Don't execute if we don't have orders
+	if (!HasOrders())
+		return;
+
+	bot.Actions()->UnitCommand(u->unit, ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+}
+
