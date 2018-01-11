@@ -10,3 +10,6 @@
 /FradBotLM/x64
 /FradBotLM/*.user
 /bot/*.user
+/.sonarqube
+/bw-output
+/sonarscan.bat
