@@ -2,6 +2,7 @@
 #include "bot.h"
 #include <sstream>
 using namespace sc2;
+using namespace std;
 
 /*static */bool ArmyManager::IsMilitaryUnit(const sc2::Unit* unit)
 {
@@ -64,8 +65,8 @@ void ArmyManager::OnStep()
 	}
 
 	//Do these things whether autonomous or not, w/o timer
-	for (Platoon & platoon : armyPlatoons) {
-		platoon.OnStep();
+	for (shared_ptr<Platoon> platoon : armyPlatoons) {
+		platoon->OnStep();
 	}
 }
 
@@ -82,16 +83,16 @@ void ArmyManager::OnUnitCreated(const sc2::Unit* unit)
 void ArmyManager::AddUnitToPlatoon(const sc2::Unit* unit)
 {
 	//Iterate through all platoons and try to add the unit
-	for (Platoon & platoon : armyPlatoons) {
-		if (platoon.AddUnit(unit)) {
+	for (shared_ptr<Platoon> platoon : armyPlatoons) {
+		if (platoon->AddUnit(unit)) {
 			//Met our goal
 			return;
 		}
 	}
 
 	//No room in that platoon, we'll have to create a new one.
-	Platoon newPlatoon(bot);
-	newPlatoon.AddUnit(unit);
+	shared_ptr<Platoon> newPlatoon = make_shared<Platoon>(bot);
+	newPlatoon->AddUnit(unit);
 	armyPlatoons.push_back(newPlatoon);
 }
 
@@ -259,8 +260,8 @@ std::string ArmyManager::GetDebugSummaryString()
 {
 	std::ostringstream oss;
 	oss << "Army Summary.  Platoons:  " << armyPlatoons.size() << std::endl;
-	for (Platoon & platoon : armyPlatoons) {
-		oss << platoon.GetDebugSummaryString() << std::endl;
+	for (shared_ptr<Platoon> platoon : armyPlatoons) {
+		oss << platoon->GetDebugSummaryString() << std::endl;
 	}
 
 	return oss.str();
@@ -289,8 +290,8 @@ void ArmyManager::ManageMilitary()
 				}
 
 				//Tell each platoon to defend
-				for (Platoon & platoon : armyPlatoons) {
-					platoon.SetOrders(Platoon::PLATOON_ORDERS::DEFEND, targetPoint);
+				for (shared_ptr<Platoon> platoon : armyPlatoons) {
+					platoon->SetOrders(Platoon::PLATOON_ORDERS::DEFEND, targetPoint);
 				}
 
 				//TODO:  New platoons
@@ -308,8 +309,8 @@ void ArmyManager::ManageMilitary()
 				Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
 
 				//Tell each platoon to attack
-				for (Platoon & platoon : armyPlatoons) {
-					platoon.SetOrders(Platoon::PLATOON_ORDERS::ATTACK, targetPoint);
+				for (shared_ptr<Platoon> platoon : armyPlatoons) {
+					platoon->SetOrders(Platoon::PLATOON_ORDERS::ATTACK, targetPoint);
 				}
 
 				//TODO:  New platoons
@@ -327,8 +328,8 @@ void ArmyManager::ManageMilitary()
 size_t ArmyManager::GetTotalArmyUnitCount()
 {
 	size_t size = 0;
-	for (Platoon & platoon : armyPlatoons) {
-		size += platoon.GetTotalPlatoonUnitCount();
+	for (shared_ptr<Platoon> platoon : armyPlatoons) {
+		size += platoon->GetTotalPlatoonUnitCount();
 	}
 	return size;
 }

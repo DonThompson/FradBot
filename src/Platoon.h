@@ -31,7 +31,7 @@ public:
 
 private:
 	Bot & bot;
-	std::vector<Squad> squads;
+	std::vector<std::shared_ptr<Squad>> squads;
 	size_t maxSquadCount;
 
 	PLATOON_ORDERS currentOrders;

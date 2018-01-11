@@ -44,6 +44,6 @@ private:
 	uint32_t currentStrategy;
 
 	//Unit management
-	std::vector<Platoon> armyPlatoons;
+	std::vector<std::shared_ptr<Platoon>> armyPlatoons;
 
 };

@@ -2,6 +2,7 @@
 #include "bot.h"
 #include <sstream>
 using namespace sc2;
+using namespace std;
 
 //Hardcoded limits to work with for now
 size_t maxSquadMarines = 5;
@@ -22,8 +23,8 @@ Platoon::Platoon(Bot & b)
 size_t Platoon::GetTotalPlatoonUnitCount()
 {
 	size_t size = 0;
-	for (Squad & squad : squads) {
-		size += squad.GetTotalSquadUnitCount();
+	for (shared_ptr<Squad> squad : squads) {
+		size += squad->GetTotalSquadUnitCount();
 	}
 	return size;
 }
@@ -34,10 +35,10 @@ bool Platoon::AddUnit(const sc2::Unit* unit)
 	//Ask each squad how many of this unit type they have.  First squad with an opening takes it
 	size_t max = GetMaxOfTypeInSquad(unit->unit_type);
 
-	for (Squad & squad : squads) {
-		size_t size = squad.CountUnitsByType(unit->unit_type);
+	for (shared_ptr<Squad> squad : squads) {
+		size_t size = squad->CountUnitsByType(unit->unit_type);
 		if (size < max) {
-			squad.AddUnit(unit);
+			squad->AddUnit(unit);
 			return true;
 		}
 		else {
@@ -48,8 +49,8 @@ bool Platoon::AddUnit(const sc2::Unit* unit)
 	//No room available in our current squads.  Do we have room to add another squad in this platoon?
 	if (squads.size() < maxSquadCount) {
 		//Make a new squad
-		Squad newSquad(bot, *this);
-		newSquad.AddUnit(unit);
+		shared_ptr<Squad> newSquad = make_shared<Squad>(bot, *this);
+		newSquad->AddUnit(unit);
 		squads.push_back(newSquad);
 		return true;
 	}
@@ -101,8 +102,8 @@ std::string Platoon::GetDebugSummaryString()
 
 	std::ostringstream oss;
 	oss << "* Platoon " << _name << std::endl;
-	for (Squad & squad : squads) {
-		oss << squad.GetDebugSummaryString() << std::endl;
+	for (shared_ptr<Squad> squad : squads) {
+		oss << squad->GetDebugSummaryString() << std::endl;
 	}
 
 	return oss.str();
@@ -115,8 +116,8 @@ void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
 	currentTargetPoint = targetPoint;
 
 	//Clear all squad orders
-	for (Squad & squad : squads) {
-		squad.ClearOrders();
+	for (shared_ptr<Squad> squad : squads) {
+		squad->ClearOrders();
 	}
 }
 
@@ -145,8 +146,8 @@ void Platoon::OnStep()
 		//TODO:  maybe we keep another vector of squads "working on" the target.  if 2 finish and 3rd isn't yet, we'll keep re-tasking the first 2.
 		//TODO:  we're already iterating through squads -- this callback is probably in OnStep()
 		bool atLeastOneFailed = false;
-		for (Squad squad : squads) {
-			float currentDistance = sc2::Distance2D(squad.GetCurrentPosition(), currentTargetPoint);
+		for (shared_ptr<Squad> squad : squads) {
+			float currentDistance = sc2::Distance2D(squad->GetCurrentPosition(), currentTargetPoint);
 			if (currentDistance > winRange) {
 				//At least squad is not there yet, so keep issuing orders
 				atLeastOneFailed = true;
@@ -166,13 +167,13 @@ void Platoon::OnStep()
 	//TODO:  if no squads have orders, we've accomplished our orders.  need to flag that as not having orders anymore
 	//	Maybe each squad should message back up the parent that they've finished?
 
-	for (Squad & squad : squads) {
+	for (shared_ptr<Squad> squad : squads) {
 		//If the squad already has orders, let them continue them
-		if (squad.HasOrders())
+		if (squad->HasOrders())
 			continue;
 
 		//Only move a short distance toward that target.  We'll work our way their slowly.
-		Point3D currentPos = squad.GetCurrentPosition();
+		Point3D currentPos = squad->GetCurrentPosition();
 
 		//50% of the way between points.
 		//	TODO:  this will keep shrinking to crazy small values?
@@ -185,7 +186,7 @@ void Platoon::OnStep()
 
 		//execute orders.  TODO:  who should issue attack command?
 		SquadOrders orders(partialPoint);
-		squad.SetOrders(orders);
+		squad->SetOrders(orders);
 		
 		/* order type kinda useless?
 		if (currentOrders == PLATOON_ORDERS::ATTACK) {
@@ -206,8 +207,8 @@ void Platoon::OnStep()
 
 
 	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
-	for (Squad & squad : squads) {
-		squad.OnStep();
+	for (shared_ptr<Squad> squad : squads) {
+		squad->OnStep();
 	}
 	
 

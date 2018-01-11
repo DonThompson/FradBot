@@ -65,6 +65,7 @@ Suggestions:
 * Set build positions when evaluating map.
 * Redefine bot components.  Managers should have autonomy.  "Accessors" (naming?) should be just access.  Could use this to remove the ones commented out managers.push_back and avoid defining functions that can't be reached.
 * Random map selection.  Going to end up too dependent on bel'shir knowledge
+* Should I be using shared_ptr for most of my vectors?
 
 ONGOING ISSUES:
 * So much work on orders...

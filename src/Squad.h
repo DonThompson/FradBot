@@ -27,7 +27,7 @@ private:
 	Bot & bot;
 	Platoon & parentPlatoon;
 	//All units
-	std::vector<ArmyUnit> squadUnits;
+	std::vector<std::shared_ptr<ArmyUnit>> squadUnits;
 	//Track squad unit counts for fast access
 	std::map<sc2::UNIT_TYPEID, size_t> squadUnitCounts;
 	//Current squad orders

@@ -3,6 +3,7 @@
 #include "bot.h"
 #include <sstream>
 using namespace sc2;
+using namespace std;
 
 Squad::Squad(Bot & b, Platoon & _parent)
 	: bot(b)
@@ -13,7 +14,7 @@ Squad::Squad(Bot & b, Platoon & _parent)
 
 void Squad::AddUnit(const sc2::Unit* unit)
 {
-	ArmyUnit au(*this, unit);
+	shared_ptr<ArmyUnit> au = make_shared<ArmyUnit>(*this, unit);
 	squadUnits.push_back(au);
 
 	//Update our counts appropriately
@@ -63,8 +64,8 @@ void Squad::OnStep()
 	}
 
 	/*
-	for (ArmyUnit & au : squadUnits) {
-		au.OnStep();
+	for (shared_ptr<ArmyUnit> unit : squadUnits) {
+		au->OnStep();
 	}
 	*/
 }
@@ -73,8 +74,8 @@ void Squad::OnStep()
 Squad::operator const sc2::Units()
 {
 	sc2::Units units;
-	for (ArmyUnit unit : squadUnits) {
-		units.push_back(unit.unit);
+	for (shared_ptr<ArmyUnit> unit : squadUnits) {
+		units.push_back(unit->unit);
 	}
 	return units;
 }
@@ -100,7 +101,7 @@ void Squad::ClearOrders()
 sc2::Point3D Squad::GetCurrentPosition()
 {
 	if (squadUnits.size() > 0) {
-		return squadUnits.front().unit->pos;
+		return squadUnits.front()->unit->pos;
 	}
 
 	//TODO:  Not sure this is a good idea either
