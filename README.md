@@ -72,17 +72,15 @@ ONGOING ISSUES:
 * move up to strategy manager
 * new platoons should request upon creation
 * same for new squads inside
-* and units when added?
 * start handling onstep events
 * defense... needs more thought
-* offense, attack move in small gaps.  say 10% of distance to target point at a time?
-* what about a queue (or just 1?) of orders.  tell a unit to go to pt x, he does it.  when he has no orders, he asks for new orders.  maybe at the squad level?
+* offense, attack move in small gaps.  say 10% of distance to target point at a time?  Need pathing for this.
 * Squad & Platoon names
 * Reactors aren't handled - we see an order and skip it.
 * squad should notify platoon when it's dead
 * squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?
-* checkForSquadOrdersAchieved and hasOrders keep getting set to insane values (205????).  wth?
-* platoon order clearing doesn't work.  missing something with references/pointers/etc.
+* one squad in the platoon seems to give up 2/3 of the way to the target and gets stuck.  seems to be the first -- i think they're reaching the target, clearing orders, and never getting more
+* Somehow the squad is near the point but not at it.  There's some level of unit push going on -- he's about 2.5 distance away from the point.
 
 # Setup
 

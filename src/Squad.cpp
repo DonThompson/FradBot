@@ -61,10 +61,27 @@ std::string Squad::GetDebugSummaryString()
 //Called each game step
 void Squad::OnStep()
 {
+	//TEMP
+	std::ostringstream oss;
+	Color color = Colors::White;
+	if (HasOrders()) {
+		oss << "Squad => " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y;
+		color = Colors::Purple;
+	}
+	else {
+		oss << "Squad";
+	}
+	bot.Draw().DrawTextOnMap(oss.str(), GetCurrentPosition(), color);
+	//END TEMP
+
+
 	//TODO:  throttle this?
 
 	//Have we reached our target? If so the orders should be cleared.
-	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 1.0f) {
+	//TODO:  Picked 3.0 because marines were pushing enough so that they somehow missed the point, but got to the 
+	//	action destination.
+	//TODO:  Should the squad detect lack of sc2::Unit::orders.size() with HasOrders()?
+	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 3.0f) {
 		//We've arrived!
 		ClearOrders();
 
@@ -126,6 +143,7 @@ void Squad::ExecuteOrdersActionOnSquad()
 	if (!HasOrders())
 		return;
 
+	std::cout << "Sending squad @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
 	bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
 
@@ -135,6 +153,6 @@ void Squad::ExecuteOrdersActionOnArmyUnit(shared_ptr<ArmyUnit> u)
 	if (!HasOrders())
 		return;
 
+	std::cout << "Sending single unit @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
 	bot.Actions()->UnitCommand(u->unit, ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
-

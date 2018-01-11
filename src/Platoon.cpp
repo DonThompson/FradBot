@@ -124,6 +124,16 @@ void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
 //Called each game step
 void Platoon::OnStep()
 {
+	//TEMP:  DRAW
+	if (hasOrders) {
+		//TODO:  3d pt.  completely guess at z order, may work on some maps and not others
+		Point3D pt3d(currentTargetPoint.x, currentTargetPoint.y, 12.0f);
+		bot.Draw().DrawCircle(pt3d, 1.0f, sc2::Colors::Purple);
+		bot.Draw().DrawTextOnMap("Platoon Target!", pt3d);
+	}
+	//END TEMP
+
+
 	//TODO:  Should we throttle the speed here?
 
 	//Ensure the platoon has orders.  If it doesn't, we can't pass to the squads.
