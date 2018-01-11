@@ -4,7 +4,7 @@
 #include <sstream>
 using namespace sc2;
 
-Squad::Squad(Bot & b, Platoon* _parent)
+Squad::Squad(Bot & b, Platoon & _parent)
 	: bot(b)
 	, parentPlatoon(_parent)
 	, squadOrders(SquadOrders::Empty())
@@ -13,7 +13,7 @@ Squad::Squad(Bot & b, Platoon* _parent)
 
 void Squad::AddUnit(const sc2::Unit* unit)
 {
-	ArmyUnit au(this, unit);
+	ArmyUnit au(*this, unit);
 	squadUnits.push_back(au);
 
 	//Update our counts appropriately
@@ -59,9 +59,7 @@ void Squad::OnStep()
 		ClearOrders();
 
 		//Let our parent platoon know
-		if (parentPlatoon) {
-			parentPlatoon->OnSquadOrdersAchieved();
-		}
+		parentPlatoon.OnSquadOrdersAchieved();
 	}
 
 	/*

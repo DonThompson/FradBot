@@ -10,7 +10,7 @@ class Platoon;
 class Squad
 {
 public:
-	Squad(Bot & b, Platoon* _parent);
+	Squad(Bot & b, Platoon & _parent);
 
 	void AddUnit(const sc2::Unit* unit);
 	size_t CountUnitsByType(sc2::UNIT_TYPEID unitTypeID);
@@ -25,7 +25,7 @@ public:
 
 private:
 	Bot & bot;
-	Platoon* parentPlatoon;
+	Platoon & parentPlatoon;
 	//All units
 	std::vector<ArmyUnit> squadUnits;
 	//Track squad unit counts for fast access
