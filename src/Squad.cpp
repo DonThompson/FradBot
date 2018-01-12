@@ -9,6 +9,7 @@ Squad::Squad(Bot & b, std::shared_ptr<Platoon> _parent)
 	: bot(b)
 	, parentPlatoon(_parent)
 	, squadOrders(SquadOrders::Empty())
+	, isGathered(false)
 {
 }
 
@@ -19,6 +20,9 @@ void Squad::AddUnit(const sc2::Unit* unit)
 
 	//Update our counts appropriately
 	squadUnitCounts[unit->unit_type]++;
+
+	//The squad is no longer gathered together
+	isGathered = false;
 
 	//This unit needs to follow any squad target orders.  If we don't have orders, he should
 	//	try to group up with the rest of his squad.
@@ -155,4 +159,33 @@ void Squad::ExecuteOrdersActionOnArmyUnit(shared_ptr<ArmyUnit> u)
 
 	std::cout << "Sending single unit @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
 	bot.Actions()->UnitCommand(u->unit, ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+}
+
+bool Squad::HasGathered()
+{
+	//Already known.  Once we gather, it's permanent.
+	if (isGathered)
+		return true;
+
+	//Should be safe for a reasonable number of units with some pushing
+	const float maxDistance = 2.5f;
+
+	//Maybe they have since we last tried.  Let's look from the center point
+	Point3D centerPt = GetCurrentPosition();
+
+	for (shared_ptr<ArmyUnit> au : squadUnits) {
+		if (sc2::Distance3D(au->Position(), centerPt) > maxDistance) {
+			//Safety check:  Someone is still outside gathering range.  Make sure he's got some kind of order.
+			//TODO:  Not sure this should live here
+			if (au->GetOrderCount() == 0) {
+				//Out of range, but not trying to get here!  Fix that
+				bot.Actions()->UnitCommand(au->unit, ABILITY_ID::ATTACK_ATTACK, centerPt);
+			}
+			return false;
+		}
+	}
+
+	//Everyone is gathered!
+	isGathered = true;
+	return true;
 }

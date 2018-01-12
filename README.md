@@ -71,8 +71,6 @@ ONGOING ISSUES:
 * So much work on orders...
 * move up to strategy manager
 * new platoons should request upon creation
-* same for new squads inside
-* start handling onstep events
 * defense... needs more thought
 * offense, attack move in small gaps.  say 10% of distance to target point at a time?  Need pathing for this.
 * Squad & Platoon names
@@ -84,6 +82,8 @@ ONGOING ISSUES:
 * Platoons need to work together, squads are fairly independent - they run off w/o each other.
 * New platoons still need to get orders, similar to additions to squad.  follow that model.
 * Late add-on units to a squad run off by themselves, to easily die.  Lock squads when they take off?  Or wait until full?  or until some point.
+
+* squad gathering works!  platoon gathering not so much.
 
 # Setup
 

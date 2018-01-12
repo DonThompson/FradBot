@@ -148,6 +148,7 @@
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\Platoon.cpp" />
+    <ClCompile Include="..\src\PlatoonOrders.cpp" />
     <ClCompile Include="..\src\Squad.cpp" />
     <ClCompile Include="..\src\SquadOrders.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\Platoon.h" />
+    <ClInclude Include="..\src\PlatoonOrders.h" />
     <ClInclude Include="..\src\Squad.h" />
     <ClInclude Include="..\src\SquadOrders.h" />
     <ClInclude Include="..\src\StrategyManager.h" />

@@ -116,45 +116,34 @@ void Platoon::SetOrders(PlatoonOrders orders)
 //Should be called each game step.  Can be throttled.
 void Platoon::ProcessPendingOrders()
 {
-	//TODO:  I feel like, eventually, we'll want some sort of "do it now!" type orders.  But for now, orders
-	//	will never be executed until the previous orders are completed.  This probably won't live long.
-	//TODO:  It's really not the previous commands I'm worried about, but the "gathering" of units.
-
-	//Figure out if we're ready to accept any pending orders
+	//Figure out if we have any new orders pending
 	if (pendingOrders.hasOrders)
 	{
 		bool applyNewOrders = false;
-		//If we have no current orders, jump to it
-		if (!currentOrders.hasOrders) {
-			applyNewOrders = true;
+		//Make sure every squad has finished gathering.
+		bool isAnyStillGathering = false;
+		for (shared_ptr<Squad> squad : squads) {
+			if (!squad->HasGathered()) {
+				isAnyStillGathering = true;
+			}
 		}
-		//For now we wait even for attacks
-		/*else if (currentOrders.orderType == ATTACK) {
-			applyNewOrders = true;
-		}*/
-		else {
-			//We don't want to initiate until all the squads have finished their work.
-			bool anyHasOrders = false;
-			for (shared_ptr<Squad> squad : squads) {
-				if (squad->HasOrders()) {
-					anyHasOrders = true;
-					break;
-				}
-			}
 
-			//If no squads have orders (to gather), then we can go ahead and move to our new orders
-			if (!anyHasOrders) {
-				applyNewOrders = true;
-			}
+		if (!isAnyStillGathering) {
+			//Everyone is gathered, go forward with our new orders.
+			applyNewOrders = true;
 		}
 
 		//TODO:  close squad
 		if (applyNewOrders) {
 			currentOrders = pendingOrders;
+			pendingOrders.Clear();
 			//Clear all squad orders
 			for (shared_ptr<Squad> squad : squads) {
 				squad->ClearOrders();
 			}
+		}
+		else {
+			std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
 		}
 	}
 }

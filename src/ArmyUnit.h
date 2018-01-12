@@ -8,6 +8,9 @@ public:
 	ArmyUnit(std::shared_ptr<Squad> _parentSquad);
 	ArmyUnit(std::shared_ptr<Squad> _parentSquad, const sc2::Unit* _unit);
 	void OnStep();
+	
+	sc2::Point3D Position();
+	size_t GetOrderCount();
 
 //TODO:  Make private?
 public:

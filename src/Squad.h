@@ -22,6 +22,7 @@ public:
 	void SetOrders(SquadOrders newOrders);
 	void ClearOrders();
 	sc2::Point3D GetCurrentPosition();
+	bool HasGathered();
 
 private:
 	Bot & bot;
@@ -34,5 +35,7 @@ private:
 	SquadOrders squadOrders;
 	void ExecuteOrdersActionOnSquad();
 	void ExecuteOrdersActionOnArmyUnit(std::shared_ptr<ArmyUnit> u);
+	//Have all the units gathered up close enough to each other?  Once we gather for the first time, this is permanent.
+	bool isGathered;
 	
 };

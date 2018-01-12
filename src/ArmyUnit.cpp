@@ -19,3 +19,13 @@ void ArmyUnit::OnStep()
 {
 	//TODO:  Do something
 }
+
+Point3D ArmyUnit::Position()
+{
+	return unit->pos;
+}
+
+size_t ArmyUnit::GetOrderCount()
+{
+	return unit->orders.size();
+}
