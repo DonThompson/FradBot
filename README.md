@@ -66,24 +66,25 @@ Suggestions:
 * Redefine bot components.  Managers should have autonomy.  "Accessors" (naming?) should be just access.  Could use this to remove the ones commented out managers.push_back and avoid defining functions that can't be reached.
 * Random map selection.  Going to end up too dependent on bel'shir knowledge
 * Should I be using shared_ptr for most of my vectors?
+* Really need to get autonomy in build orders for workers, supply at least.  army maybe not far after.
+* SCV split for expansions getting important
 
 ONGOING ISSUES:
 * So much work on orders...
 * move up to strategy manager
-* new platoons should request upon creation
 * defense... needs more thought
 * offense, attack move in small gaps.  say 10% of distance to target point at a time?  Need pathing for this.
 * Squad & Platoon names
 * Reactors aren't handled - we see an order and skip it.
-* squad should notify platoon when it's dead
-* squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?
-* one squad in the platoon seems to give up 2/3 of the way to the target and gets stuck.  seems to be the first -- i think they're reaching the target, clearing orders, and never getting more
+* squad should notify platoon when it's dead.  Currently it's staying in memory and keeps drawing where it died.  Neat tombstone feature.
+* squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?  Same for platoon.
 * Somehow the squad is near the point but not at it.  There's some level of unit push going on -- he's about 2.5 distance away from the point.  HACK:  increased distance to 3.0f and solved it (for now)
-* Platoons need to work together, squads are fairly independent - they run off w/o each other.
-* New platoons still need to get orders, similar to additions to squad.  follow that model.
-* Late add-on units to a squad run off by themselves, to easily die.  Lock squads when they take off?  Or wait until full?  or until some point.
-* army manager shouldn't send off platoons that aren't ready
 * Travel across the map could be a little smoother.  Partial distance travel is done by squad, so you end up with slightly different points, and one squad gets ahead of the others.
+* Defense of "natural choke" isn't quite working -- the natural has 2 chokes, 1 into main and 1 into map.  We're getting that first.
+* TODO:  Units got very gummed up in the choke and ended up pushing even further with marauders around.  bumped up to 3.0f range.  lot of guessing going on here.
+* Medivacs don't move to their squad
+* comment out std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
+* first couple platoons go out, then it quickly gets stuck and they won't attack.  orders stuck in pending?  never completed "defend"?
 
 # Setup
 

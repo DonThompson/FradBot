@@ -168,7 +168,7 @@ bool Squad::HasGathered()
 		return true;
 
 	//Should be safe for a reasonable number of units with some pushing
-	const float maxDistance = 2.5f;
+	const float maxDistance = 3.2f;
 
 	//Maybe they have since we last tried.  Let's look from the center point
 	Point3D centerPt = GetCurrentPosition();

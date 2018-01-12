@@ -279,9 +279,17 @@ void ArmyManager::ManageMilitary()
 		}
 		//defend otherwise
 		else if (platoon->GetTotalPlatoonUnitCount() >= 1 && !platoon->HasOrders()) {
-			//TODO:  Position.  Picking the enemy start for now
-			Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
+			//TODO:  Position.  Picking the highest natural choke for now
+			Point2D targetPoint;
+			std::vector<Point2D> chokes = bot.Map().GetRegionChokePoints(bot.BaseLocations().Natural()->GetRegionId());
+			if (chokes.size() > 0) {
+				targetPoint = chokes[chokes.size() - 1];
+			}
+			else {
+				//TODO
+				std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
+			}
+			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
 		}
 	}
 

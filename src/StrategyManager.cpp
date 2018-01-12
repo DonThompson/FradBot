@@ -19,9 +19,9 @@ void StrategyManager::OnGameStart()
 	*/
 
 	//New strategy leaves them all reliant on the strategy manager to coordinate!
-	//BO_ExpandFirstIntoBioBall();
+	BO_ExpandFirstIntoBioBall();
 
-	BO_SimpleBio();
+	//BO_SimpleBio();
 	
 
 }

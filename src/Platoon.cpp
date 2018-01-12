@@ -163,7 +163,7 @@ void Platoon::ProcessPendingOrders()
 				platoonClosedToNewMembers = true;
 		}
 		else {
-			std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
+			//std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
 		}
 	}
 }
