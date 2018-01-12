@@ -29,6 +29,8 @@ public:
 	void EnableAutonomy();
 	//Disables the economy manager to act autonomously.  Each manager will treat this differently.
 	void DisableAutonomy();
+	//Gets a summary string to output on the screen when debugging
+	virtual std::string GetDebugSummaryString() { return ""; }
 
 protected:
 	//Our working bot

@@ -119,6 +119,21 @@
     <ClCompile Include="..\src\MapManager.cpp">
       <Filter>Map</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Squad.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ArmyUnit.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Platoon.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SquadOrders.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PlatoonOrders.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -200,6 +215,21 @@
     </ClInclude>
     <ClInclude Include="..\src\MapManager.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ArmyUnit.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Platoon.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Squad.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SquadOrders.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PlatoonOrders.h">
+      <Filter>Military</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

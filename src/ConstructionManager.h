@@ -49,6 +49,7 @@ public:
 
 	//Called for each step of the game.  Not for public consumption.
 	virtual void OnStep();
+	virtual std::string GetDebugSummaryString();
 
 private:
 	uint64_t nextBuildingId;

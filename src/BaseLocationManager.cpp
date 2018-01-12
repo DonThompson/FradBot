@@ -142,7 +142,7 @@ BaseLocation* BaseLocationManager::FindNearestAvailableExpansionLocation()
 {
 	//first try to expand to the natural
 	BaseLocation* natural = Natural();
-	if (!natural->IsMyBase()) {
+	if (natural != nullptr && !natural->IsMyBase()) {
 		return natural;
 	}
 	//Find closest to main

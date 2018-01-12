@@ -20,6 +20,8 @@ public:
 	void DrawTextAtScreenPosition(std::string text, sc2::Point2D pt, sc2::Color color = sc2::Colors::White);
 	//! Outputs text at the top, left of the screen.
 	void DrawNoticeText(std::string text, sc2::Color color = sc2::Colors::White);
+	//! Outputs a line between two 3D points in the game world. Map coordinates are used.
+	void DrawLine(sc2::Point3D pt1, sc2::Point3D pt2, sc2::Color color = sc2::Colors::White);
 
 private:
 	const float_t BonusCircleDrawingHeight = 1.05f;

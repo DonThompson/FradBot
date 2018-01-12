@@ -118,7 +118,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../sc2api-manualcompiled/include;../../Overseer</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ArmyManager.cpp" />
+    <ClCompile Include="..\src\ArmyUnit.cpp" />
     <ClCompile Include="..\src\BaseLocation.cpp" />
     <ClCompile Include="..\src\BaseLocationInitializer.cpp" />
     <ClCompile Include="..\src\BaseLocationManager.cpp" />
@@ -146,6 +147,10 @@
     <ClCompile Include="..\src\MapManager.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
+    <ClCompile Include="..\src\Platoon.cpp" />
+    <ClCompile Include="..\src\PlatoonOrders.cpp" />
+    <ClCompile Include="..\src\Squad.cpp" />
+    <ClCompile Include="..\src\SquadOrders.cpp" />
     <ClCompile Include="..\src\StrategyManager.cpp" />
     <ClCompile Include="..\src\Structure.cpp" />
     <ClCompile Include="..\src\StructuresManager.cpp" />
@@ -159,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
+    <ClInclude Include="..\src\ArmyUnit.h" />
     <ClInclude Include="..\src\BaseLocation.h" />
     <ClInclude Include="..\src\BaseLocationInitializer.h" />
     <ClInclude Include="..\src\BaseLocationManager.h" />
@@ -176,6 +182,10 @@
     <ClInclude Include="..\src\MapManager.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\MorphManager.h" />
+    <ClInclude Include="..\src\Platoon.h" />
+    <ClInclude Include="..\src\PlatoonOrders.h" />
+    <ClInclude Include="..\src\Squad.h" />
+    <ClInclude Include="..\src\SquadOrders.h" />
     <ClInclude Include="..\src\StrategyManager.h" />
     <ClInclude Include="..\src\Structure.h" />
     <ClInclude Include="..\src\StructuresManager.h" />

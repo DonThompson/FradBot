@@ -61,13 +61,31 @@ Suggestions:
 * http://www.teamliquid.net/forum/starcraft-2/529138-improving-mineral-gathering-rate-in-sc2
 * Now that we have base locations, go back and fix econ/construction to use the base, not random world wide
 * Starting SCV split.
-* Redo the output drawing, these are nice.  Have a new ManagerBase function for GetDebugOutput or such, call it in OnStep for each manager, put it in 1 string and output it.
 * Move workers to natural when it completes.
 * Set build positions when evaluating map.
 * Redefine bot components.  Managers should have autonomy.  "Accessors" (naming?) should be just access.  Could use this to remove the ones commented out managers.push_back and avoid defining functions that can't be reached.
+* Random map selection.  Going to end up too dependent on bel'shir knowledge
+* Should I be using shared_ptr for most of my vectors?
+* Really need to get autonomy in build orders for workers, supply at least.  army maybe not far after.
+* SCV split for expansions getting important
+* A whole different military option... move the platoon/squad center point, and have the units just keep up with it?  Would that be far simpler?  I feel like this current implementation is a black hole of time.
 
 ONGOING ISSUES:
-
+* So much work on orders...
+* move up to strategy manager
+* defense... needs more thought
+* offense, attack move in small gaps.  say 10% of distance to target point at a time?  Need pathing for this.
+* Squad & Platoon names
+* Reactors aren't handled - we see an order and skip it.
+* squad should notify platoon when it's dead.  Currently it's staying in memory and keeps drawing where it died.  Neat tombstone feature.
+* squad to maintain it's position.  Leader? (could die)  center? (maybe they aren't close?)  Other?  Same for platoon.
+* Somehow the squad is near the point but not at it.  There's some level of unit push going on -- he's about 2.5 distance away from the point.  HACK:  increased distance to 3.0f and solved it (for now)
+* Travel across the map could be a little smoother.  Partial distance travel is done by squad, so you end up with slightly different points, and one squad gets ahead of the others.
+* Defense of "natural choke" isn't quite working -- the natural has 2 chokes, 1 into main and 1 into map.  We're getting that first.
+* TODO:  Units got very gummed up in the choke and ended up pushing even further with marauders around.  bumped up to 3.0f range.  lot of guessing going on here.
+* Medivacs don't move to their squad
+* comment out std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
+* first couple platoons go out, then it quickly gets stuck and they won't attack.  orders stuck in pending?  never completed "defend"?
 
 # Setup
 
@@ -79,6 +97,11 @@ https://github.com/Blizzard/s2client-api#coding-standard
 
 Unzip, put the lib & include folders in a folder called 'sc2api-precompiled'.
 Sibling to that, create your folder for this project -- 'FradBot'
+
+## Get the Overseer library
+https://github.com/pimmen89/Overseer
+
+Clone the library repo at the same root as the bot (c:\xxx\FradBot and c:\xxx\Overseer).
 
 ## One time configuration
 Project Settings -> C++ -> General - Additional Include Directories should point to ../sc2api-precompiled/include  (or wherever you load these files)

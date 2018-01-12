@@ -19,8 +19,23 @@ void StrategyManager::OnGameStart()
 	*/
 
 	//New strategy leaves them all reliant on the strategy manager to coordinate!
+	BO_ExpandFirstIntoBioBall();
 
-	//Setup our initial build order
+	//BO_SimpleBio();
+	
+
+}
+
+void StrategyManager::OnStep()
+{
+}
+
+void StrategyManager::BO_ExpandFirstIntoBioBall()
+{
+	//Attempt to follow a build order.  We'll start with this one which has enough complexity to push us along
+	//	http://www.sc2bm.com/builds/159#expand
+	//Note numbers in the article are 1 higher ("the 13th scv")
+
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
@@ -112,8 +127,8 @@ void StrategyManager::OnGameStart()
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARAUDER));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 72 supply
-	//TODO:  Lift Factory from Reactor	
-	//TODO:  Land Starport on Reactor	
+																			//TODO:  Lift Factory from Reactor	
+																			//TODO:  Land Starport on Reactor	
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_COMMANDCENTER));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MEDIVAC));
 	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MEDIVAC));
@@ -133,20 +148,110 @@ void StrategyManager::OnGameStart()
 	//TODO:  Scanner sweep auto?
 
 	//END OF BUILD ORDER
-
 }
 
-void StrategyManager::OnStep()
+//Simple just for testing - gets us units fast to test attacking
+void StrategyManager::BO_SimpleBio()
 {
-	//Attempt to follow a build order.  We'll start with this one which has enough complexity to push us along
-	//	http://www.sc2bm.com/builds/159#expand
-	//Note numbers in the article are 1 higher ("the 13th scv")
-	int32_t lastFoodSeen = 0;
-	int32_t currentFood = Observation()->GetFoodUsed();
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
 
-	//TODO:  Works at early game, messes up once you lose a unit?
-	if (currentFood == lastFoodSeen) {
-		return;
-	}
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_REFINERY));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));	//@ 19 scv
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_REFINERY));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_BARRACKS));	//@ 22 supply
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_SCV));
+
+	//just keep building marines
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_REACTOR_BARRACKS));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_REACTOR_BARRACKS));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(BuildQueueItem(ABILITY_ID::BUILD_SUPPLYDEPOT));
+
+
 
 }
