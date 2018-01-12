@@ -5,7 +5,7 @@
 using namespace sc2;
 using namespace std;
 
-Squad::Squad(Bot & b, std::shared_ptr<Platoon> _parent)
+Squad::Squad(Bot & b, const std::shared_ptr<Platoon> & _parent)
 	: bot(b)
 	, parentPlatoon(_parent)
 	, squadOrders(SquadOrders::Empty())

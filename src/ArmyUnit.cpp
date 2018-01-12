@@ -2,13 +2,13 @@
 #include "Squad.h"
 using namespace sc2;
 
-ArmyUnit::ArmyUnit(std::shared_ptr<Squad> _parentSquad)
+ArmyUnit::ArmyUnit(const std::shared_ptr<Squad> & _parentSquad)
 	: ArmyUnit(_parentSquad, (const sc2::Unit*)nullptr)
 {
 	
 }
 
-ArmyUnit::ArmyUnit(std::shared_ptr<Squad> _parentSquad, const sc2::Unit* _unit)
+ArmyUnit::ArmyUnit(const std::shared_ptr<Squad> & _parentSquad, const sc2::Unit* _unit)
 	: parentSquad(_parentSquad)
 	, unit(_unit)
 {

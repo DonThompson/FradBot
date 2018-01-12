@@ -68,6 +68,7 @@ Suggestions:
 * Should I be using shared_ptr for most of my vectors?
 * Really need to get autonomy in build orders for workers, supply at least.  army maybe not far after.
 * SCV split for expansions getting important
+* A whole different military option... move the platoon/squad center point, and have the units just keep up with it?  Would that be far simpler?  I feel like this current implementation is a black hole of time.
 
 ONGOING ISSUES:
 * So much work on orders...

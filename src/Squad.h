@@ -10,7 +10,7 @@ class Platoon;
 class Squad : public std::enable_shared_from_this<Squad>
 {
 public:
-	Squad(Bot & b, std::shared_ptr<Platoon> _parent);
+	Squad(Bot & b, const std::shared_ptr<Platoon> & _parent);
 
 	void AddUnit(const sc2::Unit* unit);
 	size_t CountUnitsByType(sc2::UNIT_TYPEID unitTypeID);

@@ -5,8 +5,8 @@ class Squad;
 class ArmyUnit
 {
 public:
-	ArmyUnit(std::shared_ptr<Squad> _parentSquad);
-	ArmyUnit(std::shared_ptr<Squad> _parentSquad, const sc2::Unit* _unit);
+	ArmyUnit(const std::shared_ptr<Squad> & _parentSquad);
+	ArmyUnit(const std::shared_ptr<Squad> & _parentSquad, const sc2::Unit* _unit);
 	void OnStep();
 	
 	sc2::Point3D Position();
