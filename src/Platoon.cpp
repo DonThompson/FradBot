@@ -49,6 +49,11 @@ bool Platoon::AddUnit(const sc2::Unit* unit)
 		//Make a new squad
 		shared_ptr<Squad> newSquad = make_shared<Squad>(bot, shared_from_this());
 		newSquad->AddUnit(unit);
+		//Tell the new squad to go to the center point of the platoon.  If we're properly closing platoons when they move
+		//	out, this should work fine.  If a platoon gets a unit while it's clear across the map... this unit is going to 
+		//	hare off on its own.
+		//TODO:  Not sure that's right?
+		newSquad->SetOrders(SquadOrders(GetCurrentPosition()));
 		squads.push_back(newSquad);
 		return true;
 	}
@@ -230,19 +235,7 @@ void Platoon::OnStep()
 		//execute orders.  TODO:  who should issue attack command?
 		SquadOrders orders(partialPoint);
 		squad->SetOrders(orders);
-		
-		/* order type kinda useless?
-		if (currentOrders == PLATOON_ORDERS::ATTACK) {
-			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
-		}
-		else if (currentOrders == PLATOON_ORDERS::DEFEND) {
-			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
-		}
-		else if (currentOrders == PLATOON_ORDERS::GATHER) {
-			bot.Actions()->UnitCommand(squad, ABILITY_ID::ATTACK_ATTACK, currentTargetPoint);
-		}*/
 	}
-
 
 	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
 	for (shared_ptr<Squad> squad : squads) {
@@ -256,4 +249,16 @@ void Platoon::OnSquadOrdersAchieved()
 	//TODO:  hack because we can't iterate over squads in the callback because it's already iterating squads
 	//TODO:  still an issue with shared ptrs?  probably, infinite recursion.
 	checkForSquadOrdersAchieved = true;
+}
+
+sc2::Point3D Platoon::GetCurrentPosition()
+{
+	//squad 1 leads the way
+	if (squads.size() > 0) {
+		return squads.front()->GetCurrentPosition();
+	}
+
+	//TODO:  Not sure this is a good idea either
+	return Point3D(0, 0, 0);
+
 }

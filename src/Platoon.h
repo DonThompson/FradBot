@@ -41,6 +41,7 @@ public:
 	void SetOrders(PlatoonOrders orders);
 	void OnSquadOrdersAchieved();
 	void OnStep();
+	sc2::Point3D GetCurrentPosition();
 
 	std::string GetDebugSummaryString();
 

@@ -82,8 +82,8 @@ ONGOING ISSUES:
 * Platoons need to work together, squads are fairly independent - they run off w/o each other.
 * New platoons still need to get orders, similar to additions to squad.  follow that model.
 * Late add-on units to a squad run off by themselves, to easily die.  Lock squads when they take off?  Or wait until full?  or until some point.
-
-* squad gathering works!  platoon gathering not so much.
+* army manager shouldn't send off platoons that aren't ready
+* Travel across the map could be a little smoother.  Partial distance travel is done by squad, so you end up with slightly different points, and one squad gets ahead of the others.
 
 # Setup
 
