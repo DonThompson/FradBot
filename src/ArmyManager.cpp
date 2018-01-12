@@ -291,7 +291,7 @@ void ArmyManager::ManageMilitary()
 
 				//Tell each platoon to defend
 				for (shared_ptr<Platoon> platoon : armyPlatoons) {
-					platoon->SetOrders(Platoon::PLATOON_ORDERS::DEFEND, targetPoint);
+					platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
 				}
 
 				//TODO:  New platoons
@@ -310,7 +310,7 @@ void ArmyManager::ManageMilitary()
 
 				//Tell each platoon to attack
 				for (shared_ptr<Platoon> platoon : armyPlatoons) {
-					platoon->SetOrders(Platoon::PLATOON_ORDERS::ATTACK, targetPoint);
+					platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
 				}
 
 				//TODO:  New platoons

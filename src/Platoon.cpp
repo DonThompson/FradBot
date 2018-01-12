@@ -13,10 +13,8 @@ size_t maxSquadsPerPlatoon = 3;
 
 Platoon::Platoon(Bot & b)
 	: maxSquadCount(maxSquadsPerPlatoon)
-	, currentOrders(PLATOON_ORDERS::GATHER)
 	, bot(b)
 {
-	hasOrders = false;
 	checkForSquadOrdersAchieved = false;
 }
 
@@ -109,35 +107,81 @@ std::string Platoon::GetDebugSummaryString()
 	return oss.str();
 }
 
-void Platoon::SetOrders(PLATOON_ORDERS orders, Point2D targetPoint)
+void Platoon::SetOrders(PlatoonOrders orders)
 {
-	hasOrders = true;
-	currentOrders = orders;
-	currentTargetPoint = targetPoint;
+	//Load the new orders as pending.  Each step we'll analyze if we're ready to switch orders.
+	pendingOrders = orders;
+}
 
-	//Clear all squad orders
-	for (shared_ptr<Squad> squad : squads) {
-		squad->ClearOrders();
+//Should be called each game step.  Can be throttled.
+void Platoon::ProcessPendingOrders()
+{
+	//TODO:  I feel like, eventually, we'll want some sort of "do it now!" type orders.  But for now, orders
+	//	will never be executed until the previous orders are completed.  This probably won't live long.
+	//TODO:  It's really not the previous commands I'm worried about, but the "gathering" of units.
+
+	//Figure out if we're ready to accept any pending orders
+	if (pendingOrders.hasOrders)
+	{
+		bool applyNewOrders = false;
+		//If we have no current orders, jump to it
+		if (!currentOrders.hasOrders) {
+			applyNewOrders = true;
+		}
+		//For now we wait even for attacks
+		/*else if (currentOrders.orderType == ATTACK) {
+			applyNewOrders = true;
+		}*/
+		else {
+			//We don't want to initiate until all the squads have finished their work.
+			bool anyHasOrders = false;
+			for (shared_ptr<Squad> squad : squads) {
+				if (squad->HasOrders()) {
+					anyHasOrders = true;
+					break;
+				}
+			}
+
+			//If no squads have orders (to gather), then we can go ahead and move to our new orders
+			if (!anyHasOrders) {
+				applyNewOrders = true;
+			}
+		}
+
+		//TODO:  close squad
+		if (applyNewOrders) {
+			currentOrders = pendingOrders;
+			//Clear all squad orders
+			for (shared_ptr<Squad> squad : squads) {
+				squad->ClearOrders();
+			}
+		}
+	}
+}
+
+//Should be called each game step.  Should not be throttled.
+void Platoon::DrawCurrentOrders()
+{
+	if (currentOrders.hasOrders) {
+		//TODO:  3d pt.  completely guess at z order, may work on some maps and not others
+		Point3D pt3d(currentOrders.targetPoint.x, currentOrders.targetPoint.y, 12.0f);
+		//Draw a circle at our target with a label
+		bot.Draw().DrawCircle(pt3d, 1.0f, sc2::Colors::Purple);
+		//TODO:  Platoon name
+		bot.Draw().DrawTextOnMap("Platoon {name} Target!", pt3d);
 	}
 }
 
 //Called each game step
 void Platoon::OnStep()
 {
-	//TEMP:  DRAW
-	if (hasOrders) {
-		//TODO:  3d pt.  completely guess at z order, may work on some maps and not others
-		Point3D pt3d(currentTargetPoint.x, currentTargetPoint.y, 12.0f);
-		bot.Draw().DrawCircle(pt3d, 1.0f, sc2::Colors::Purple);
-		bot.Draw().DrawTextOnMap("Platoon Target!", pt3d);
-	}
-	//END TEMP
-
+	ProcessPendingOrders();
+	DrawCurrentOrders();
 
 	//TODO:  Should we throttle the speed here?
 
 	//Ensure the platoon has orders.  If it doesn't, we can't pass to the squads.
-	if (!hasOrders)
+	if (!currentOrders.hasOrders)
 		return;
 
 	//First we check if one of our squads achieved an objective.  If so, we might have achieved our entire objective for the platoon.
@@ -159,7 +203,7 @@ void Platoon::OnStep()
 		//TODO:  we're already iterating through squads -- this callback is probably in OnStep()
 		bool atLeastOneFailed = false;
 		for (shared_ptr<Squad> squad : squads) {
-			float currentDistance = sc2::Distance2D(squad->GetCurrentPosition(), currentTargetPoint);
+			float currentDistance = sc2::Distance2D(squad->GetCurrentPosition(), currentOrders.targetPoint);
 			if (currentDistance > winRange) {
 				//At least squad is not there yet, so keep issuing orders
 				atLeastOneFailed = true;
@@ -168,9 +212,7 @@ void Platoon::OnStep()
 
 		if (!atLeastOneFailed) {
 			//If we got here, all squads are within range.  We can clear our orders
-			hasOrders = false;
-			currentOrders = PLATOON_ORDERS::GATHER;
-			currentTargetPoint = Point2D(0, 0);
+			currentOrders.Clear();
 			//Quit out - we don't need to iterate over the squads
 			return;
 		}
@@ -189,7 +231,7 @@ void Platoon::OnStep()
 
 		//50% of the way between points.
 		//	TODO:  this will keep shrinking to crazy small values?
-		Point2D partialPoint((currentPos.x + currentTargetPoint.x) / 2, (currentPos.y + currentTargetPoint.y) / 2);
+		Point2D partialPoint((currentPos.x + currentOrders.targetPoint.x) / 2, (currentPos.y + currentOrders.targetPoint.y) / 2);
 
 		//TODO:  this doesn't seem to work
 		//draw stuff
@@ -213,24 +255,16 @@ void Platoon::OnStep()
 	}
 
 
-
-
-
-
-
 	//TODO:  Or throttle here?  Or inside squad?  Or above platoon?
 	for (shared_ptr<Squad> squad : squads) {
 		squad->OnStep();
 	}
-	
-
 }
 
 //Called when a squad achieves their orders
 void Platoon::OnSquadOrdersAchieved()
 {
 	//TODO:  hack because we can't iterate over squads in the callback because it's already iterating squads
+	//TODO:  still an issue with shared ptrs?  probably, infinite recursion.
 	checkForSquadOrdersAchieved = true;
-
-
 }
