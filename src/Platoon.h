@@ -42,7 +42,7 @@ public:
 	void OnSquadOrdersAchieved();
 	void OnStep();
 	sc2::Point3D GetCurrentPosition();
-
+	bool HasOrders();
 	std::string GetDebugSummaryString();
 
 private:
@@ -59,4 +59,5 @@ private:
 	void ProcessPendingOrders();
 	void DrawCurrentOrders();
 	size_t GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID);
+	bool platoonClosedToNewMembers;
 };

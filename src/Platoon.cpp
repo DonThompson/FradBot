@@ -14,8 +14,9 @@ size_t maxSquadsPerPlatoon = 3;
 Platoon::Platoon(Bot & b)
 	: maxSquadCount(maxSquadsPerPlatoon)
 	, bot(b)
+	, platoonClosedToNewMembers(false)
+	, checkForSquadOrdersAchieved(false)
 {
-	checkForSquadOrdersAchieved = false;
 }
 
 size_t Platoon::GetTotalPlatoonUnitCount()
@@ -30,6 +31,10 @@ size_t Platoon::GetTotalPlatoonUnitCount()
 //Return true if the unit was accepted.  False if there is no room.
 bool Platoon::AddUnit(const sc2::Unit* unit)
 {
+	//No new members!
+	if (platoonClosedToNewMembers)
+		return false;
+
 	//Ask each squad how many of this unit type they have.  First squad with an opening takes it
 	size_t max = GetMaxOfTypeInSquad(unit->unit_type);
 
@@ -125,6 +130,10 @@ void Platoon::ProcessPendingOrders()
 	if (pendingOrders.hasOrders)
 	{
 		bool applyNewOrders = false;
+
+		//TODO:  Can we skip this if we're closed?
+		//if(!platoonClosedToNewMembers) {
+
 		//Make sure every squad has finished gathering.
 		bool isAnyStillGathering = false;
 		for (shared_ptr<Squad> squad : squads) {
@@ -146,6 +155,12 @@ void Platoon::ProcessPendingOrders()
 			for (shared_ptr<Squad> squad : squads) {
 				squad->ClearOrders();
 			}
+
+			//Done with our initial platoon gathering and we have a real order.  Close down the group
+			//	so we don't pick up any stragglers.
+			//TODO:  This really needs to be 'if we're leaving the base' sort of thing.  Best I've got is "attack" for now.
+			if(currentOrders.orderType == ATTACK)
+				platoonClosedToNewMembers = true;
 		}
 		else {
 			std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
@@ -261,4 +276,11 @@ sc2::Point3D Platoon::GetCurrentPosition()
 	//TODO:  Not sure this is a good idea either
 	return Point3D(0, 0, 0);
 
+}
+
+bool Platoon::HasOrders()
+{
+	//TODO:  I think we could be in a state where we got pending orders, but are still gathering, 
+	//	thus haven't moved them over -- but have no current orders.
+	return currentOrders.hasOrders || pendingOrders.hasOrders;
 }

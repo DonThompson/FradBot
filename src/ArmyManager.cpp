@@ -269,6 +269,23 @@ std::string ArmyManager::GetDebugSummaryString()
 
 void ArmyManager::ManageMilitary()
 {
+	//V2:  Attack @ ~12 units in each platoon
+	for (shared_ptr<Platoon> platoon : armyPlatoons) {
+		//Attack if we're big enough
+		if (platoon->GetTotalPlatoonUnitCount() >= 12 && !platoon->HasOrders()) {
+			//TODO:  Position.  Picking the enemy start for now
+			Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
+			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
+		}
+		//defend otherwise
+		else if (platoon->GetTotalPlatoonUnitCount() >= 1 && !platoon->HasOrders()) {
+			//TODO:  Position.  Picking the enemy start for now
+			Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
+			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
+		}
+	}
+
+	/*
 	//V1:  Replicate the old terrible strategy with platoons.
 	switch (currentStrategy) {
 	case 0:	//Game initialization, build shit and don't do anything.
@@ -301,7 +318,7 @@ void ArmyManager::ManageMilitary()
 	case 1:	//Defend the base!
 		{
 			size_t armyUnitCount = GetTotalArmyUnitCount();
-			if (armyUnitCount >= 15) {
+			if (armyUnitCount >= 12) {
 				//Move to offense
 				currentStrategy = 2;
 
@@ -322,7 +339,7 @@ void ArmyManager::ManageMilitary()
 			//TODO:  Come back to defend?
 		}
 		break;
-	}
+	}*/
 }
 
 size_t ArmyManager::GetTotalArmyUnitCount()
