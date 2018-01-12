@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBotLauncher", "launcher
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBot", "bot\FradBot.vcxproj", "{76B4E376-0294-4A9C-95A3-D8F9D821F41D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FradBotLM", "FradBotLM\FradBotLM.vcxproj", "{9BE00037-813F-4B81-AA8D-49D0700E5CEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +36,12 @@ Global
 		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x64.Build.0 = Release|x64
 		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x86.ActiveCfg = Release|Win32
 		{76B4E376-0294-4A9C-95A3-D8F9D821F41D}.Release|x86.Build.0 = Release|Win32
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Debug|x64.ActiveCfg = Debug|x64
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Debug|x86.ActiveCfg = Debug|Win32
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Debug|x86.Build.0 = Debug|Win32
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Release|x64.ActiveCfg = Release|x64
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Release|x86.ActiveCfg = Release|Win32
+		{9BE00037-813F-4B81-AA8D-49D0700E5CEA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
