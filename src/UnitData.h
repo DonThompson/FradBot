@@ -1,5 +1,5 @@
 #pragma once
-#include <sc2api\sc2_api.h>
+#include <sc2api/sc2_api.h>
 
 //Local (faster) copy of sc2::UnitTypeData with data that doesn't change
 //	Simply copied everything out of sc2::UnitTypeData and hid (toward the bottom)

@@ -1,5 +1,5 @@
 #pragma once
-#include <sc2api\sc2_api.h>
+#include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
 class Bot;
 class MapImpl;		//Never use the header in this file, it will "leak" Overseer data to the rest of the bot.
