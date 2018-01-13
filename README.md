@@ -85,9 +85,10 @@ ONGOING ISSUES:
 * Defense of "natural choke" isn't quite working -- the natural has 2 chokes, 1 into main and 1 into map.  We're getting that first.
 * TODO:  Units got very gummed up in the choke and ended up pushing even further with marauders around.  bumped up to 3.0f range.  lot of guessing going on here.
 * Medivacs don't move to their squad
-* comment out std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
 * first couple platoons go out, then it quickly gets stuck and they won't attack.  orders stuck in pending?  never completed "defend"?
-* Abyssal Reef:  by complete coincidence, the move command sends you to the middle of some rocks.  The marines can never get there, and thus just hang out.
+* really need a "win the game" approach.  Once they clear out the target (nexus/cc), they just stand there.  Seek & destroy type.
+* really need a scouting manager.
+
 
 # Setup
 
