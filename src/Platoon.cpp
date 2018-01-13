@@ -215,6 +215,7 @@ void Platoon::OnStep()
 		//TODO:  we're already iterating through squads -- this callback is probably in OnStep()
 		bool atLeastOneFailed = false;
 		for (shared_ptr<Squad> squad : squads) {
+			//TODO:  Maybe use pathing here?  I want to leave it on raw distance for now because this code is saving us when units are sent to unpathable points.
 			float currentDistance = sc2::Distance2D(squad->GetCurrentPosition(), currentOrders.targetPoint);
 			if (currentDistance > winRange) {
 				//At least squad is not there yet, so keep issuing orders

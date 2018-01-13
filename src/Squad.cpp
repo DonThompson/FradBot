@@ -85,7 +85,8 @@ void Squad::OnStep()
 	//TODO:  Picked 3.0 because marines were pushing enough so that they somehow missed the point, but got to the 
 	//	action destination.
 	//TODO:  Should the squad detect lack of sc2::Unit::orders.size() with HasOrders()?
-	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 3.0f) {
+	//Use pathable distance, otherwise units will stand on a cliff above the point or behind rocks on the wrong side.
+	if (bot.Query()->PathingDistance(GetCurrentPosition(), squadOrders.currentTargetPoint) < 3.0f) {
 		//We've arrived!
 		ClearOrders();
 

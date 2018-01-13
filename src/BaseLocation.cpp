@@ -30,6 +30,7 @@ bool BaseLocation::IsPointInBase(Point3D pt)
 
 bool BaseLocation::IsPointInBase(Point2D pt)
 {
+	//Use raw distance, not pathing distance.  We'll eventually be removing this methodology.
 	if (Distance2D(resourceDepotLocation, pt) < baseRadius)
 		return true;
 	return false;

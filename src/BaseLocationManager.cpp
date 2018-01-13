@@ -75,7 +75,6 @@ void BaseLocationManager::InitializeNaturalExpansions()
 				continue;
 
 			float_t dist = bot.Query()->PathingDistance(startBase.GetResourceDepotLocation(), destBase.GetResourceDepotLocation());
-			//float_t dist = DistanceSquared3D(startBase.GetResourceDepotLocation(), destBase.GetResourceDepotLocation());
 			if (dist < closestDistance) {
 				closestDistance = dist;
 				closestBaseId = destBase.GetBaseLocationId();
@@ -159,7 +158,8 @@ BaseLocation* BaseLocationManager::FindNearestAvailableExpansionLocation()
 	BaseLocation* winner = nullptr;
 	float_t distanceFromMain = std::numeric_limits<float_t>::max();
 	for (BaseLocation* loc : GetNeutralBases()) {
-		float_t dist = Distance2D(loc->GetResourceDepotLocation(), mainPt);
+		//Use pathing distance
+		float_t dist = bot.Query()->PathingDistance(loc->GetResourceDepotLocation(), mainPt);
 		if (dist < distanceFromMain) {
 			//new winner
 			winner = loc;

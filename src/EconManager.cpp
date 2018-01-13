@@ -196,7 +196,9 @@ const Unit* EconManager::FindNearestMineralPatch(const Point2D& start)
 	const Unit* target = nullptr;
 	for (const auto& u : units) {
 		if (Utils::IsMineralPatch(u->unit_type)) {
-			float d = DistanceSquared2D(u->pos, start);
+			//Use pathing distance, not air distance.
+			//	NOTE:  Pathing using a unit appears to not work (returns 0) if the unit is in fog of war.  Explicitly use the position
+			float d = bot.Query()->PathingDistance(u->pos, start);
 			if (d < distance) {
 				distance = d;
 				target = u;
