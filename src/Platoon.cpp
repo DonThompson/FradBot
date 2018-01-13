@@ -173,7 +173,10 @@ void Platoon::DrawCurrentOrders()
 {
 	if (currentOrders.hasOrders) {
 		//TODO:  3d pt.  completely guess at z order, may work on some maps and not others
-		Point3D pt3d(currentOrders.targetPoint.x, currentOrders.targetPoint.y, 12.0f);
+		//TODO:  This should work?
+		//float_t zPos = bot.Map().GetGroundHeightAtPoint(currentOrders.targetPoint);
+		float_t zPos = 12.0f;
+		Point3D pt3d(currentOrders.targetPoint.x, currentOrders.targetPoint.y, zPos);
 		//Draw a circle at our target with a label
 		bot.Draw().DrawCircle(pt3d, 1.0f, sc2::Colors::Purple);
 		//TODO:  Platoon name
@@ -241,6 +244,19 @@ void Platoon::OnStep()
 		//50% of the way between points.
 		//	TODO:  this will keep shrinking to crazy small values?
 		Point2D partialPoint((currentPos.x + currentOrders.targetPoint.x) / 2, (currentPos.y + currentOrders.targetPoint.y) / 2);
+		//TODO:  Picked value at random
+		if (bot.Query()->PathingDistance(squad->GetFirstRawUnit(), partialPoint) < 6.0f) {
+			//We're pretty close to our target point, just jump right there, no more halfsies.
+			partialPoint = currentOrders.targetPoint;
+		}
+
+		//Make sure the point is actually reachable
+		//TODO:  Real pathing needed!
+		if (!bot.Observation()->IsPathable(partialPoint)) {
+			//TODO:  what do we do?  For now let's just jump to the end.  We really need some pathing.
+			//bot.Query()->PathingDistance()
+			partialPoint = currentOrders.targetPoint;
+		}
 
 		//TODO:  this doesn't seem to work
 		//draw stuff

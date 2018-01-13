@@ -23,6 +23,7 @@ public:
 	void ClearOrders();
 	sc2::Point3D GetCurrentPosition();
 	bool HasGathered();
+	const sc2::Unit* GetFirstRawUnit();
 
 private:
 	Bot & bot;

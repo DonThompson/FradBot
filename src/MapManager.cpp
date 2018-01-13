@@ -2,6 +2,7 @@
 #include "bot.h"
 #include "MapImpl.h"		//Should only ever be included in this cpp file.  Constrains us to never exposing the Overseer library map info directly.
 using namespace sc2;
+using namespace std;
 
 MapManager::MapManager(Bot & b)
 	: ManagerBase(b)
@@ -55,6 +56,21 @@ std::vector<sc2::Point2D> MapManager::GetRegionChokePoints(size_t regionId)
 	}
 
 	return allChokePoints;
+}
+
+bool MapManager::IsPointWalkable(Point2D ptToTest)
+{
+	/*overseerMapImpl->getGraph()
+	shared_ptr<Tile> tile = overseerMapImpl->GetTile(ptToTest);
+	tile->iswa*/
+		return false;
+}
+
+//Find the ground z position for any 2d tile.  Great way to turn a 2d into a 3d point
+float_t MapManager::GetGroundHeightAtPoint(sc2::Point2D pt)
+{
+	shared_ptr<Tile> tile = overseerMapImpl->GetTile(pt);
+	return static_cast<float_t>(tile->GroundHeight());
 }
 
 /*

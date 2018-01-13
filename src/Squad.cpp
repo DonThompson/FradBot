@@ -189,3 +189,11 @@ bool Squad::HasGathered()
 	isGathered = true;
 	return true;
 }
+
+const sc2::Unit* Squad::GetFirstRawUnit()
+{
+	if (squadUnits.size() == 0)
+		return nullptr;
+
+	return squadUnits[0]->unit;
+}

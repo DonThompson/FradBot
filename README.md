@@ -69,6 +69,7 @@ Suggestions:
 * Really need to get autonomy in build orders for workers, supply at least.  army maybe not far after.
 * SCV split for expansions getting important
 * A whole different military option... move the platoon/squad center point, and have the units just keep up with it?  Would that be far simpler?  I feel like this current implementation is a black hole of time.
+* Redefine natural - closest to your main choke point *abyssal reef it expands to your 3rd*
 
 ONGOING ISSUES:
 * So much work on orders...
@@ -86,6 +87,7 @@ ONGOING ISSUES:
 * Medivacs don't move to their squad
 * comment out std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
 * first couple platoons go out, then it quickly gets stuck and they won't attack.  orders stuck in pending?  never completed "defend"?
+* Abyssal Reef:  by complete coincidence, the move command sends you to the middle of some rocks.  The marines can never get there, and thus just hang out.
 
 # Setup
 

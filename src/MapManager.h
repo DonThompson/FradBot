@@ -19,6 +19,8 @@ public:
 
 	size_t GetRegionIdFromPoint(sc2::Point2D pt);
 	std::vector<sc2::Point2D> GetRegionChokePoints(size_t regionId);
+	float_t GetGroundHeightAtPoint(sc2::Point2D pt);
+	bool IsPointWalkable(sc2::Point2D ptToTest);
 	/*
 	std::vector<TilePosition> GetRegionTiles(size_t regionId);
 	std::vector<RegionEdge> GetRegionEdges(size_t regionId);
