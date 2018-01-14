@@ -55,7 +55,6 @@ void SupplyManager::OnStep()
 bool SupplyManager::SupplyDepotNeeded()
 {
 	const ObservationInterface* observation = Observation();
-	int32_t supplyUsed = observation->GetFoodUsed();
 	int32_t currentSupplyCap = observation->GetFoodCap();
 
 	//Shortcut - never go over 200
@@ -104,7 +103,6 @@ uint32_t SupplyManager::PredictSupplyDepotsNeeded()
 uint32_t SupplyManager::CalculateSupplyCurrentlyBeingProduced()
 {
 	const ObservationInterface* observation = Observation();
-	ActionInterface* actions = Actions();
 
 	//Loop through all units and see if they're building a unit right now, and if so what the cost of that unit is
 	int32_t supplyBeingProduced = 0;
