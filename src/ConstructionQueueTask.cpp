@@ -3,9 +3,9 @@ using namespace sc2;
 
 //Base constructor, builds a queue task with no values.  Not recommended for use.
 ConstructionQueueTask::ConstructionQueueTask()
+	: ConstructionQueueTask(0, 0, ABILITY_ID::INVALID, nullptr, nullptr)
 {
 	//Just use the expected constructor with some predefined values
-	ConstructionQueueTask(0, 0, ABILITY_ID::INVALID, nullptr, nullptr);
 }
 
 //Common default constructor, use this one.
