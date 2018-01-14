@@ -25,15 +25,6 @@ class Bot;
 
 class Platoon : public std::enable_shared_from_this<Platoon>
 {
-//TODO.  Move elsewhere?  Class'ify it?  Something.
-public:
-	//TODO: MOVE
-	enum PLATOON_ORDERS {
-		GATHER = 0,
-		ATTACK,
-		DEFEND,
-	};
-
 public:
 	Platoon(Bot & b);
 	size_t GetTotalPlatoonUnitCount();

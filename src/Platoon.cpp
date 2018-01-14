@@ -159,7 +159,7 @@ void Platoon::ProcessPendingOrders()
 			//Done with our initial platoon gathering and we have a real order.  Close down the group
 			//	so we don't pick up any stragglers.
 			//TODO:  This really needs to be 'if we're leaving the base' sort of thing.  Best I've got is "attack" for now.
-			if(currentOrders.orderType == PLATOON_ORDERS::ATTACK)
+			if(currentOrders.orderType == PlatoonOrders::ORDER_TYPE::ATTACK)
 				platoonClosedToNewMembers = true;
 		}
 		else {
