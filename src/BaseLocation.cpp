@@ -105,6 +105,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 	oss << "Base location " << baseLocationId << flags << " Region " << regionId << std::endl;
 	bot.Draw().DrawTextOnMap(oss.str(), resourceDepotLocation, color);
 
+	/* No longer needed, these work consistently.
 	for (const Unit* patch : mineralPatches) {
 		bot.Draw().DrawCircle(patch->pos, patch->radius, color);
 	}
@@ -112,6 +113,7 @@ void BaseLocation::DrawSelf(Bot & bot)
 	for (const Unit* geyser : geysers) {
 		bot.Draw().DrawCircle(geyser->pos, geyser->radius, color);
 	}
+	*/
 }
 
 uint32_t BaseLocation::GetBaseLocationId()

@@ -292,62 +292,6 @@ void ArmyManager::ManageMilitary()
 			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
 		}
 	}
-
-	/*
-	//V1:  Replicate the old terrible strategy with platoons.
-	switch (currentStrategy) {
-	case 0:	//Game initialization, build shit and don't do anything.
-		{
-			size_t armyUnitCount = GetTotalArmyUnitCount();
-			if (armyUnitCount > 0) {
-				//Move to defend
-				currentStrategy = 1;
-
-				//TODO:  Position.  Picking the natural choke for now
-				Point2D targetPoint;
-				std::vector<Point2D> chokes = bot.Map().GetRegionChokePoints(bot.BaseLocations().Natural()->GetRegionId());
-				if (chokes.size() > 0) {
-					targetPoint = chokes[0];
-				}
-				else {
-					//TODO
-					std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
-				}
-
-				//Tell each platoon to defend
-				for (shared_ptr<Platoon> platoon : armyPlatoons) {
-					platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
-				}
-
-				//TODO:  New platoons
-			}
-		}
-		break;
-	case 1:	//Defend the base!
-		{
-			size_t armyUnitCount = GetTotalArmyUnitCount();
-			if (armyUnitCount >= 12) {
-				//Move to offense
-				currentStrategy = 2;
-
-				//TODO:  Position.  Picking the enemy start for now
-				Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
-
-				//Tell each platoon to attack
-				for (shared_ptr<Platoon> platoon : armyPlatoons) {
-					platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
-				}
-
-				//TODO:  New platoons
-			}
-		}
-		break;
-	case 2:	//Offense, defeat the enemy
-		{
-			//TODO:  Come back to defend?
-		}
-		break;
-	}*/
 }
 
 size_t ArmyManager::GetTotalArmyUnitCount()

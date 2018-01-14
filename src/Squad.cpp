@@ -62,8 +62,7 @@ std::string Squad::GetDebugSummaryString()
 	return oss.str();
 }
 
-//Called each game step
-void Squad::OnStep()
+void Squad::DrawSquadDetails()
 {
 	//TEMP
 	std::ostringstream oss;
@@ -77,6 +76,13 @@ void Squad::OnStep()
 	}
 	bot.Draw().DrawTextOnMap(oss.str(), GetCurrentPosition(), color);
 	//END TEMP
+}
+
+//Called each game step
+void Squad::OnStep()
+{
+	//platoon calls this now
+	//DrawSquadDetails();
 
 
 	//TODO:  throttle this?

@@ -169,6 +169,7 @@ void Platoon::ProcessPendingOrders()
 }
 
 //Should be called each game step.  Should not be throttled.
+//TODO:  rename to drawplatoon or such
 void Platoon::DrawCurrentOrders()
 {
 	if (currentOrders.hasOrders) {
@@ -182,6 +183,12 @@ void Platoon::DrawCurrentOrders()
 		//TODO:  Platoon name
 		bot.Draw().DrawTextOnMap("Platoon {name} Target!", pt3d);
 	}
+
+	//todo:  other platoon data to draw?
+
+	for (shared_ptr<Squad> squad : squads) {
+		squad->DrawSquadDetails();
+	}
 }
 
 //Called each game step
@@ -189,6 +196,11 @@ void Platoon::OnStep()
 {
 	ProcessPendingOrders();
 	DrawCurrentOrders();
+
+	//TODO:  I put a throttle in place to help with performance.  Not sure we should keep this?  This does cascade down to squads.
+	if (bot.Observation()->GetGameLoop() % 2 != 0)
+		return;
+
 
 	//TODO:  Should we throttle the speed here?
 
