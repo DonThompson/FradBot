@@ -17,7 +17,8 @@ public:
 	size_t GetTotalSquadUnitCount();
 	void OnStep();
 	std::string GetDebugSummaryString();
-	operator const sc2::Units();
+
+	sc2::Units AsUnits();
 	bool HasOrders();
 	void SetOrders(SquadOrders newOrders);
 	void ClearOrders();
