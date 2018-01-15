@@ -20,16 +20,16 @@ public:
 
 	//Implement as needed, should match your notification requirements.
 	//	See bot.h for descriptions.
-	virtual void OnGameStart() { }
-	virtual void OnStep() { }
-	virtual void OnUnitDestroyed(const sc2::Unit* unit) { }
-	virtual void OnUnitCreated(const sc2::Unit* unit) { }
-	virtual void OnUnitIdle(const sc2::Unit* unit) { }
-	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID) { }
-	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit) { }
-	virtual void OnNydusDetected() { }
-	virtual void OnNuclearLaunchDetected() { }
-	virtual void OnUnitEnterVision(const sc2::Unit* unit) { }
+	virtual void OnGameStart() { /* Implement if you need it */ }
+	virtual void OnStep() { /* Implement if you need it */ }
+	virtual void OnUnitDestroyed(const sc2::Unit* unit) { /* Implement if you need it */ }
+	virtual void OnUnitCreated(const sc2::Unit* unit) { /* Implement if you need it */ }
+	virtual void OnUnitIdle(const sc2::Unit* unit) { /* Implement if you need it */ }
+	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID) { /* Implement if you need it */ }
+	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit) { /* Implement if you need it */ }
+	virtual void OnNydusDetected() { /* Implement if you need it */ }
+	virtual void OnNuclearLaunchDetected() { /* Implement if you need it */ }
+	virtual void OnUnitEnterVision(const sc2::Unit* unit) { /* Implement if you need it */ }
 
 protected:
 	//Getter for derived classes
