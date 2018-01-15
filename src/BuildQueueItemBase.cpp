@@ -4,6 +4,7 @@ using namespace sc2;
 BuildQueueItemBase::BuildQueueItemBase()
 	: firstSeenGameLoop(0)
 	, timeoutLoops(0)
+	, itemType(BUILD_QUEUE_TYPE::GAME_ABILITY)
 {
 	//I'm hardcoding this for now.  We could make it a property that a build order could define later.
 	//Purely made up from watching "realtime" games and getting through my build order.
