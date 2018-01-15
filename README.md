@@ -71,6 +71,7 @@ Suggestions:
 * SCV split for expansions getting important
 * A whole different military option... move the platoon/squad center point, and have the units just keep up with it?  Would that be far simpler?  I feel like this current implementation is a black hole of time.
 * Code against interfaces.  A few of these I think probably need v2's started.
+**** Pull out managers.  Instead define individual jobs that do one thing.  "gas worker balancer", "idle scv monitor", etc.  These should register for the events they want to receive.
 
 ONGOING ISSUES:
 * So much work on orders...

@@ -1,7 +1,10 @@
 #include "EconManager.h"
 #include "bot.h"
 #include "WorkerProducerSearch.h"
+#include "VespeneWorkerBalanceModule.h"
+#include "IdleWorkerModule.h"
 using namespace sc2;
+using namespace std;
 
 EconManager::EconManager(Bot & b)
 	: ManagerBase(b)
@@ -9,6 +12,17 @@ EconManager::EconManager(Bot & b)
 	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
+	vespeneWorkerBalanceModule = make_unique<VespeneWorkerBalanceModule>();
+	idleWorkerModule = make_unique<IdleWorkerModule>();
+}
+
+void EconManager::OnGameStart()
+{
+	//The following modules are always on, enabled from the beginning.
+	idleWorkerModule->EnableModule();
+	vespeneWorkerBalanceModule->EnableModule();
+
+	//All other modules need to be enabled when ready
 }
 
 void EconManager::OnStep()
@@ -36,10 +50,10 @@ void EconManager::OnStep()
 
 }
 
+//"Always On" behavior
 void EconManager::OnUnitIdle(const Unit* unit)
 {
 	switch (unit->unit_type.ToType()) {
-	case UNIT_TYPEID::TERRAN_COMMANDCENTER:     OnCommandCenterIdle(unit);      break;
 	case UNIT_TYPEID::TERRAN_SCV: {
 		const Unit* mineral_target = FindNearestMineralPatch(unit->pos);
 		if (mineral_target == nullptr) {
@@ -64,11 +78,6 @@ void EconManager::BalanceBuilders()
 			HandleCommandCenterIdle(cc);
 		}
 	}
-}
-
-void EconManager::OnCommandCenterIdle(const Unit* unit)
-{
-	HandleCommandCenterIdle(Structure(unit));
 }
 
 void EconManager::HandleCommandCenterIdle(Structure cc)

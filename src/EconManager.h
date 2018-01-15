@@ -8,10 +8,20 @@
 #include "Structure.h"
 
 class Bot;
+class VespeneWorkerBalanceModule;
+class IdleWorkerModule;
 
-//Autonomy:
+//Behaviors
+//	Always
+//		* VespeneWorkerBalanceModule
+//		* Idle workers moved to nearest minerals 
+
+//	Autonomy Enabled
+
+
+
 //	Enabled:  Builds workers if we have not saturated the minerals & gas fully.  Builds refineries if missing.  Shifts workers between the two.  And everything in disabled.
-//	Disabled:  Handlers idle workers and puts them back to mining.
+//	Disabled:  Handles idle workers and puts them back to mining.
 class EconManager : public ManagerBase {
 private:
 	clock_t lastBalanceClock;
@@ -19,6 +29,7 @@ private:
 public:
 	EconManager(Bot & b);
 	virtual void OnStep();
+	virtual void OnGameStart();
 	virtual void OnUnitIdle(const sc2::Unit* unit);
 
 	void OnRefinerySuccess(int64_t taskId);
@@ -32,7 +43,6 @@ public:
 private:
 	void BalanceBuilders();
 	void BalanceGasWorkers();
-	void OnCommandCenterIdle(const sc2::Unit* unit);
 	bool NeedRefinery();
 	int32_t GetRefineryCount();
 	void BuildRefinery();
@@ -43,6 +53,11 @@ private:
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;
 
+
+	//Included modules
+private:
+	std::unique_ptr<VespeneWorkerBalanceModule> vespeneWorkerBalanceModule;
+	std::unique_ptr<IdleWorkerModule> idleWorkerModule;
 };
 
 #endif //__ECON_MANAGER_H

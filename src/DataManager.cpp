@@ -68,7 +68,7 @@ void DataManager::MapUnitData()
 
 void DataManager::AddProducingBuildings(UnitData& data)
 {
-	switch (static_cast<ABILITY_ID>(data.ability_id)) {
+	switch (data.ability_id.ToType()) {
 	case ABILITY_ID::TRAIN_GHOST:
 	case ABILITY_ID::TRAIN_MARAUDER:
 	case ABILITY_ID::TRAIN_MARINE:

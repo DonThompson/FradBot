@@ -136,6 +136,8 @@
     <ClCompile Include="..\src\BaseLocationManager.cpp" />
     <ClCompile Include="..\src\bot.cpp" />
     <ClCompile Include="..\src\BuildQueueItem.cpp" />
+    <ClCompile Include="..\src\BuildQueueItemBase.cpp" />
+    <ClCompile Include="..\src\BuildQueueItem_Auto.cpp" />
     <ClCompile Include="..\src\BuildQueueManager.cpp" />
     <ClCompile Include="..\src\ConstructionManager.cpp" />
     <ClCompile Include="..\src\ConstructionPlacement.cpp" />
@@ -160,7 +162,9 @@
     <ClCompile Include="..\src\UpgradeList.cpp" />
     <ClCompile Include="..\src\UpgradesManager.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
+    <ClCompile Include="..\src\VespeneWorkerBalanceModule.cpp" />
     <ClCompile Include="..\src\WorkerProducerSearch.cpp" />
+    <ClCompile Include="IdleWorkerModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
@@ -169,7 +173,10 @@
     <ClInclude Include="..\src\BaseLocationInitializer.h" />
     <ClInclude Include="..\src\BaseLocationManager.h" />
     <ClInclude Include="..\src\bot.h" />
+    <ClInclude Include="..\src\BuildQueueEnums.h" />
     <ClInclude Include="..\src\BuildQueueItem.h" />
+    <ClInclude Include="..\src\BuildQueueItemBase.h" />
+    <ClInclude Include="..\src\BuildQueueItem_Auto.h" />
     <ClInclude Include="..\src\BuildQueueManager.h" />
     <ClInclude Include="..\src\ConstructionManager.h" />
     <ClInclude Include="..\src\ConstructionPlacement.h" />
@@ -195,7 +202,9 @@
     <ClInclude Include="..\src\UpgradeList.h" />
     <ClInclude Include="..\src\UpgradesManager.h" />
     <ClInclude Include="..\src\Utils.h" />
+    <ClInclude Include="..\src\VespeneWorkerBalanceModule.h" />
     <ClInclude Include="..\src\WorkerProducerSearch.h" />
+    <ClInclude Include="IdleWorkerModule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

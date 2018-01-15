@@ -72,47 +72,33 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 33 supply
+
+	//Turn on automatic SCV management.  We don't need a build order for every SCV from here out.
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem_Auto>(AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS));
+
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_TECHLAB_BARRACKS));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 37 supply
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_STIMPACK));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	//TODO:  Scanner sweep auto?
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_FACTORY));	//@ 44 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_ENGINEERINGBAY));	//@ 44 supply
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	//TODO:  Mules should probably always be auto?
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 46 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REFINERY));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 52 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS));
 	//Econ manager will auto handle moving SCVs to gas
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_SCV));
-
-	//Turn on automatic SCV management.  We don't need a build order for every SCV.
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem_Auto>(AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS));
-
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_STARPORT));	//@ 60 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_FACTORY));	//@ 60 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 60 supply
