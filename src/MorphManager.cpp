@@ -25,6 +25,7 @@ MorphManager::MorphManager(Bot & b)
 
 	default:
 		//Not a morph
+		break;
 	}
 
 	return false;
