@@ -98,6 +98,10 @@ size_t Platoon::GetMaxOfTypeInSquad(sc2::UNIT_TYPEID unitTypeID)
 	case UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
 		//TODO:  Future. Cram them all in the first squad
 		break;
+	default:
+		//Did we miss one?
+		std::cout << "ERROR:  Platoon::GetMaxOfTypeInSquad unhandled unit type " << sc2::UnitTypeToName(unitTypeID) << std::endl;
+		break;
 	}
 
 	return 200;
