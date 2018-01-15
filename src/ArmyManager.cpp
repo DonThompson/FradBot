@@ -29,6 +29,9 @@ using namespace std;
 	case UNIT_TYPEID::TERRAN_WIDOWMINE:
 	case UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
 		return true;
+	default:
+		//Nope, not military
+		break;
 	}
 
 	return false;

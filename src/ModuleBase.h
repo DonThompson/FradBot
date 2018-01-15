@@ -6,7 +6,7 @@ class Bot;
 class ModuleBase
 {
 public:
-	ModuleBase(Bot & b);
+	explicit ModuleBase(Bot & b);
 
 	//Turn on the module.  Will not be executed until enabled.
 	void EnableModule();

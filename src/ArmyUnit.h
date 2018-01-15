@@ -5,7 +5,7 @@ class Squad;
 class ArmyUnit
 {
 public:
-	ArmyUnit(const std::shared_ptr<Squad> & _parentSquad);
+	explicit ArmyUnit(const std::shared_ptr<Squad> & _parentSquad);
 	ArmyUnit(const std::shared_ptr<Squad> & _parentSquad, const sc2::Unit* _unit);
 	void OnStep();
 	

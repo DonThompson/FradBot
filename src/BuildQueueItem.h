@@ -7,7 +7,7 @@
 class BuildQueueItem : public BuildQueueItemBase
 {
 public:
-	BuildQueueItem(sc2::ABILITY_ID _abilityID);
+	explicit BuildQueueItem(sc2::ABILITY_ID _abilityID);
 	sc2::ABILITY_ID abilityToTrain;
 
 	virtual std::string GetDescription();
