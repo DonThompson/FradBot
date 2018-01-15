@@ -8,7 +8,7 @@ public:
 
 public:
 	SquadOrders();
-	SquadOrders(sc2::Point2D targetPoint);
+	explicit SquadOrders(sc2::Point2D targetPoint);
 	bool operator ==(SquadOrders& rhs);
 	bool operator !=(SquadOrders& lhs);
 

@@ -7,7 +7,7 @@
 class BaseLocationManager : public ManagerBase
 {
 public:
-	BaseLocationManager(Bot & b);
+	explicit BaseLocationManager(Bot & b);
 	
 	virtual void OnStep();
 	virtual void OnGameStart();

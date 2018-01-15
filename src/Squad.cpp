@@ -111,7 +111,7 @@ void Squad::OnStep()
 }
 
 //TODO:  Needs to be super fast.Worth duplicating tracking.  Is this fast enough?
-Squad::operator const sc2::Units()
+sc2::Units Squad::AsUnits()
 {
 	sc2::Units units;
 	for (shared_ptr<ArmyUnit> unit : squadUnits) {
@@ -155,7 +155,7 @@ void Squad::ExecuteOrdersActionOnSquad()
 		return;
 
 	std::cout << "Sending squad @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
-	bot.Actions()->UnitCommand(operator const sc2::Units(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
+	bot.Actions()->UnitCommand(AsUnits(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
 
 void Squad::ExecuteOrdersActionOnArmyUnit(shared_ptr<ArmyUnit> u)

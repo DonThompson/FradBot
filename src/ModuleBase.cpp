@@ -20,3 +20,8 @@ bool ModuleBase::IsEnabled()
 {
 	return enabled;
 }
+
+Bot & ModuleBase::GetBot()
+{
+	return bot;
+}

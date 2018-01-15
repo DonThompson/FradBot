@@ -16,7 +16,7 @@ public:
 	static bool IsMilitaryUnit(const sc2::Unit* unit);
 
 public:
-	ArmyManager(Bot & b);
+	explicit ArmyManager(Bot & b);
 	virtual void OnStep();
 	virtual void OnUnitCreated(const sc2::Unit* unit);
 	virtual void OnUnitDestroyed(const sc2::Unit* unit);

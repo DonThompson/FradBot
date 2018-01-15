@@ -10,7 +10,7 @@ StructuresManager::StructuresManager(Bot & b)
 
 void StructuresManager::OnStep()
 {
-
+	//Not needed at this time
 }
 
 /*static*/bool StructuresManager::IsBuilding(sc2::ABILITY_ID abilityID)
@@ -30,6 +30,9 @@ void StructuresManager::OnStep()
 	case ABILITY_ID::BUILD_STARPORT:
 	case ABILITY_ID::BUILD_SUPPLYDEPOT:
 		return true;
+	default:
+		//Not a terran building
+		break;
 	}
 
 	/*Took out addons for now.
@@ -88,12 +91,12 @@ void StructuresManager::OnStep()
 //Also called when buildings are canceled during construction
 void StructuresManager::OnUnitDestroyed(const Unit* unit)
 {
-
+	//Not needed at this time
 }
 
 void StructuresManager::OnBuildingConstructionComplete(const Unit* unit)
 {
-
+	//Not needed at this time
 }
 
 std::vector<Structure> StructuresManager::GetStructuresByType(UNIT_TYPEID unitTypeID)

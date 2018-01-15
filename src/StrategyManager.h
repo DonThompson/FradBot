@@ -7,7 +7,7 @@ class Bot;
 class StrategyManager : public ManagerBase
 {
 public:
-	StrategyManager(Bot & b);
+	explicit StrategyManager(Bot & b);
 
 	virtual void OnGameStart();
 	virtual void OnStep();

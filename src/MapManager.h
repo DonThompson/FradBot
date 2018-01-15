@@ -12,7 +12,7 @@ class MapImpl;		//Never use the header in this file, it will "leak" Overseer dat
 class MapManager : public ManagerBase
 {
 public:
-	MapManager(Bot & b);
+	explicit MapManager(Bot & b);
 	~MapManager();
 	virtual void OnStep();
 	virtual void OnGameStart();

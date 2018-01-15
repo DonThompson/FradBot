@@ -7,7 +7,7 @@ class Bot;
 class IdleWorkerModule : public ModuleBase
 {
 public:
-	IdleWorkerModule(Bot & b);
+	explicit IdleWorkerModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnUnitIdle(const sc2::Unit* unit);
 

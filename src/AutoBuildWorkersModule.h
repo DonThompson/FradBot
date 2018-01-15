@@ -8,7 +8,7 @@ class Bot;
 class AutoBuildWorkersModule : public ModuleBase
 {
 public:
-	AutoBuildWorkersModule(Bot & b);
+	explicit AutoBuildWorkersModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
 	virtual void OnUnitIdle(const sc2::Unit* unit);

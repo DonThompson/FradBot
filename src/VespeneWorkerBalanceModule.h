@@ -6,7 +6,7 @@ class Bot;
 class VespeneWorkerBalanceModule : public ModuleBase
 {
 public:
-	VespeneWorkerBalanceModule(Bot & b);
+	explicit VespeneWorkerBalanceModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
 

@@ -12,7 +12,7 @@ class Structure
 {
 public:
 	Structure();
-	Structure(const sc2::Unit* _building);
+	explicit Structure(const sc2::Unit* _building);
 
 	//Start to map out pass throughs
 	int32_t assignedHarvesters();

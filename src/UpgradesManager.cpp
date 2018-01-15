@@ -46,6 +46,9 @@ using namespace sc2;
 	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
 	case ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
 		return true;
+	default:
+		//Not a terran upgrade
+		break;
 	}
 	return false;
 }
@@ -176,6 +179,9 @@ void UpgradesManager::OnUpgradeCompleted(UpgradeID upgradeID)
 		break;
 	case UPGRADE_ID::STIMPACK:
 		upgrades.hasStim = true;
+		break;
+	default:
+		//Not an upgrade we care about right now, maybe later
 		break;
 	}
 }

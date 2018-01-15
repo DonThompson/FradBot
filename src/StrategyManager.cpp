@@ -30,6 +30,7 @@ void StrategyManager::OnGameStart()
 
 void StrategyManager::OnStep()
 {
+	//Not needed at this point
 }
 
 void StrategyManager::BO_ExpandFirstIntoBioBall()

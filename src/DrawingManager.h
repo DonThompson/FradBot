@@ -6,7 +6,7 @@
 class DrawingManager : public ManagerBase
 {
 public:
-	DrawingManager(Bot & b);
+	explicit DrawingManager(Bot & b);
 	~DrawingManager();
 
 	//Called for each step of the game.  Not for public consumption.

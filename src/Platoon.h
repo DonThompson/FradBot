@@ -26,7 +26,7 @@ class Bot;
 class Platoon : public std::enable_shared_from_this<Platoon>
 {
 public:
-	Platoon(Bot & b);
+	explicit Platoon(Bot & b);
 	size_t GetTotalPlatoonUnitCount();
 	bool AddUnit(const sc2::Unit* unit);
 	void SetOrders(PlatoonOrders orders);

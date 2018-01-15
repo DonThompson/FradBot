@@ -122,6 +122,9 @@ void ConstructionManager::OnStep()
 		case ConstructionTaskState::eCompleted:
 			HandleCompleted(task, tasksToRemove, taskId);
 			break;
+		default:
+			std::cout << "ERROR:  Unknown construction task state" << std::endl;
+			break;
 		}
 
 		//Update the queue with any changes made to our task by the current step

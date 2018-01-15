@@ -92,6 +92,7 @@ MapManager & Bot::Map()
 
 void Bot::OnGameFullStart()
 {
+	//Not needed at this time
 }
 
 void Bot::OnGameStart()
@@ -136,6 +137,7 @@ void Bot::OnGameEnd()
 
 void Bot::OnError(const std::vector<sc2::ClientError>& client_errors, const std::vector<std::string>& protocol_errors /*= {}*/)
 {
+	//Not needed at this time
 }
 
 void Bot::OnStep() {

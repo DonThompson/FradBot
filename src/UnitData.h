@@ -8,7 +8,7 @@ class UnitData
 {
 public:
 	UnitData();
-	UnitData(sc2::UnitTypeData sourceData);
+	explicit UnitData(sc2::UnitTypeData sourceData);
 
 	//! Stable ID. This ID will not change between patches.
 	sc2::UnitTypeID unit_type_id;

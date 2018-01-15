@@ -29,6 +29,9 @@ using namespace std;
 	case UNIT_TYPEID::TERRAN_WIDOWMINE:
 	case UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
 		return true;
+	default:
+		//Nope, not military
+		break;
 	}
 
 	return false;
@@ -208,6 +211,9 @@ void ArmyManager::OnBarracksIdle(const Unit* unit)
 		break;
 	case 1:
 		Actions()->UnitCommand(unit, ABILITY_ID::TRAIN_MARAUDER);
+		break;
+	default:
+		//Not possible
 		break;
 	}
 }
