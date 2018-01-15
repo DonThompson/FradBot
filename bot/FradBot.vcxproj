@@ -143,11 +143,15 @@
     <ClCompile Include="..\src\ConstructionPlacement.cpp" />
     <ClCompile Include="..\src\ConstructionQueueTask.cpp" />
     <ClCompile Include="..\src\DataManager.cpp" />
+    <ClCompile Include="..\src\DistanceUtils.cpp" />
     <ClCompile Include="..\src\DrawingManager.cpp" />
     <ClCompile Include="..\src\EconManager.cpp" />
+    <ClCompile Include="..\src\IdleWorkerModule.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
     <ClCompile Include="..\src\MapManager.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
+    <ClCompile Include="..\src\ModuleBase.cpp" />
+    <ClCompile Include="..\src\ModuleNotificationRequirement.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\Platoon.cpp" />
     <ClCompile Include="..\src\PlatoonOrders.cpp" />
@@ -164,7 +168,6 @@
     <ClCompile Include="..\src\Utils.cpp" />
     <ClCompile Include="..\src\VespeneWorkerBalanceModule.cpp" />
     <ClCompile Include="..\src\WorkerProducerSearch.cpp" />
-    <ClCompile Include="IdleWorkerModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
@@ -183,11 +186,15 @@
     <ClInclude Include="..\src\ConstructionQueueTask.h" />
     <ClInclude Include="..\src\ConstructionTaskState.h" />
     <ClInclude Include="..\src\DataManager.h" />
+    <ClInclude Include="..\src\DistanceUtils.h" />
     <ClInclude Include="..\src\DrawingManager.h" />
     <ClInclude Include="..\src\EconManager.h" />
+    <ClInclude Include="..\src\IdleWorkerModule.h" />
     <ClInclude Include="..\src\ManagerBase.h" />
     <ClInclude Include="..\src\MapManager.h" />
     <ClInclude Include="..\src\MineralLine.h" />
+    <ClInclude Include="..\src\ModuleBase.h" />
+    <ClInclude Include="..\src\ModuleNotificationRequirement.h" />
     <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\Platoon.h" />
     <ClInclude Include="..\src\PlatoonOrders.h" />
@@ -204,7 +211,6 @@
     <ClInclude Include="..\src\Utils.h" />
     <ClInclude Include="..\src\VespeneWorkerBalanceModule.h" />
     <ClInclude Include="..\src\WorkerProducerSearch.h" />
-    <ClInclude Include="IdleWorkerModule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

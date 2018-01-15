@@ -143,8 +143,17 @@
     <ClCompile Include="..\src\VespeneWorkerBalanceModule.cpp">
       <Filter>Economy</Filter>
     </ClCompile>
-    <ClCompile Include="IdleWorkerModule.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\IdleWorkerModule.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleBase.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleNotificationRequirement.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DistanceUtils.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,8 +264,17 @@
     <ClInclude Include="..\src\VespeneWorkerBalanceModule.h">
       <Filter>Economy</Filter>
     </ClInclude>
-    <ClInclude Include="IdleWorkerModule.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\IdleWorkerModule.h">
+      <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleBase.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleNotificationRequirement.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DistanceUtils.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

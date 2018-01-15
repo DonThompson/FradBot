@@ -72,6 +72,17 @@ void EconManager::OnGameStart()
 
 void EconManager::OnStep()
 {
+	//Send notifications out to each module that has been enabled
+	for (std::pair<std::shared_ptr<ModuleBase>, uint32_t> p : stepLoopNotificationMap) {
+		std::shared_ptr<ModuleBase> m = p.first;
+		if (m->IsEnabled()) {
+			if (bot.Observation()->GetGameLoop() % p.second == 0) {
+				m->OnStep();
+			}
+		}
+	}
+
+
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
 	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
 	if (clock() - lastBalanceClock > rebalanceTime) {
@@ -86,7 +97,6 @@ void EconManager::OnStep()
 		}
 
 		//Work to do regardless of automony (inside time limiting)
-		BalanceGasWorkers();
 
 		lastBalanceClock = clock();
 	}
@@ -242,24 +252,4 @@ const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const Ob
 		}
 	}
 	return target;
-}
-
-
-
-
-
-
-//"Always On" behavior
-void EconManager::BalanceGasWorkers()
-{
-	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
-	//	TODO:  Needs to pull from base location
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (Structure r : refineries) {
-		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
-			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
-			const Unit* unit = Utils::GetRandomHarvester(Observation());
-			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
-		}
-	}
 }
