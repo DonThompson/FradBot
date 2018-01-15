@@ -16,8 +16,58 @@ EconManager::EconManager(Bot & b)
 	InitializeModules();
 }
 
+void EconManager::InitializeModules()
+{
+	vector<shared_ptr<ModuleBase>> modules;
+
+	//The following modules are always on, enabled from the beginning.
+	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
+	vespeneWorkerBalanceModule->EnableModule();
+	modules.push_back(vespeneWorkerBalanceModule);
+
+	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
+	idleWorkerModule->EnableModule();
+	modules.push_back(idleWorkerModule);
+
+	//All other modules need to be enabled when ready
+	//add to modules.push_back(...);
+
+
+	//Setup notifications
+	for (const shared_ptr<ModuleBase> m : modules) {
+		ModuleNotificationRequirement reqs = m->GetNotificationRequirements();
+
+		if (reqs.onGameStart) {
+			gameStartNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitCreated) {
+			unitCreateNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitDestroyed) {
+			unitDestroyNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitIdle) {
+			unitIdleNotifications.push_back(m);
+		}
+
+		uint32_t stepLoopCount = reqs.stepLoopCount;
+		if (stepLoopCount > 0) {
+			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
+		}
+	}
+}
+
 void EconManager::OnGameStart()
 {
+	//Send notifications out to each module that has been enabled
+	for (std::shared_ptr<ModuleBase> m : gameStartNotifications) {
+		if (m->IsEnabled()) {
+			m->OnGameStart();
+		}
+	}
 }
 
 void EconManager::OnStep()
@@ -55,6 +105,14 @@ void EconManager::OnUnitIdle(const Unit* unit)
 		}
 	}
 }
+
+
+
+
+
+
+
+
 
 void EconManager::BalanceBuilders()
 {
@@ -186,6 +244,11 @@ const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const Ob
 	return target;
 }
 
+
+
+
+
+
 //"Always On" behavior
 void EconManager::BalanceGasWorkers()
 {
@@ -197,50 +260,6 @@ void EconManager::BalanceGasWorkers()
 			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
 			const Unit* unit = Utils::GetRandomHarvester(Observation());
 			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
-		}
-	}
-}
-
-void EconManager::InitializeModules()
-{
-	vector<shared_ptr<ModuleBase>> modules;
-
-	//The following modules are always on, enabled from the beginning.
-	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
-	vespeneWorkerBalanceModule->EnableModule();
-	modules.push_back(vespeneWorkerBalanceModule);
-
-	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
-	idleWorkerModule->EnableModule();
-	modules.push_back(idleWorkerModule);
-
-	//All other modules need to be enabled when ready
-	//add to modules.push_back(...);
-
-
-	//Setup notifications
-	for (const shared_ptr<ModuleBase> m : modules) {
-		ModuleNotificationRequirement reqs = m->GetNotificationRequirements();
-
-		if (reqs.onGameStart) {
-			gameStartNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitCreated) {
-			unitCreateNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitDestroyed) {
-			unitDestroyNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitIdle) {
-			unitIdleNotifications.push_back(m);
-		}
-
-		uint32_t stepLoopCount = reqs.stepLoopCount;
-		if (stepLoopCount > 0) {
-			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
 		}
 	}
 }

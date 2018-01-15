@@ -11,7 +11,7 @@ IdleWorkerModule::IdleWorkerModule(Bot & b)
 //We only need to be notified for idle units, nowhere else
 ModuleNotificationRequirement IdleWorkerModule::GetNotificationRequirements()
 {
-	return ModuleNotificationRequirement(false, 0, true, false, false);
+	return ModuleNotificationRequirement(false, 0, true, false, false, false, false, false, false, false);
 }
 
 //Handle idle unit notifications.  We only care about SCVs
@@ -63,6 +63,6 @@ const Unit* IdleWorkerModule::FindNearestMineralPatch(const Point2D& start)
 	}
 	//Go ahead and use pathing distance.  This is a reasonably rare event (we must have just mined out our base), so it's worth the slight
 	//	performance hit to get a better destination.
-	const Unit* target = DistanceUtils::FindClosestUnitUsingPathingDistance(bot, minerals, start);
+	target = DistanceUtils::FindClosestUnitUsingPathingDistance(bot, minerals, start);
 	return target;
 }

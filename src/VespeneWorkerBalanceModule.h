@@ -7,5 +7,7 @@ class VespeneWorkerBalanceModule : public ModuleBase
 public:
 	VespeneWorkerBalanceModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
+
+
 };
 

@@ -20,6 +20,7 @@ public:
 
 	//Implement as needed, should match your notification requirements.
 	//	See bot.h for descriptions.
+	virtual void OnGameStart() { }
 	virtual void OnStep() { }
 	virtual void OnUnitDestroyed(const sc2::Unit* unit) { }
 	virtual void OnUnitCreated(const sc2::Unit* unit) { }
