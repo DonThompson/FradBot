@@ -90,6 +90,9 @@ bool Utils::IsMineralPatch(sc2::UNIT_TYPEID unitTypeID)
 	case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD:
 	case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD750:
 		return true;
+	default:
+		//Not a mineral patch
+		break;
 	}
 	return false;
 }
@@ -103,6 +106,9 @@ bool Utils::IsVespeneGeyser(sc2::UNIT_TYPEID unitTypeID)
 	case UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER:
 	case UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER:
 		return true;
+	default:
+		//Not a geyser
+		break;
 	}
 	return false;
 }

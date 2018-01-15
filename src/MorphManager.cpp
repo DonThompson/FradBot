@@ -22,6 +22,9 @@ MorphManager::MorphManager(Bot & b)
 	case ABILITY_ID::MORPH_ORBITALCOMMAND:
 	case ABILITY_ID::MORPH_PLANETARYFORTRESS:
 		return true;
+
+	default:
+		//Not a morph
 	}
 
 	return false;
@@ -60,6 +63,10 @@ bool MorphManager::PerformMorph(sc2::ABILITY_ID abilityID)
 	case ABILITY_ID::MORPH_ORBITALCOMMAND:
 	case ABILITY_ID::MORPH_PLANETARYFORTRESS:
 		return MorphCommandCenter(abilityID);
+		break;
+
+	default:
+		//Not a morph
 		break;
 	}
 
