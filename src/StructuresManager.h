@@ -22,7 +22,7 @@ public:
 	static bool IsBuilding(sc2::ABILITY_ID abilityID);
 
 public:
-	StructuresManager(Bot & b);
+	explicit StructuresManager(Bot & b);
 
 	virtual void OnStep();
 	virtual void OnUnitDestroyed(const sc2::Unit* unit);

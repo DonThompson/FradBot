@@ -34,7 +34,7 @@ class Bot;
 class ConstructionManager : public ManagerBase
 {
 public:
-	ConstructionManager(Bot & b);
+	explicit ConstructionManager(Bot & b);
 
 	//Use to request that the construction manager construct a building.  Callback functions optional.  The construction manager will find a worker and a position
 	//	for the building to be constructed.

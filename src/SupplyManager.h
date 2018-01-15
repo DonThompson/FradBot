@@ -14,7 +14,7 @@ class Bot;
 class SupplyManager : public ManagerBase
 {
 public:
-	SupplyManager(Bot & b);
+	explicit SupplyManager(Bot & b);
 	~SupplyManager();
 	virtual void OnStep();
 

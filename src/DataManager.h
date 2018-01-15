@@ -7,7 +7,7 @@ class Bot;
 class DataManager : public ManagerBase
 {
 public:
-	DataManager(Bot & b);
+	explicit DataManager(Bot & b);
 	virtual void OnStep();
 
 	UnitData GetUnitData(sc2::UNIT_TYPEID unitTypeID);

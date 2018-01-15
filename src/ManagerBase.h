@@ -9,21 +9,21 @@ class ManagerBase
 {
 public:
 	//Base constructor
-	ManagerBase(Bot & bot);
+	explicit ManagerBase(Bot & bot);
 
 	//Required for all managers to implement, handles each step of the game.
 	virtual void OnStep() = 0;
 
 	//Individual game actions, not required for managers to implement.  Use as needed.
-	virtual void OnGameStart() {}
-	virtual void OnUnitIdle(const sc2::Unit* unit) {}
-	virtual void OnUnitDestroyed(const sc2::Unit* unit) {}
-	virtual void OnUnitCreated(const sc2::Unit* unit) {}
-	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID) {}
-	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit) {}
-	virtual void OnNydusDetected() {}
-	virtual void OnNuclearLaunchDetected() {}
-	virtual void OnUnitEnterVision(const sc2::Unit* unit) {}
+	virtual void OnGameStart() {/* Implement if you need it */ }
+	virtual void OnUnitIdle(const sc2::Unit* unit) {/* Implement if you need it */ }
+	virtual void OnUnitDestroyed(const sc2::Unit* unit) {/* Implement if you need it */ }
+	virtual void OnUnitCreated(const sc2::Unit* unit) {/* Implement if you need it */ }
+	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID) {/* Implement if you need it */ }
+	virtual void OnBuildingConstructionComplete(const sc2::Unit* unit) {/* Implement if you need it */ }
+	virtual void OnNydusDetected() {/* Implement if you need it */ }
+	virtual void OnNuclearLaunchDetected() {/* Implement if you need it */ }
+	virtual void OnUnitEnterVision(const sc2::Unit* unit) {/* Implement if you need it */ }
 
 	//Enables the economy manager to act autonomously.  Each manager will treat this differently.
 	void EnableAutonomy();

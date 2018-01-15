@@ -11,7 +11,7 @@ class BuildQueueItem;
 class BuildQueueManager : public ManagerBase
 {
 public:
-	BuildQueueManager(Bot & b);
+	explicit BuildQueueManager(Bot & b);
 	virtual void OnStep();
 
 	void Push(std::shared_ptr<BuildQueueItemBase> item);

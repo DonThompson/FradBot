@@ -10,7 +10,7 @@ class MineralLine
 
 public:
 	//Initialize the class with your first mineral patch
-	MineralLine(MineralPatch startingMineralPatch);
+	explicit MineralLine(MineralPatch startingMineralPatch);
 	//Are the given minerals near this mineral line?  true if so.
 	bool AreTheseMineralsNear(MineralPatch mineralPatch);
 	//Retrieves the current center of the mineral line.  This center will shift as minerals are added to the line.

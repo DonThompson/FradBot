@@ -18,7 +18,7 @@ public:
 	static sc2::UNIT_TYPEID GetUpgradeProducerType(sc2::ABILITY_ID abilityID);
 
 public:
-	UpgradesManager(Bot & b);
+	explicit UpgradesManager(Bot & b);
 
 	virtual void OnStep();
 	virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID);

@@ -8,7 +8,7 @@ class Bot;
 class WorkerProducerSearch
 {
 public:
-	WorkerProducerSearch(Bot & b);
+	explicit WorkerProducerSearch(Bot & b);
 	//Rules:
 	//	Always start with main, then natural, then all other bases.
 	//	Never queue units, build them as others finish.  Utilize our super APM!

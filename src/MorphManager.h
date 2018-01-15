@@ -8,7 +8,7 @@ public:
 	static bool IsMorph(sc2::ABILITY_ID abilityID);
 
 public:
-	MorphManager(Bot & b);
+	explicit MorphManager(Bot & b);
 	virtual void OnStep();
 	bool PerformMorph(sc2::ABILITY_ID abilityID);
 

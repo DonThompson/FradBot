@@ -212,6 +212,9 @@ void ArmyManager::OnBarracksIdle(const Unit* unit)
 	case 1:
 		Actions()->UnitCommand(unit, ABILITY_ID::TRAIN_MARAUDER);
 		break;
+	default:
+		//Not possible
+		break;
 	}
 }
 

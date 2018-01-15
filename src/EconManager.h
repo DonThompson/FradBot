@@ -29,7 +29,7 @@ private:
 	clock_t lastBalanceClock;
 
 public:
-	EconManager(Bot & b);
+	explicit EconManager(Bot & b);
 	virtual void OnStep();
 	virtual void OnGameStart();
 	virtual void OnUnitIdle(const sc2::Unit* unit);
