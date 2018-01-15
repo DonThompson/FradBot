@@ -28,7 +28,7 @@ const Unit* Utils::GetRandomHarvester(const ObservationInterface* observation)
 				return harvester;
 			}
 			else {
-				switch (static_cast<ABILITY_ID>(order.ability_id)) {
+				switch (order.ability_id.ToType()) {
 				case ABILITY_ID::HARVEST_RETURN:		//Money in hand, we don't want to take this away!
 					break;
 				default:

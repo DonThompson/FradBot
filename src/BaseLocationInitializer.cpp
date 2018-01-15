@@ -139,7 +139,7 @@ Point2D BaseLocationInitializer::FindClosestPointTo(Point2D startingPoint, std::
 	Point2D closestPoint(0, 0);
 	float_t closestDistance = 100.0f;		//pick something far enough away to be further than anything this function might encounter
 	for (Point2D pt : pointList) {
-		//Calc distance
+		//Calc distance.  OK to use raw distance, we're just looking in a small predefined space
 		float_t thisDistance = Distance2D(startingPoint, pt);
 		if (thisDistance < closestDistance) {
 			//Winner, save it

@@ -1,29 +1,14 @@
 #include "BuildQueueItem.h"
 using namespace sc2;
 
-BuildQueueItem::BuildQueueItem(AbilityID _abilityID)
-	: firstSeenGameLoop(0)
-	, timeoutLoops(0)
+BuildQueueItem::BuildQueueItem(ABILITY_ID _abilityID)
+	: BuildQueueItemBase()
+	, abilityToTrain(_abilityID)
 {
-	abilityToTrain = _abilityID;
-
-	//I'm hardcoding this for now.  We could make it a property that a build order could define later.
-	//Purely made up from watching "realtime" games and getting through my build order.
-	timeoutLoops = 500;
+	itemType = BUILD_QUEUE_TYPE::GAME_ABILITY;
 }
 
-//Returns true if the item has timed out and should be thrown away
-bool BuildQueueItem::CheckTimeout(uint32_t currentGameLoop)
+std::string BuildQueueItem::GetDescription()
 {
-	//First, we use this function as initialization.  If we haven't been seen, set it.
-	if (firstSeenGameLoop == 0) {
-		firstSeenGameLoop = currentGameLoop;
-		return false;
-	}
-
-	//After that, look for timeout based on our configured value
-	if (firstSeenGameLoop + timeoutLoops < currentGameLoop) {
-		return true;
-	}
-	return false;
+	return sc2::AbilityTypeToName(abilityToTrain);
 }

@@ -62,8 +62,7 @@ std::string Squad::GetDebugSummaryString()
 	return oss.str();
 }
 
-//Called each game step
-void Squad::OnStep()
+void Squad::DrawSquadDetails()
 {
 	//TEMP
 	std::ostringstream oss;
@@ -77,6 +76,13 @@ void Squad::OnStep()
 	}
 	bot.Draw().DrawTextOnMap(oss.str(), GetCurrentPosition(), color);
 	//END TEMP
+}
+
+//Called each game step
+void Squad::OnStep()
+{
+	//platoon calls this now
+	//DrawSquadDetails();
 
 
 	//TODO:  throttle this?
@@ -85,7 +91,8 @@ void Squad::OnStep()
 	//TODO:  Picked 3.0 because marines were pushing enough so that they somehow missed the point, but got to the 
 	//	action destination.
 	//TODO:  Should the squad detect lack of sc2::Unit::orders.size() with HasOrders()?
-	if (sc2::Distance2D(GetCurrentPosition(), squadOrders.currentTargetPoint) < 3.0f) {
+	//Use pathable distance, otherwise units will stand on a cliff above the point or behind rocks on the wrong side.
+	if (bot.Query()->PathingDistance(GetCurrentPosition(), squadOrders.currentTargetPoint) < 3.0f) {
 		//We've arrived!
 		ClearOrders();
 
@@ -188,4 +195,12 @@ bool Squad::HasGathered()
 	//Everyone is gathered!
 	isGathered = true;
 	return true;
+}
+
+const sc2::Unit* Squad::GetFirstRawUnit()
+{
+	if (squadUnits.size() == 0)
+		return nullptr;
+
+	return squadUnits[0]->unit;
 }

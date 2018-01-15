@@ -1,7 +1,8 @@
 # FradBot
 Beginner Starcraft2 Bot
 
-Current state:  Defeats all medium AI better than 80% of the time.
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d30fc75889ff4f458b8f1260c9287c35)](https://www.codacy.com/app/thompsondn/FradBot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DonThompson/FradBot&amp;utm_campaign=Badge_Grade)
+
 
 General:
 * Generalize the rebalance logic in econ/supply manager to some kind of event system.  Game time is probably preferred.
@@ -69,6 +70,9 @@ Suggestions:
 * Really need to get autonomy in build orders for workers, supply at least.  army maybe not far after.
 * SCV split for expansions getting important
 * A whole different military option... move the platoon/squad center point, and have the units just keep up with it?  Would that be far simpler?  I feel like this current implementation is a black hole of time.
+* Code against interfaces.  A few of these I think probably need v2's started.
+**** Pull out managers.  Instead define individual jobs that do one thing.  "gas worker balancer", "idle scv monitor", etc.  These should register for the events they want to receive.
+* Move lots of old code into modules
 
 ONGOING ISSUES:
 * So much work on orders...
@@ -84,8 +88,13 @@ ONGOING ISSUES:
 * Defense of "natural choke" isn't quite working -- the natural has 2 chokes, 1 into main and 1 into map.  We're getting that first.
 * TODO:  Units got very gummed up in the choke and ended up pushing even further with marauders around.  bumped up to 3.0f range.  lot of guessing going on here.
 * Medivacs don't move to their squad
-* comment out std::cout << "Platoon {name} still gathering - orders on hold" << std::endl;
 * first couple platoons go out, then it quickly gets stuck and they won't attack.  orders stuck in pending?  never completed "defend"?
+* really need a "win the game" approach.  Once they clear out the target (nexus/cc), they just stand there.  Seek & destroy type.
+* really need a scouting manager.
+* I switched a bunch of code over to pathing queries instead of pure distance queries.  Framerate went from 2ms to 5-6ms consistently.  Related?  PC just running slow?
+* I'm still sending units to the wrong choke.  Maybe need to get some "pathing to center" of map?  then keep track of it, i'm sure i'm recalculating that a bunch of times.
+* Platoon travel could still be improved. They're getting a little strung out, especially if they turn a corner to reach a point - first squad gets there and bolts off, next squad gets delayed from that push, 3rd squad even more so.
+* Fix dead units / center pt / movement.  Had a platoon get in a fight, some survived, but "patient zero" didn't, so the squad just stood there.
 
 # Setup
 

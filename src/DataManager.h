@@ -1,5 +1,5 @@
 #pragma once
-#include <sc2api\sc2_api.h>
+#include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
 #include "UnitData.h"
 class Bot;

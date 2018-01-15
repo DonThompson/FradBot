@@ -16,6 +16,7 @@ public:
 
 	void AddMineralPatch(const sc2::Unit* patch);
 	void AddGeyser(const sc2::Unit* geyser);
+	sc2::Units GetMineralPatches();
 
 	void DrawSelf(Bot & bot);
 

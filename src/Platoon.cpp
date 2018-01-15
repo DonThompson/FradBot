@@ -159,7 +159,7 @@ void Platoon::ProcessPendingOrders()
 			//Done with our initial platoon gathering and we have a real order.  Close down the group
 			//	so we don't pick up any stragglers.
 			//TODO:  This really needs to be 'if we're leaving the base' sort of thing.  Best I've got is "attack" for now.
-			if(currentOrders.orderType == ATTACK)
+			if(currentOrders.orderType == PlatoonOrders::ORDER_TYPE::ATTACK)
 				platoonClosedToNewMembers = true;
 		}
 		else {
@@ -169,15 +169,25 @@ void Platoon::ProcessPendingOrders()
 }
 
 //Should be called each game step.  Should not be throttled.
+//TODO:  rename to drawplatoon or such
 void Platoon::DrawCurrentOrders()
 {
 	if (currentOrders.hasOrders) {
 		//TODO:  3d pt.  completely guess at z order, may work on some maps and not others
-		Point3D pt3d(currentOrders.targetPoint.x, currentOrders.targetPoint.y, 12.0f);
+		//TODO:  This should work?
+		//float_t zPos = bot.Map().GetGroundHeightAtPoint(currentOrders.targetPoint);
+		float_t zPos = 12.0f;
+		Point3D pt3d(currentOrders.targetPoint.x, currentOrders.targetPoint.y, zPos);
 		//Draw a circle at our target with a label
 		bot.Draw().DrawCircle(pt3d, 1.0f, sc2::Colors::Purple);
 		//TODO:  Platoon name
 		bot.Draw().DrawTextOnMap("Platoon {name} Target!", pt3d);
+	}
+
+	//todo:  other platoon data to draw?
+
+	for (shared_ptr<Squad> squad : squads) {
+		squad->DrawSquadDetails();
 	}
 }
 
@@ -186,6 +196,11 @@ void Platoon::OnStep()
 {
 	ProcessPendingOrders();
 	DrawCurrentOrders();
+
+	//TODO:  I put a throttle in place to help with performance.  Not sure we should keep this?  This does cascade down to squads.
+	if (bot.Observation()->GetGameLoop() % 2 != 0)
+		return;
+
 
 	//TODO:  Should we throttle the speed here?
 
@@ -212,6 +227,7 @@ void Platoon::OnStep()
 		//TODO:  we're already iterating through squads -- this callback is probably in OnStep()
 		bool atLeastOneFailed = false;
 		for (shared_ptr<Squad> squad : squads) {
+			//TODO:  Maybe use pathing here?  I want to leave it on raw distance for now because this code is saving us when units are sent to unpathable points.
 			float currentDistance = sc2::Distance2D(squad->GetCurrentPosition(), currentOrders.targetPoint);
 			if (currentDistance > winRange) {
 				//At least squad is not there yet, so keep issuing orders
@@ -241,6 +257,19 @@ void Platoon::OnStep()
 		//50% of the way between points.
 		//	TODO:  this will keep shrinking to crazy small values?
 		Point2D partialPoint((currentPos.x + currentOrders.targetPoint.x) / 2, (currentPos.y + currentOrders.targetPoint.y) / 2);
+		//TODO:  Picked value at random
+		if (bot.Query()->PathingDistance(squad->GetFirstRawUnit(), partialPoint) < 6.0f) {
+			//We're pretty close to our target point, just jump right there, no more halfsies.
+			partialPoint = currentOrders.targetPoint;
+		}
+
+		//Make sure the point is actually reachable
+		//TODO:  Real pathing needed!
+		if (!bot.Observation()->IsPathable(partialPoint)) {
+			//TODO:  what do we do?  For now let's just jump to the end.  We really need some pathing.
+			//bot.Query()->PathingDistance()
+			partialPoint = currentOrders.targetPoint;
+		}
 
 		//TODO:  this doesn't seem to work
 		//draw stuff

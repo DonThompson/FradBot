@@ -1,7 +1,11 @@
 #include "EconManager.h"
 #include "bot.h"
 #include "WorkerProducerSearch.h"
+#include "VespeneWorkerBalanceModule.h"
+#include "IdleWorkerModule.h"
+#include "AutoBuildWorkersModule.h"
 using namespace sc2;
+using namespace std;
 
 EconManager::EconManager(Bot & b)
 	: ManagerBase(b)
@@ -9,25 +13,98 @@ EconManager::EconManager(Bot & b)
 	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
+
+	InitializeModules();
+}
+
+void EconManager::InitializeModules()
+{
+	vector<shared_ptr<ModuleBase>> modules;
+
+	//The following modules are always on, enabled from the beginning.
+	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
+	vespeneWorkerBalanceModule->EnableModule();
+	modules.push_back(vespeneWorkerBalanceModule);
+
+	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
+	idleWorkerModule->EnableModule();
+	modules.push_back(idleWorkerModule);
+
+	//All other modules need to be enabled when ready
+	autoBuildWorkersModule = make_shared<AutoBuildWorkersModule>(bot);
+	//Disabled by default
+	modules.push_back(autoBuildWorkersModule);
+
+
+
+
+	//Setup notifications
+	for (const shared_ptr<ModuleBase> m : modules) {
+		ModuleNotificationRequirement reqs = m->GetNotificationRequirements();
+
+		if (reqs.onGameStart) {
+			gameStartNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitCreated) {
+			unitCreateNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitDestroyed) {
+			unitDestroyNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitIdle) {
+			unitIdleNotifications.push_back(m);
+		}
+
+		uint32_t stepLoopCount = reqs.stepLoopCount;
+		if (stepLoopCount > 0) {
+			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
+		}
+	}
+}
+
+void EconManager::EnableAutoBuildWorkersModule()
+{
+	autoBuildWorkersModule->EnableModule();
+}
+
+void EconManager::OnGameStart()
+{
+	//Send notifications out to each module that has been enabled
+	for (std::shared_ptr<ModuleBase> m : gameStartNotifications) {
+		if (m->IsEnabled()) {
+			m->OnGameStart();
+		}
+	}
 }
 
 void EconManager::OnStep()
 {
+	//Send notifications out to each module that has been enabled
+	for (std::pair<std::shared_ptr<ModuleBase>, uint32_t> p : stepLoopNotificationMap) {
+		std::shared_ptr<ModuleBase> m = p.first;
+		if (m->IsEnabled()) {
+			if (bot.Observation()->GetGameLoop() % p.second == 0) {
+				m->OnStep();
+			}
+		}
+	}
+
+
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
 	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
 	if (clock() - lastBalanceClock > rebalanceTime) {
 		//If the economy manager has been asked to run on its own, perform these actions
 		if (actAutonomously)
 		{
-			BalanceBuilders();
-
 			if (NeedRefinery()) {
 				BuildRefinery();
 			}
 		}
 
 		//Work to do regardless of automony (inside time limiting)
-		BalanceGasWorkers();
 
 		lastBalanceClock = clock();
 	}
@@ -36,66 +113,23 @@ void EconManager::OnStep()
 
 }
 
+//"Always On" behavior
 void EconManager::OnUnitIdle(const Unit* unit)
 {
-	switch (unit->unit_type.ToType()) {
-	case UNIT_TYPEID::TERRAN_COMMANDCENTER:     OnCommandCenterIdle(unit);      break;
-	case UNIT_TYPEID::TERRAN_SCV: {
-		const Unit* mineral_target = FindNearestMineralPatch(unit->pos);
-		if (mineral_target == nullptr) {
-			break;
-		}
-		Actions()->UnitCommand(unit, ABILITY_ID::SMART, mineral_target);
-		break;
-	}
-	default: {
-		break;
-	}
-	}
-}
-
-void EconManager::BalanceBuilders()
-{
-	//Make sure command centers have enough units - we might have just stolen some to bring them below threshold
-	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
-	for (Structure cc : ccs) {
-		//Just call the idle function, it'll quit if not needed
-		if (cc.getOrderCount() == 0) {
-			HandleCommandCenterIdle(cc);
+	//Send notifications out to each module that has been enabled
+	for (std::shared_ptr<ModuleBase> m : unitIdleNotifications) {
+		if (m->IsEnabled()) {
+			m->OnUnitIdle(unit);
 		}
 	}
 }
 
-void EconManager::OnCommandCenterIdle(const Unit* unit)
-{
-	HandleCommandCenterIdle(Structure(unit));
-}
 
-void EconManager::HandleCommandCenterIdle(Structure cc)
-{
-	//Only build if we're acting autonomously.  Otherwise let the game strategy handle it.
-	if (actAutonomously)
-	{
-		//Only build if we're short harvesters
-		bool buildSCV = false;
 
-		if (cc.assignedHarvesters() < cc.idealHarvesters()) {
-			buildSCV = true;
-		}
 
-		//Or if we're short gas harvesters
-		std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-		for (Structure r : refineries) {
-			if (r.assignedHarvesters() < r.idealHarvesters()) {
-				buildSCV = true;
-			}
-		}
 
-		if (buildSCV) {
-			TrainWorker(&cc);
-		}
-	}
-}
+
+
 
 //Returns true if the training structure had the worker available to build and we issued the command.
 //	TODO:  Still possible that it doesn't execute.
@@ -187,36 +221,4 @@ const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const Ob
 		}
 	}
 	return target;
-}
-
-const Unit* EconManager::FindNearestMineralPatch(const Point2D& start)
-{
-	Units units = Observation()->GetUnits(Unit::Alliance::Neutral);
-	float distance = std::numeric_limits<float>::max();
-	const Unit* target = nullptr;
-	for (const auto& u : units) {
-		if (Utils::IsMineralPatch(u->unit_type)) {
-			float d = DistanceSquared2D(u->pos, start);
-			if (d < distance) {
-				distance = d;
-				target = u;
-			}
-		}
-	}
-	return target;
-}
-
-//"Always On" behavior
-void EconManager::BalanceGasWorkers()
-{
-	//Version 1:  SIMPLE.  If we have a refinery < max, assign there.  Otherwise, assign to minerals.
-	//	TODO:  Needs to pull from base location
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-	for (Structure r : refineries) {
-		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
-			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
-			const Unit* unit = Utils::GetRandomHarvester(Observation());
-			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
-		}
-	}
 }

@@ -1,13 +1,16 @@
 #include "BuildQueueManager.h"
 #include "bot.h"
+#include "BuildQueueItem_Auto.h"
+#include "BuildQueueItem.h"
 using namespace sc2;
+using namespace std;
 
 BuildQueueManager::BuildQueueManager(Bot & b)
 	: ManagerBase(b)
 {
 }
 
-void BuildQueueManager::Push(BuildQueueItem item)
+void BuildQueueManager::Push(std::shared_ptr<BuildQueueItemBase> item)
 {
 	buildQueue.push_back(item);
 }
@@ -32,66 +35,32 @@ void BuildQueueManager::OnStep()
 	}
 
 	//Work on the first item
-	BuildQueueItem& item = buildQueue[0];
+	std::shared_ptr<BuildQueueItemBase> & item = buildQueue.at(0);
 
 	//First, we put a safety check for timeout.  Don't want items stuck in the build queue forever that we can never
 	//	build for some reason.  Early in dev, this handles unforeseen situations and things not yet build into the
 	//	manager.  Later, this should be a catch against edge cases... for exampleyou lose all your gas workers and 
 	//	the upgrade queued for 200 gas keeps anything else from building.
-	if (item.CheckTimeout(gameLoop)) {
+	if (item->CheckTimeout(gameLoop)) {
 		//It timed out, dequeue this request
-		std::cout << "WARNING:  ITEM TIMED OUT.  REMOVING FROM QUEUE.  (" << AbilityTypeToName(item.abilityToTrain) << ")" << std::endl;
+		std::cout << "WARNING:  ITEM TIMED OUT.  REMOVING FROM QUEUE.  (" << item->GetDescription() << ")" << std::endl;
 		buildQueue.erase(buildQueue.begin());
 		return;
 	}
 
-	//Ensure we have enough resources available to train this item
-	if (!HasResourcesFor(item.abilityToTrain)) {
-		return;
+	switch (item->itemType) {
+	case BUILD_QUEUE_TYPE::AUTO_ABILITY:
+		TryHandleAutoAbility(static_pointer_cast<BuildQueueItem_Auto>(item));
+		break;
+	case BUILD_QUEUE_TYPE::GAME_ABILITY:
+		TryHandleGameAbility(static_pointer_cast<BuildQueueItem>(item));
+		break;
+	default:
+		std::cout << "ERROR:  Unknown build queue item type" << std::endl;
+		break;
 	}
 
-	//For now, we break down into types of things to build:  Worker, Building, any other unit, Upgrades, morph, etc.
-	if (IsWorker(item.abilityToTrain)) {
-		if (bot.Econ().TrainWorker()) {
-			buildQueue.erase(buildQueue.begin());
-			std::cout << "Worker queued" << std::endl;
-		}
-	}
-	else if (IsBuilding(item.abilityToTrain)) {
-		//TODO:  We should move the item to a "building" state or hold it in a separate queue -- if it fails, re-queue it at the top, 
-		//	if it succeeds, fully remove it then.
-		//The construction manager will do its best to make sure this building gets constructed.
-		uint64_t queueId = bot.Construction().BuildStructure(item.abilityToTrain,
-			std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
-			std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
 
-		std::cout << "Starting new building(" << AbilityTypeToName(item.abilityToTrain) << "), task id:  " << queueId << std::endl;
-
-		buildQueue.erase(buildQueue.begin());
-	}
-	else if (IsUnit(item.abilityToTrain)) {
-		if (bot.Army().TrainUnit(item.abilityToTrain)) {
-			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
-			buildQueue.erase(buildQueue.begin());
-		}
-	}
-	else if (UpgradesManager::IsUpgrade(item.abilityToTrain)) {
-		if (bot.Upgrades().PerformUpgrade(item.abilityToTrain)) {
-			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
-			buildQueue.erase(buildQueue.begin());
-		}
-	}
-	else if (MorphManager::IsMorph(item.abilityToTrain)) {
-		if (bot.Morph().PerformMorph(item.abilityToTrain)) {
-			std::cout << sc2::AbilityTypeToName(item.abilityToTrain) << " queued" << std::endl;
-			buildQueue.erase(buildQueue.begin());
-		}
-	}
-	else {
-		//We must have missed one
-		std::cout << "Unknown build queue item:  " << sc2::AbilityTypeToName(item.abilityToTrain) << ".  DEQUEUEING" << std::endl;
-		buildQueue.erase(buildQueue.begin());
-	}
 }
 
 void BuildQueueManager::OnConstructionSuccess(int64_t taskId)
@@ -141,4 +110,68 @@ bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 	if (data.mineral_cost <= currentMinerals && data.vespene_cost <= currentVespene && currentFood + data.food_required <= currentFoodCap)
 		return true;
 	return false;
+}
+
+void BuildQueueManager::TryHandleAutoAbility(const std::shared_ptr<BuildQueueItem_Auto> & item)
+{
+	switch (item->abilityID) {
+	case AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS:
+		bot.Econ().EnableAutoBuildWorkersModule();
+		buildQueue.erase(buildQueue.begin());
+		break;
+	default:
+		std::cout << "ERROR:  UNKNOWN AUTO_ABILITYID " << item->GetDescription() << std::endl;
+		break;
+	}
+}
+
+void BuildQueueManager::TryHandleGameAbility(const std::shared_ptr<BuildQueueItem> & item)
+{
+	//Ensure we have enough resources available to train this item
+	if (!HasResourcesFor(item->abilityToTrain)) {
+		return;
+	}
+
+	//For now, we break down into types of things to build:  Worker, Building, any other unit, Upgrades, morph, etc.
+	if (IsWorker(item->abilityToTrain)) {
+		if (bot.Econ().TrainWorker()) {
+			buildQueue.erase(buildQueue.begin());
+			std::cout << "Worker queued" << std::endl;
+		}
+	}
+	else if (IsBuilding(item->abilityToTrain)) {
+		//TODO:  We should move the item to a "building" state or hold it in a separate queue -- if it fails, re-queue it at the top, 
+		//	if it succeeds, fully remove it then.
+		//The construction manager will do its best to make sure this building gets constructed.
+		uint64_t queueId = bot.Construction().BuildStructure(item->abilityToTrain,
+			std::bind(&BuildQueueManager::OnConstructionSuccess, this, std::placeholders::_1),
+			std::bind(&BuildQueueManager::OnConstructionFailed, this, std::placeholders::_1));
+
+		std::cout << "Starting new building(" << item->GetDescription() << "), task id:  " << queueId << std::endl;
+
+		buildQueue.erase(buildQueue.begin());
+	}
+	else if (IsUnit(item->abilityToTrain)) {
+		if (bot.Army().TrainUnit(item->abilityToTrain)) {
+			std::cout << item->GetDescription() << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
+	}
+	else if (UpgradesManager::IsUpgrade(item->abilityToTrain)) {
+		if (bot.Upgrades().PerformUpgrade(item->abilityToTrain)) {
+			std::cout << item->GetDescription() << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
+	}
+	else if (MorphManager::IsMorph(item->abilityToTrain)) {
+		if (bot.Morph().PerformMorph(item->abilityToTrain)) {
+			std::cout << item->GetDescription() << " queued" << std::endl;
+			buildQueue.erase(buildQueue.begin());
+		}
+	}
+	else {
+		//We must have missed one
+		std::cout << "ERROR:  Unknown build queue item:  " << item->GetDescription() << ".  DEQUEUEING" << std::endl;
+		buildQueue.erase(buildQueue.begin());
+	}
 }
