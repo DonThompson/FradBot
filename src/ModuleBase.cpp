@@ -1,7 +1,8 @@
 #include "ModuleBase.h"
 
-ModuleBase::ModuleBase()
-	: enabled(false)
+ModuleBase::ModuleBase(Bot & b)
+	: bot(b)
+	, enabled(false)
 {
 }
 
@@ -13,4 +14,9 @@ void ModuleBase::EnableModule()
 void ModuleBase::DisableModule()
 {
 	enabled = false;
+}
+
+bool ModuleBase::IsEnabled()
+{
+	return enabled;
 }

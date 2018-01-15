@@ -8,6 +8,7 @@
 #include "Structure.h"
 
 class Bot;
+class ModuleBase;
 class VespeneWorkerBalanceModule;
 class IdleWorkerModule;
 
@@ -31,6 +32,14 @@ public:
 	virtual void OnStep();
 	virtual void OnGameStart();
 	virtual void OnUnitIdle(const sc2::Unit* unit);
+	//TODO:  Get modules in base and don't mess with this stuff
+	//virtual void OnUnitDestroyed(const sc2::Unit* unit);
+	//virtual void OnUnitCreated(const sc2::Unit* unit);
+	//virtual void OnUpgradeCompleted(sc2::UpgradeID upgradeID);
+	//virtual void OnBuildingConstructionComplete(const sc2::Unit* unit);
+	//virtual void OnUnitEnterVision(const sc2::Unit* unit);
+	//virtual void OnNydusDetected();
+	//virtual void OnNuclearLaunchDetected();
 
 	void OnRefinerySuccess(int64_t taskId);
 	void OnRefineryFailed(int64_t taskId);
@@ -55,9 +64,17 @@ private:
 
 
 	//Included modules
+public:
+	void InitializeModules();	//TODO:  Base class?
 private:
-	std::unique_ptr<VespeneWorkerBalanceModule> vespeneWorkerBalanceModule;
-	std::unique_ptr<IdleWorkerModule> idleWorkerModule;
+	std::vector<std::shared_ptr<ModuleBase>> gameStartNotifications;		//TODO:  Base class
+	std::vector<std::shared_ptr<ModuleBase>> unitIdleNotifications;		//TODO:  Base class
+	std::vector<std::shared_ptr<ModuleBase>> unitCreateNotifications;		//TODO:  Base class
+	std::vector<std::shared_ptr<ModuleBase>> unitDestroyNotifications;		//TODO:  Base class
+	std::map<std::shared_ptr<ModuleBase>, uint32_t> stepLoopNotificationMap;	//TODO:  Base class
+
+	std::shared_ptr<VespeneWorkerBalanceModule> vespeneWorkerBalanceModule;
+	std::shared_ptr<IdleWorkerModule> idleWorkerModule;
 };
 
 #endif //__ECON_MANAGER_H

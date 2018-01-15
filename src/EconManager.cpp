@@ -12,17 +12,12 @@ EconManager::EconManager(Bot & b)
 	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
-	vespeneWorkerBalanceModule = make_unique<VespeneWorkerBalanceModule>();
-	idleWorkerModule = make_unique<IdleWorkerModule>();
+
+	InitializeModules();
 }
 
 void EconManager::OnGameStart()
 {
-	//The following modules are always on, enabled from the beginning.
-	idleWorkerModule->EnableModule();
-	vespeneWorkerBalanceModule->EnableModule();
-
-	//All other modules need to be enabled when ready
 }
 
 void EconManager::OnStep()
@@ -53,18 +48,11 @@ void EconManager::OnStep()
 //"Always On" behavior
 void EconManager::OnUnitIdle(const Unit* unit)
 {
-	switch (unit->unit_type.ToType()) {
-	case UNIT_TYPEID::TERRAN_SCV: {
-		const Unit* mineral_target = FindNearestMineralPatch(unit->pos);
-		if (mineral_target == nullptr) {
-			break;
+	//Send notifications out to each module that has been enabled
+	for (std::shared_ptr<ModuleBase> m : unitIdleNotifications) {
+		if (m->IsEnabled()) {
+			m->OnUnitIdle(unit);
 		}
-		Actions()->UnitCommand(unit, ABILITY_ID::SMART, mineral_target);
-		break;
-	}
-	default: {
-		break;
-	}
 	}
 }
 
@@ -198,25 +186,6 @@ const Unit* EconManager::FindNearestVespeneGeyser(const Point2D& start, const Ob
 	return target;
 }
 
-const Unit* EconManager::FindNearestMineralPatch(const Point2D& start)
-{
-	Units units = Observation()->GetUnits(Unit::Alliance::Neutral);
-	float distance = std::numeric_limits<float>::max();
-	const Unit* target = nullptr;
-	for (const auto& u : units) {
-		if (Utils::IsMineralPatch(u->unit_type)) {
-			//Use pathing distance, not air distance.
-			//	NOTE:  Pathing using a unit appears to not work (returns 0) if the unit is in fog of war.  Explicitly use the position
-			float d = bot.Query()->PathingDistance(u->pos, start);
-			if (d < distance) {
-				distance = d;
-				target = u;
-			}
-		}
-	}
-	return target;
-}
-
 //"Always On" behavior
 void EconManager::BalanceGasWorkers()
 {
@@ -228,6 +197,50 @@ void EconManager::BalanceGasWorkers()
 			std::cout << "Moving harvester to gas refinery.  Assigned:  " << r.assignedHarvesters() << ".  Ideal:  " << r.idealHarvesters() << std::endl;
 			const Unit* unit = Utils::GetRandomHarvester(Observation());
 			Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
+		}
+	}
+}
+
+void EconManager::InitializeModules()
+{
+	vector<shared_ptr<ModuleBase>> modules;
+
+	//The following modules are always on, enabled from the beginning.
+	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
+	vespeneWorkerBalanceModule->EnableModule();
+	modules.push_back(vespeneWorkerBalanceModule);
+
+	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
+	idleWorkerModule->EnableModule();
+	modules.push_back(idleWorkerModule);
+
+	//All other modules need to be enabled when ready
+	//add to modules.push_back(...);
+
+
+	//Setup notifications
+	for (const shared_ptr<ModuleBase> m : modules) {
+		ModuleNotificationRequirement reqs = m->GetNotificationRequirements();
+
+		if (reqs.onGameStart) {
+			gameStartNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitCreated) {
+			unitCreateNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitDestroyed) {
+			unitDestroyNotifications.push_back(m);
+		}
+
+		if (reqs.onUnitIdle) {
+			unitIdleNotifications.push_back(m);
+		}
+
+		uint32_t stepLoopCount = reqs.stepLoopCount;
+		if (stepLoopCount > 0) {
+			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
 		}
 	}
 }
