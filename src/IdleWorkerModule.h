@@ -13,5 +13,6 @@ public:
 
 private:
 	const sc2::Unit* FindNearestMineralPatch(const sc2::Point2D& start);
+	const sc2::Unit* FindNearestMineralPatch__IDEAL_NOT_USED(const sc2::Point2D& start);
 	void OnSCVIdle(const sc2::Unit* unit);
 };

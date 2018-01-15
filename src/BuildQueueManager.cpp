@@ -116,8 +116,7 @@ void BuildQueueManager::TryHandleAutoAbility(const std::shared_ptr<BuildQueueIte
 {
 	switch (item->abilityID) {
 	case AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS:
-		//TODO:  Need to be more nuanced
-		bot.Econ().EnableAutonomy();
+		bot.Econ().EnableAutoBuildWorkersModule();
 		buildQueue.erase(buildQueue.begin());
 		break;
 	default:

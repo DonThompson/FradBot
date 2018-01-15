@@ -155,6 +155,9 @@
     <ClCompile Include="..\src\DistanceUtils.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\AutoBuildWorkersModule.cpp">
+      <Filter>Economy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -275,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="..\src\DistanceUtils.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoBuildWorkersModule.h">
+      <Filter>Economy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

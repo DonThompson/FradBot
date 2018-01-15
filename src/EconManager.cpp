@@ -3,6 +3,7 @@
 #include "WorkerProducerSearch.h"
 #include "VespeneWorkerBalanceModule.h"
 #include "IdleWorkerModule.h"
+#include "AutoBuildWorkersModule.h"
 using namespace sc2;
 using namespace std;
 
@@ -30,7 +31,11 @@ void EconManager::InitializeModules()
 	modules.push_back(idleWorkerModule);
 
 	//All other modules need to be enabled when ready
-	//add to modules.push_back(...);
+	autoBuildWorkersModule = make_shared<AutoBuildWorkersModule>(bot);
+	//Disabled by default
+	modules.push_back(autoBuildWorkersModule);
+
+
 
 
 	//Setup notifications
@@ -58,6 +63,11 @@ void EconManager::InitializeModules()
 			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
 		}
 	}
+}
+
+void EconManager::EnableAutoBuildWorkersModule()
+{
+	autoBuildWorkersModule->EnableModule();
 }
 
 void EconManager::OnGameStart()
@@ -89,8 +99,6 @@ void EconManager::OnStep()
 		//If the economy manager has been asked to run on its own, perform these actions
 		if (actAutonomously)
 		{
-			BalanceBuilders();
-
 			if (NeedRefinery()) {
 				BuildRefinery();
 			}
@@ -122,45 +130,6 @@ void EconManager::OnUnitIdle(const Unit* unit)
 
 
 
-
-
-void EconManager::BalanceBuilders()
-{
-	//Make sure command centers have enough units - we might have just stolen some to bring them below threshold
-	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
-	for (Structure cc : ccs) {
-		//Just call the idle function, it'll quit if not needed
-		if (cc.getOrderCount() == 0) {
-			HandleCommandCenterIdle(cc);
-		}
-	}
-}
-
-void EconManager::HandleCommandCenterIdle(Structure cc)
-{
-	//Only build if we're acting autonomously.  Otherwise let the game strategy handle it.
-	if (actAutonomously)
-	{
-		//Only build if we're short harvesters
-		bool buildSCV = false;
-
-		if (cc.assignedHarvesters() < cc.idealHarvesters()) {
-			buildSCV = true;
-		}
-
-		//Or if we're short gas harvesters
-		std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
-		for (Structure r : refineries) {
-			if (r.assignedHarvesters() < r.idealHarvesters()) {
-				buildSCV = true;
-			}
-		}
-
-		if (buildSCV) {
-			TrainWorker(&cc);
-		}
-	}
-}
 
 //Returns true if the training structure had the worker available to build and we issued the command.
 //	TODO:  Still possible that it doesn't execute.

@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\ArmyManager.cpp" />
     <ClCompile Include="..\src\ArmyUnit.cpp" />
+    <ClCompile Include="..\src\AutoBuildWorkersModule.cpp" />
     <ClCompile Include="..\src\BaseLocation.cpp" />
     <ClCompile Include="..\src\BaseLocationInitializer.cpp" />
     <ClCompile Include="..\src\BaseLocationManager.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
     <ClInclude Include="..\src\ArmyUnit.h" />
+    <ClInclude Include="..\src\AutoBuildWorkersModule.h" />
     <ClInclude Include="..\src\BaseLocation.h" />
     <ClInclude Include="..\src\BaseLocationInitializer.h" />
     <ClInclude Include="..\src\BaseLocationManager.h" />

@@ -11,6 +11,7 @@ class Bot;
 class ModuleBase;
 class VespeneWorkerBalanceModule;
 class IdleWorkerModule;
+class AutoBuildWorkersModule;
 
 //Behaviors
 //	Always
@@ -41,6 +42,8 @@ public:
 	//virtual void OnNydusDetected();
 	//virtual void OnNuclearLaunchDetected();
 
+	void EnableAutoBuildWorkersModule();
+
 	void OnRefinerySuccess(int64_t taskId);
 	void OnRefineryFailed(int64_t taskId);
 
@@ -50,11 +53,9 @@ public:
 	bool TrainWorker(Structure* buildFrom = nullptr);
 
 private:
-	void BalanceBuilders();
 	bool NeedRefinery();
 	int32_t GetRefineryCount();
 	void BuildRefinery();
-	void HandleCommandCenterIdle(Structure cc);
 
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;
@@ -72,6 +73,7 @@ private:
 
 	std::shared_ptr<VespeneWorkerBalanceModule> vespeneWorkerBalanceModule;
 	std::shared_ptr<IdleWorkerModule> idleWorkerModule;
+	std::shared_ptr<AutoBuildWorkersModule> autoBuildWorkersModule;
 };
 
 #endif //__ECON_MANAGER_H
