@@ -46,6 +46,11 @@ void BaseLocation::AddGeyser(const Unit* geyser)
 	geysers.push_back(geyser);
 }
 
+sc2::Units BaseLocation::GetMineralPatches()
+{
+	return mineralPatches;
+}
+
 void BaseLocation::DrawSelf(Bot & bot)
 {
 	Color color = Colors::Gray;
