@@ -36,7 +36,7 @@ void IdleWorkerModule::OnSCVIdle(const sc2::Unit* unit)
 		DisableModule();
 		return;
 	}
-	bot.Actions()->UnitCommand(unit, ABILITY_ID::SMART, mineral_target);
+	GetBot().Actions()->UnitCommand(unit, ABILITY_ID::SMART, mineral_target);
 }
 
 
@@ -51,7 +51,7 @@ const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch__IDEAL_NOT_USED(const
 {
 	//First, just look at the minerals in the base we're already standing in.  Almost certainly that's the winner.  It also keeps us from running
 	//	off to a nearby expansion after we build something near an edge.  Mine local!
-	BaseLocation *loc = bot.BaseLocations().GetLocationByPosition(start);
+	BaseLocation *loc = GetBot().BaseLocations().GetLocationByPosition(start);
 	Units thisLocationMinerals = loc->GetMineralPatches();
 	const Unit* target = DistanceUtils::FindClosestUnitUsingRawDistance(thisLocationMinerals, start);
 	//Did we find minerals in this base location?
@@ -61,7 +61,7 @@ const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch__IDEAL_NOT_USED(const
 	//If we didn't find minerals in our base, just try the whole map.
 	//	FUTURE:  This could obviously be much improved (search the next closest base, search all our bases, find a base with low workers, etc), but
 	//	good enough for now.
-	Units units = bot.Observation()->GetUnits(Unit::Alliance::Neutral);
+	Units units = GetBot().Observation()->GetUnits(Unit::Alliance::Neutral);
 	Units minerals;
 	for (const auto& u : units) {
 		if (Utils::IsMineralPatch(u->unit_type)) {
@@ -70,7 +70,7 @@ const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch__IDEAL_NOT_USED(const
 	}
 	//Go ahead and use pathing distance.  This is a reasonably rare event (we must have just mined out our base), so it's worth the slight
 	//	performance hit to get a better destination.
-	target = DistanceUtils::FindClosestUnitUsingPathingDistance(bot, minerals, start);
+	target = DistanceUtils::FindClosestUnitUsingPathingDistance(GetBot(), minerals, start);
 	return target;
 }
 
@@ -78,7 +78,7 @@ const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch__IDEAL_NOT_USED(const
 const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch(const sc2::Point2D& start)
 {
 	//If we didn't find minerals in our base, just try the whole map.
-	Units units = bot.Observation()->GetUnits(Unit::Alliance::Neutral);
+	Units units = GetBot().Observation()->GetUnits(Unit::Alliance::Neutral);
 	Units minerals;
 	for (const auto& u : units) {
 		if (Utils::IsMineralPatch(u->unit_type)) {
@@ -86,5 +86,5 @@ const sc2::Unit* IdleWorkerModule::FindNearestMineralPatch(const sc2::Point2D& s
 		}
 	}
 	//Go ahead and use the pathing distance.  This keeps our scvs from going down to expansions because they just finished building near a cliff or such.
-	return DistanceUtils::FindClosestUnitUsingPathingDistance(bot, minerals, start);
+	return DistanceUtils::FindClosestUnitUsingPathingDistance(GetBot(), minerals, start);
 }

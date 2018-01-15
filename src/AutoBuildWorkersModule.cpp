@@ -21,9 +21,9 @@ ModuleNotificationRequirement AutoBuildWorkersModule::GetNotificationRequirement
 void AutoBuildWorkersModule::OnStep()
 {
 	//Make sure to check all types of morphed command centers
-	std::vector<Structure> ccs = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
-	std::vector<Structure> orbitals = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_ORBITALCOMMAND);
-	std::vector<Structure> forts = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_PLANETARYFORTRESS);
+	std::vector<Structure> ccs = GetBot().Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER);
+	std::vector<Structure> orbitals = GetBot().Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_ORBITALCOMMAND);
+	std::vector<Structure> forts = GetBot().Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_PLANETARYFORTRESS);
 
 	//No faster to bring them all into one array then iterate, so just do it the hard way
 	for (Structure cc : ccs) {
@@ -69,6 +69,6 @@ void AutoBuildWorkersModule::OnCCIdle(Structure commandCenter)
 	}
 
 	if (buildSCV) {
-		bot.Econ().TrainWorker(&commandCenter);
+		GetBot().Econ().TrainWorker(&commandCenter);
 	}
 }

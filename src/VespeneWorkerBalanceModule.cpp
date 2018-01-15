@@ -24,13 +24,13 @@ void VespeneWorkerBalanceModule::OnStep()
 //Version 1:  SIMPLE.  If we have a refinery < ideal harvesters, assign there.  Otherwise, assign to minerals.
 void VespeneWorkerBalanceModule::BalanceGasWorkers()
 {
-	std::vector<Structure> refineries = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
+	std::vector<Structure> refineries = GetBot().Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_REFINERY);
 	for (Structure r : refineries) {
 		if (r.IsBuildingComplete() && r.assignedHarvesters() < r.idealHarvesters()) {
 			std::cout << "Moving harvester to gas refinery.  Previously assigned: " << r.assignedHarvesters() << ",  ideal: " << r.idealHarvesters() << std::endl;
 			//TODO:  Get a harvester from this base, not one from anywhere on the map
-			const Unit* unit = Utils::GetRandomHarvester(bot.Observation());
-			bot.Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
+			const Unit* unit = Utils::GetRandomHarvester(GetBot().Observation());
+			GetBot().Actions()->UnitCommand(unit, ABILITY_ID::SMART, r.building);
 			//Only do one
 			return;
 		}

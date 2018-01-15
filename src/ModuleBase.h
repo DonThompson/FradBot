@@ -32,6 +32,10 @@ public:
 	virtual void OnUnitEnterVision(const sc2::Unit* unit) { }
 
 protected:
+	//Getter for derived classes
+	Bot & GetBot();
+
+private:
 	//Necessary reference to the bot.
 	Bot & bot;
 	//Module enabled status
