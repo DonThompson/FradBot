@@ -19,7 +19,7 @@ void BaseLocationInitializer::InitializeBaseLocations()
 	Structure cc = bot.Structures().GetStructuresByType(UNIT_TYPEID::TERRAN_COMMANDCENTER).front();
 	BaseLocation locMine(UseNextBaseLocationId(), cc.building->pos);
 	locMine.SetMyStartingBase();
-	locMine.SetResourceDepot(cc.building);
+	locMine.SetResourceDepot(cc);
 	locMine.SetRegionId(bot.Map().GetRegionIdFromPoint(cc.building->pos));
 	locMine.SetChokePoints(bot.Map().GetRegionChokePoints(locMine.GetRegionId()));
 
