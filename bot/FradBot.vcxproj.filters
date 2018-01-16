@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="BaseManagement">
       <UniqueIdentifier>{7c8a32cd-de1d-4d3a-9040-0be5c4e966c6}</UniqueIdentifier>
     </Filter>
@@ -40,12 +36,12 @@
     <Filter Include="Map">
       <UniqueIdentifier>{c2a3bfc9-ac85-4550-855e-f6225a7da7cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Architecture">
+      <UniqueIdentifier>{d04d0150-8dec-4173-a378-296107d70807}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DrawingManager.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ManagerBase.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Utils.cpp">
@@ -137,20 +133,11 @@
     <ClCompile Include="..\src\BuildQueueItemBase.cpp">
       <Filter>BuildQueue</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BuildQueueItem_Auto.cpp">
-      <Filter>BuildQueue</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\VespeneWorkerBalanceModule.cpp">
       <Filter>Economy</Filter>
     </ClCompile>
     <ClCompile Include="..\src\IdleWorkerModule.cpp">
       <Filter>Economy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ModuleBase.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ModuleNotificationRequirement.cpp">
-      <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DistanceUtils.cpp">
       <Filter>Util</Filter>
@@ -158,12 +145,27 @@
     <ClCompile Include="..\src\AutoBuildWorkersModule.cpp">
       <Filter>Economy</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ModuleManager.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleNotificationRequirement.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleBase.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ManagerBase.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleCreator.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildQueueModuleItem.cpp">
+      <Filter>BuildQueue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ManagerBase.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Timer.h">
@@ -261,26 +263,35 @@
     <ClInclude Include="..\src\BuildQueueItemBase.h">
       <Filter>BuildQueue</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BuildQueueItem_Auto.h">
-      <Filter>BuildQueue</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\VespeneWorkerBalanceModule.h">
       <Filter>Economy</Filter>
     </ClInclude>
     <ClInclude Include="..\src\IdleWorkerModule.h">
       <Filter>Economy</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ModuleBase.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ModuleNotificationRequirement.h">
-      <Filter>Util</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DistanceUtils.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AutoBuildWorkersModule.h">
       <Filter>Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleManager.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleNotificationRequirement.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleBase.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ManagerBase.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleCreator.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BuildQueueModuleItem.h">
+      <Filter>BuildQueue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

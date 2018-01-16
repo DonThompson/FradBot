@@ -1,6 +1,6 @@
 #include "BuildQueueManager.h"
 #include "bot.h"
-#include "BuildQueueItem_Auto.h"
+#include "BuildQueueModuleItem.h"
 #include "BuildQueueItem.h"
 using namespace sc2;
 using namespace std;
@@ -49,8 +49,8 @@ void BuildQueueManager::OnStep()
 	}
 
 	switch (item->itemType) {
-	case BUILD_QUEUE_TYPE::AUTO_ABILITY:
-		TryHandleAutoAbility(static_pointer_cast<BuildQueueItem_Auto>(item));
+	case BUILD_QUEUE_TYPE::GAME_MODULE:
+		TryHandleModule(static_pointer_cast<BuildQueueModuleItem>(item));
 		break;
 	case BUILD_QUEUE_TYPE::GAME_ABILITY:
 		TryHandleGameAbility(static_pointer_cast<BuildQueueItem>(item));
@@ -112,17 +112,11 @@ bool BuildQueueManager::HasResourcesFor(sc2::ABILITY_ID abilityID)
 	return false;
 }
 
-void BuildQueueManager::TryHandleAutoAbility(const std::shared_ptr<BuildQueueItem_Auto> & item)
+void BuildQueueManager::TryHandleModule(const std::shared_ptr<BuildQueueModuleItem> & item)
 {
-	switch (item->abilityID) {
-	case AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS:
-		bot.Econ().EnableAutoBuildWorkersModule();
-		buildQueue.erase(buildQueue.begin());
-		break;
-	default:
-		std::cout << "ERROR:  UNKNOWN AUTO_ABILITYID " << item->GetDescription() << std::endl;
-		break;
-	}
+	//Enable the module given
+	bot.Modules().EnableModule(item->moduleID);
+	buildQueue.erase(buildQueue.begin());
 }
 
 void BuildQueueManager::TryHandleGameAbility(const std::shared_ptr<BuildQueueItem> & item)

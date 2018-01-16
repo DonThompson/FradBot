@@ -102,7 +102,7 @@ void DataManager::AddProducingBuildings(UnitData& data)
 		break;
 
 	default:
-		std::cout << "ERROR:  DataManager::AddProducingBuildings unknown ability " << sc2::AbilityTypeToName(data.ability_id.ToType()) << std::endl;
+		//Some other ability, zerg, protoss, whatever
 		break;
 
 	}

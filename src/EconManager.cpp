@@ -13,86 +13,10 @@ EconManager::EconManager(Bot & b)
 	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
-
-	InitializeModules();
-}
-
-void EconManager::InitializeModules()
-{
-	vector<shared_ptr<ModuleBase>> modules;
-
-	//The following modules are always on, enabled from the beginning.
-	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
-	vespeneWorkerBalanceModule->EnableModule();
-	modules.push_back(vespeneWorkerBalanceModule);
-
-	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
-	idleWorkerModule->EnableModule();
-	modules.push_back(idleWorkerModule);
-
-	//All other modules need to be enabled when ready
-	autoBuildWorkersModule = make_shared<AutoBuildWorkersModule>(bot);
-	//Disabled by default
-	modules.push_back(autoBuildWorkersModule);
-
-
-
-
-	//Setup notifications
-	for (const shared_ptr<ModuleBase> m : modules) {
-		ModuleNotificationRequirement reqs = m->GetNotificationRequirements();
-
-		if (reqs.onGameStart) {
-			gameStartNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitCreated) {
-			unitCreateNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitDestroyed) {
-			unitDestroyNotifications.push_back(m);
-		}
-
-		if (reqs.onUnitIdle) {
-			unitIdleNotifications.push_back(m);
-		}
-
-		uint32_t stepLoopCount = reqs.stepLoopCount;
-		if (stepLoopCount > 0) {
-			stepLoopNotificationMap.insert(pair<const shared_ptr<ModuleBase>, uint32_t>(m, stepLoopCount));
-		}
-	}
-}
-
-void EconManager::EnableAutoBuildWorkersModule()
-{
-	autoBuildWorkersModule->EnableModule();
-}
-
-void EconManager::OnGameStart()
-{
-	//Send notifications out to each module that has been enabled
-	for (std::shared_ptr<ModuleBase> m : gameStartNotifications) {
-		if (m->IsEnabled()) {
-			m->OnGameStart();
-		}
-	}
 }
 
 void EconManager::OnStep()
 {
-	//Send notifications out to each module that has been enabled
-	for (std::pair<std::shared_ptr<ModuleBase>, uint32_t> p : stepLoopNotificationMap) {
-		std::shared_ptr<ModuleBase> m = p.first;
-		if (m->IsEnabled()) {
-			if (bot.Observation()->GetGameLoop() % p.second == 0) {
-				m->OnStep();
-			}
-		}
-	}
-
-
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
 	const clock_t rebalanceTime = CLOCKS_PER_SEC * 2;   //2 seconds
 	if (clock() - lastBalanceClock > rebalanceTime) {
@@ -112,24 +36,6 @@ void EconManager::OnStep()
 	//Work to do regardless of automony (outside time limiting)
 
 }
-
-//"Always On" behavior
-void EconManager::OnUnitIdle(const Unit* unit)
-{
-	//Send notifications out to each module that has been enabled
-	for (std::shared_ptr<ModuleBase> m : unitIdleNotifications) {
-		if (m->IsEnabled()) {
-			m->OnUnitIdle(unit);
-		}
-	}
-}
-
-
-
-
-
-
-
 
 //Returns true if the training structure had the worker available to build and we issued the command.
 //	TODO:  Still possible that it doesn't execute.
