@@ -152,6 +152,7 @@
     <ClCompile Include="..\src\MapManager.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\ModuleBase.cpp" />
+    <ClCompile Include="..\src\ModuleManager.cpp" />
     <ClCompile Include="..\src\ModuleNotificationRequirement.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
     <ClCompile Include="..\src\Platoon.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\src\MapManager.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\ModuleBase.h" />
+    <ClInclude Include="..\src\ModuleManager.h" />
     <ClInclude Include="..\src\ModuleNotificationRequirement.h" />
     <ClInclude Include="..\src\MorphManager.h" />
     <ClInclude Include="..\src\Platoon.h" />

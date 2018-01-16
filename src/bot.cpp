@@ -7,7 +7,8 @@
 using namespace sc2;
 
 Bot::Bot()
-	: strategyManager(*this)
+	: moduleManager(*this)
+	, strategyManager(*this)
 	, supplyManager(*this)
 	, econManager(*this)
 	, armyManager(*this)
@@ -28,6 +29,11 @@ Bot::Bot()
 Bot::~Bot()
 {
 
+}
+
+ModuleManager & Bot::Modules()
+{
+	return moduleManager;
 }
 
 ConstructionManager & Bot::Construction()
@@ -109,6 +115,7 @@ void Bot::OnGameStart()
 	//Order added is order they'll get notifications and steps
 	managers.push_back(&mapManager);			//only needs start.  Initialize this first!
 	managers.push_back(&baseLocationManager);	//only needs start.  Initialize this second
+	managers.push_back(&moduleManager);			//Initialize this 3rd
 	managers.push_back(&strategyManager);
 	managers.push_back(&econManager);
 	managers.push_back(&supplyManager);

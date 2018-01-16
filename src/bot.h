@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
+#include "ModuleManager.h"
 #include "StrategyManager.h"
 #include "SupplyManager.h"
 #include "EconManager.h"
@@ -22,6 +23,7 @@
 
 class Bot : public sc2::Agent {
 private:
+	ModuleManager moduleManager;
 	StrategyManager strategyManager;
 	SupplyManager supplyManager;
 	EconManager econManager;
@@ -45,6 +47,7 @@ public:
 	//////////////////////////////////////////////
 	//  Access to Manager Classes				//
 	//////////////////////////////////////////////
+	ModuleManager & Modules();
 	ConstructionManager & Construction();
 	StructuresManager & Structures();
 	SupplyManager & Supply();
@@ -60,6 +63,10 @@ public:
 
 
 	std::string GetVersion();
+
+
+	//Module System
+
 
 
 	//////////////////////////////////////////////
