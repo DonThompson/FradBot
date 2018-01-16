@@ -1,4 +1,5 @@
 #include "ModuleBase.h"
+#include "bot.h"
 
 ModuleBase::ModuleBase(Bot & b)
 	: bot(b)
