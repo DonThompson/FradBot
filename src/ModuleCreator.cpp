@@ -14,7 +14,7 @@ using namespace std;
 //CreateSingleModule - enabled
 #define CSM_E(moduleID, moduleClassName) CreateSingleModule(bot, moduleID, make_shared<moduleClassName>(bot), true);
 //CreateSingleModule - disabled
-#define CSM(moduleID, moduleClassName) CreateSingleModule(bot, moduleID, make_shared<moduleClassName>(bot), true);
+#define CSM(moduleID, moduleClassName) CreateSingleModule(bot, moduleID, make_shared<moduleClassName>(bot));
 
 
 /*static*/void ModuleCreator::CreateAllGameModules(Bot & bot)

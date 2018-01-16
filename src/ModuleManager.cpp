@@ -13,7 +13,7 @@ ModuleManager::ModuleManager(Bot & b)
 
 //Call to initialize any module and register it to receive notifications.  Note that modules still need to be
 //	enabled before they will get notifications.
-void ModuleManager::RegisterModule(MODULE_ID moduleID, const shared_ptr<ModuleBase> gameModule)
+void ModuleManager::RegisterModule(MODULE_ID moduleID, const shared_ptr<ModuleBase> & gameModule)
 {
 	//Save a map of this module against its enumeration for future lookup
 	allModules.insert(pair<MODULE_ID, std::shared_ptr<ModuleBase>>(moduleID, gameModule));

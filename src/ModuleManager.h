@@ -15,7 +15,7 @@ public:
 	ModuleManager(Bot & b);
 
 	//Register your modules here
-	void RegisterModule(MODULE_ID moduleID, const std::shared_ptr<ModuleBase> gameModule);
+	void RegisterModule(MODULE_ID moduleID, const std::shared_ptr<ModuleBase> & gameModule);
 
 	//Enable your modules here
 	void EnableModule(MODULE_ID moduleID);
