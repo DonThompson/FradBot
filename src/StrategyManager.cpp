@@ -1,7 +1,7 @@
 #include "StrategyManager.h"
 #include "bot.h"
 #include "BuildQueueItem.h"
-#include "BuildQueueItem_Auto.h"
+#include "BuildQueueModuleItem.h"
 using namespace sc2;
 
 StrategyManager::StrategyManager(Bot & b)
@@ -75,7 +75,7 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 33 supply
 
 	//Turn on automatic SCV management.  We don't need a build order for every SCV from here out.
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem_Auto>(AUTO_ABILITYID::ENABLE_AUTOBUILDWORKERS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueModuleItem>(MODULE_ID::AUTOBUILDWORKERSMODULE));
 
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_TECHLAB_BARRACKS));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));

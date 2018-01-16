@@ -138,7 +138,7 @@
     <ClCompile Include="..\src\bot.cpp" />
     <ClCompile Include="..\src\BuildQueueItem.cpp" />
     <ClCompile Include="..\src\BuildQueueItemBase.cpp" />
-    <ClCompile Include="..\src\BuildQueueItem_Auto.cpp" />
+    <ClCompile Include="..\src\BuildQueueModuleItem.cpp" />
     <ClCompile Include="..\src\BuildQueueManager.cpp" />
     <ClCompile Include="..\src\ConstructionManager.cpp" />
     <ClCompile Include="..\src\ConstructionPlacement.cpp" />
@@ -152,6 +152,7 @@
     <ClCompile Include="..\src\MapManager.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\ModuleBase.cpp" />
+    <ClCompile Include="..\src\ModuleCreator.cpp" />
     <ClCompile Include="..\src\ModuleManager.cpp" />
     <ClCompile Include="..\src\ModuleNotificationRequirement.cpp" />
     <ClCompile Include="..\src\MorphManager.cpp" />
@@ -182,7 +183,7 @@
     <ClInclude Include="..\src\BuildQueueEnums.h" />
     <ClInclude Include="..\src\BuildQueueItem.h" />
     <ClInclude Include="..\src\BuildQueueItemBase.h" />
-    <ClInclude Include="..\src\BuildQueueItem_Auto.h" />
+    <ClInclude Include="..\src\BuildQueueModuleItem.h" />
     <ClInclude Include="..\src\BuildQueueManager.h" />
     <ClInclude Include="..\src\ConstructionManager.h" />
     <ClInclude Include="..\src\ConstructionPlacement.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="..\src\MapManager.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\ModuleBase.h" />
+    <ClInclude Include="..\src\ModuleCreator.h" />
     <ClInclude Include="..\src\ModuleManager.h" />
     <ClInclude Include="..\src\ModuleNotificationRequirement.h" />
     <ClInclude Include="..\src\MorphManager.h" />

@@ -5,7 +5,7 @@
 #include "BuildQueueItemBase.h"
 
 class Bot;
-class BuildQueueItem_Auto;
+class BuildQueueModuleItem;
 class BuildQueueItem;
 
 class BuildQueueManager : public ManagerBase
@@ -28,6 +28,6 @@ private:
 	bool IsMorphOrAddOn(sc2::ABILITY_ID abilityID);
 	bool HasResourcesFor(sc2::ABILITY_ID abilityID);
 
-	void TryHandleAutoAbility(const std::shared_ptr<BuildQueueItem_Auto> & item);
+	void TryHandleModule(const std::shared_ptr<BuildQueueModuleItem> & item);
 	void TryHandleGameAbility(const std::shared_ptr<BuildQueueItem> & item);
 };

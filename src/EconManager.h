@@ -13,17 +13,9 @@ class VespeneWorkerBalanceModule;
 class IdleWorkerModule;
 class AutoBuildWorkersModule;
 
-//Behaviors
-//	Always
-//		* VespeneWorkerBalanceModule
-//		* Idle workers moved to nearest minerals 
-
 //	Autonomy Enabled
-
-
-
-//	Enabled:  Builds workers if we have not saturated the minerals & gas fully.  Builds refineries if missing.  Shifts workers between the two.  And everything in disabled.
-//	Disabled:  Handles idle workers and puts them back to mining.
+//	Enabled:  Builds refineries if missing.  And everything in disabled.
+//	Disabled:  Does nothing
 class EconManager : public ManagerBase {
 private:
 	clock_t lastBalanceClock;
@@ -31,8 +23,6 @@ private:
 public:
 	explicit EconManager(Bot & b);
 	virtual void OnStep();
-
-	void EnableAutoBuildWorkersModule();
 
 	void OnRefinerySuccess(int64_t taskId);
 	void OnRefineryFailed(int64_t taskId);

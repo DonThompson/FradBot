@@ -133,9 +133,6 @@
     <ClCompile Include="..\src\BuildQueueItemBase.cpp">
       <Filter>BuildQueue</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BuildQueueItem_Auto.cpp">
-      <Filter>BuildQueue</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\VespeneWorkerBalanceModule.cpp">
       <Filter>Economy</Filter>
     </ClCompile>
@@ -159,6 +156,12 @@
     </ClCompile>
     <ClCompile Include="..\src\ManagerBase.cpp">
       <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModuleCreator.cpp">
+      <Filter>Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildQueueModuleItem.cpp">
+      <Filter>BuildQueue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,9 +263,6 @@
     <ClInclude Include="..\src\BuildQueueItemBase.h">
       <Filter>BuildQueue</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BuildQueueItem_Auto.h">
-      <Filter>BuildQueue</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\VespeneWorkerBalanceModule.h">
       <Filter>Economy</Filter>
     </ClInclude>
@@ -286,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="..\src\ManagerBase.h">
       <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleCreator.h">
+      <Filter>Architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BuildQueueModuleItem.h">
+      <Filter>BuildQueue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

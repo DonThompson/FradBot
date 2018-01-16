@@ -15,12 +15,6 @@ EconManager::EconManager(Bot & b)
 	lastBalanceClock = clock();
 }
 
-void EconManager::EnableAutoBuildWorkersModule()
-{
-	//TODO:  move directly to strategy
-	bot.Modules().EnableModule(MODULE_ID::AUTOBUILDWORKERSMODULE);
-}
-
 void EconManager::OnStep()
 {
 	//Rebalance workers every few seconds.  Some odd timing issues can happen if we go every step
