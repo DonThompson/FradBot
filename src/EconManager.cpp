@@ -13,30 +13,12 @@ EconManager::EconManager(Bot & b)
 	, refineriesCompleted(0)
 {
 	lastBalanceClock = clock();
-
-	InitializeModules();
-}
-
-void EconManager::InitializeModules()
-{
-	//The following modules are always on, enabled from the beginning.
-	vespeneWorkerBalanceModule = make_shared<VespeneWorkerBalanceModule>(bot);
-	vespeneWorkerBalanceModule->EnableModule();
-	bot.Modules().RegisterModule(vespeneWorkerBalanceModule);
-
-	idleWorkerModule = make_shared<IdleWorkerModule>(bot);
-	idleWorkerModule->EnableModule();
-	bot.Modules().RegisterModule(idleWorkerModule);
-
-	//All other modules need to be enabled when ready
-	autoBuildWorkersModule = make_shared<AutoBuildWorkersModule>(bot);
-	//Disabled by default
-	bot.Modules().RegisterModule(autoBuildWorkersModule);
 }
 
 void EconManager::EnableAutoBuildWorkersModule()
 {
-	autoBuildWorkersModule->EnableModule();
+	//TODO:  move directly to strategy
+	bot.Modules().EnableModule(MODULE_ID::AUTOBUILDWORKERSMODULE);
 }
 
 void EconManager::OnStep()

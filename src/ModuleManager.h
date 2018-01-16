@@ -1,16 +1,25 @@
 #pragma once
 #include <sc2api/sc2_api.h>
 #include "ManagerBase.h"
+#include "BuildQueueEnums.h"
 class Bot;
 class ModuleBase;
 
+//In charge of managing all the modules loaded in the game.  Follows three distinct phases:
+//	1)  Register modules.  See ModuleCreator.  Define your modules here and they'll be sent in.
+//	2)  Enable modules.  Modules can be enabled by default or as part of a build order, etc.
+//	3)  The ModuleManager will sent the required game notification events to the module.
 class ModuleManager : public ManagerBase
 {
 public:
 	ModuleManager(Bot & b);
 
 	//Register your modules here
-	void RegisterModule(const std::shared_ptr<ModuleBase> gameModule);
+	void RegisterModule(MODULE_ID moduleID, const std::shared_ptr<ModuleBase> gameModule);
+
+	//Enable your modules here
+	void EnableModule(MODULE_ID moduleID);
+	void DisableModule(MODULE_ID moduleID);
 
 
 	//Inherit all game events.  These should only be called by the bot framework
@@ -38,4 +47,6 @@ private:
 	std::vector<std::shared_ptr<ModuleBase>> nukeLaunchDetectedNotifications;
 	std::vector<std::shared_ptr<ModuleBase>> unitEntersVisionNotifications;
 
+	//All modules mapped to their enum
+	std::map<MODULE_ID, std::shared_ptr<ModuleBase>> allModules;
 };

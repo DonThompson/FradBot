@@ -49,15 +49,6 @@ private:
 
 	uint32_t refineriesInProgress;
 	uint32_t refineriesCompleted;
-
-
-	//Included modules
-public:
-	void InitializeModules();	//TODO:  Base class?
-private:
-	std::shared_ptr<VespeneWorkerBalanceModule> vespeneWorkerBalanceModule;
-	std::shared_ptr<IdleWorkerModule> idleWorkerModule;
-	std::shared_ptr<AutoBuildWorkersModule> autoBuildWorkersModule;
 };
 
 #endif //__ECON_MANAGER_H

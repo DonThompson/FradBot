@@ -9,3 +9,13 @@ enum class AUTO_ABILITYID {
 
 	ENABLE_AUTOBUILDWORKERS = 100,		//Enable autonomy for building workers
 };
+
+//Define all modules here.  For ease of readability, please name the enumeration identical to the class name in upper case
+enum class MODULE_ID {
+	INVALID = 0,
+
+	VESPENEWORKERBALANCEMODULE = 1,
+	IDLEWORKERMODULE = 2,
+	AUTOBUILDWORKERSMODULE = 3,
+
+};
