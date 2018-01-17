@@ -66,9 +66,11 @@ ArmyTrainer_BioBallModule::CurrentBioArmyData ArmyTrainer_BioBallModule::GetCurr
 	data.cntMarines = Utils::CountOwnUnits(GetBot().Observation(), UNIT_TYPEID::TERRAN_MARINE);
 	data.cntMarauders = Utils::CountOwnUnits(GetBot().Observation(), UNIT_TYPEID::TERRAN_MARAUDER);
 	data.cntMedivacs = Utils::CountOwnUnits(GetBot().Observation(), UNIT_TYPEID::TERRAN_MEDIVAC);
+	data.cntGhosts = Utils::CountOwnUnits(GetBot().Observation(), UNIT_TYPEID::TERRAN_GHOST);
 	return data;
 }
 
+//TODO:  Ugly code, needs cleaned up
 void ArmyTrainer_BioBallModule::OnBarracksIdle(Structure rax)
 {
 	//See what we already have
@@ -88,13 +90,25 @@ void ArmyTrainer_BioBallModule::OnBarracksIdle(Structure rax)
 
 	//Is there a tech lab?
 	if (rax.HasTechLab(GetBot())) {
+		//Marauders first (3 to every 5 marines)
+		//Ghosts second (1 to every 5 marines)
+
 		//do we have too many marauders?  We want a rough ratio of 3 marauders for every 5 marines
 		float_t ratioMarauders = data.cntMarauders / 3.0f;
 		float_t ratioMarines = data.cntMarines / 5.0f;
 		if (ratioMarauders > ratioMarines) {
-			//we have enough marauders, make a marine instead
-			GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
-			return;
+			//Check to see if we should build ghosts (and if we can build ghosts)
+			float_t ghostRatio = static_cast<float_t>(data.cntMarines) / static_cast<float_t>(data.cntGhosts);
+			if (ghostRatio > 5.0f && rax.HasAbilityAvailable(GetBot(), ABILITY_ID::TRAIN_GHOST)) {
+				//We need more ghosts
+				GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_GHOST);
+				return;
+			}
+			else {
+				//we have enough marauders and ghosts, make a marine instead
+				GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
+				return;
+			}
 		}
 		else {
 			//More marauders
@@ -126,5 +140,9 @@ void ArmyTrainer_BioBallModule::OnStarportIdle(Structure port)
 	if (ratio > 5.0f) {
 		//Build a new medivac
 		GetBot().Actions()->UnitCommand(port.building, ABILITY_ID::TRAIN_MEDIVAC);
+		if (port.HasReactor(GetBot())) {
+			//Train a second
+			GetBot().Actions()->UnitCommand(port.building, ABILITY_ID::TRAIN_MEDIVAC);
+		}
 	}
 }

@@ -18,6 +18,7 @@ private:
 		uint32_t cntMarines;
 		uint32_t cntMarauders;
 		uint32_t cntMedivacs;
+		uint32_t cntGhosts;
 	};
 
 

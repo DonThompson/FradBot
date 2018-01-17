@@ -97,6 +97,7 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 52 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS));
 	//Econ manager will auto handle moving SCVs to gas
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_GHOSTACADEMY));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
