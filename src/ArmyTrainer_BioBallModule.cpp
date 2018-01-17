@@ -114,5 +114,17 @@ void ArmyTrainer_BioBallModule::OnFactoryIdle(Structure fact)
 
 void ArmyTrainer_BioBallModule::OnStarportIdle(Structure port)
 {
+	//See what we already have
+	ArmyTrainer_BioBallModule::CurrentBioArmyData data = GetCurrentData();
 
+	//If supply is capped, quit early
+	if (data.supplyUsed >= data.supplyCap)
+		return;
+
+	//1 medivac for every 5 marines
+	float_t ratio = static_cast<float_t>(data.cntMarines) / static_cast<float_t>(data.cntMedivacs);
+	if (ratio > 5.0f) {
+		//Build a new medivac
+		GetBot().Actions()->UnitCommand(port.building, ABILITY_ID::TRAIN_MEDIVAC);
+	}
 }
