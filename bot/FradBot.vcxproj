@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ArmyManager.cpp" />
+    <ClCompile Include="..\src\ArmyTrainer_BioBallModule.cpp" />
     <ClCompile Include="..\src\ArmyUnit.cpp" />
     <ClCompile Include="..\src\AutoBuildWorkersModule.cpp" />
     <ClCompile Include="..\src\BaseLocation.cpp" />
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ArmyManager.h" />
+    <ClInclude Include="..\src\ArmyTrainer_BioBallModule.h" />
     <ClInclude Include="..\src\ArmyUnit.h" />
     <ClInclude Include="..\src\AutoBuildWorkersModule.h" />
     <ClInclude Include="..\src\BaseLocation.h" />

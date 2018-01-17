@@ -34,9 +34,14 @@ public:
 	bool IsTrainingUnit(sc2::ABILITY_ID abilityID);
 	//Only applies to resource worker producers
 	bool NeedsMoreWorkers();
+	//Gets the unit type of any addon building.  Returns INVALID if none
+	sc2::UNIT_TYPEID GetAddonType(Bot & bot);
+	//Simpler of the above - is there a reactor attached?
+	bool HasReactor(Bot & bot);
+	//Is there a tech lab attached?
+	bool HasTechLab(Bot & bot);
 
 public:
 	//TODO:  and make this private.  Lots of use like Actions()->UnitCommand(.... structure)
 	const sc2::Unit* building;
 };
-

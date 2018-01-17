@@ -103,32 +103,28 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_STARPORT));	//@ 60 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_FACTORY));	//@ 60 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 60 supply
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
+
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_TECHLAB_BARRACKS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_BARRACKS));
+
+	//Turn on automatic army building - just keep making our bio ball.  Don't do this until we have the addons we want
+	bot.BuildQueue().Push(std::make_shared<BuildQueueModuleItem>(MODULE_ID::ARMYTRAINER_BIOBALLMODULE));
+
 	//TODO:  Mules should probably always be auto?
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 66 supply
 	//TODO:  Mules should probably always be auto?
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_TECHLAB_BARRACKS));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_BARRACKS));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 72 supply
 																			//TODO:  Lift Factory from Reactor	
 																			//TODO:  Land Starport on Reactor	
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_COMMANDCENTER));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MEDIVAC));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MEDIVAC));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REFINERY));	//@ 78 supply
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARAUDER));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_FACTORY));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_COMBATSHIELD));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
-	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_CONCUSSIVESHELLS));
 	//Econ manager will auto handle moving SCVs to gas
 	//TODO:  Scanner sweep auto?
 	//END OF BUILD ORDER
+
 }
 
 //Simple just for testing - gets us units fast to test attacking

@@ -16,4 +16,3 @@ public:
 private:
 	void OnCCIdle(Structure commandCenter);
 };
-

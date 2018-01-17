@@ -154,7 +154,8 @@ void Squad::ExecuteOrdersActionOnSquad()
 	if (!HasOrders())
 		return;
 
-	std::cout << "Sending squad @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
+	//Way too much spam
+	//std::cout << "Sending squad @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
 	bot.Actions()->UnitCommand(AsUnits(), ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
 
@@ -164,7 +165,8 @@ void Squad::ExecuteOrdersActionOnArmyUnit(shared_ptr<ArmyUnit> u)
 	if (!HasOrders())
 		return;
 
-	std::cout << "Sending single unit @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
+	//Way too much spam
+	//std::cout << "Sending single unit @ target: " << squadOrders.currentTargetPoint.x << ", " << squadOrders.currentTargetPoint.y << std::endl;
 	bot.Actions()->UnitCommand(u->unit, ABILITY_ID::ATTACK_ATTACK, squadOrders.currentTargetPoint);
 }
 

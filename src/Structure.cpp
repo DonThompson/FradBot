@@ -83,3 +83,28 @@ bool Structure::NeedsMoreWorkers()
 		return true;
 	return false;
 }
+
+sc2::UNIT_TYPEID Structure::GetAddonType(Bot & bot)
+{
+	const sc2::Unit* addOn = bot.Observation()->GetUnit(building->add_on_tag);
+	if (addOn == nullptr) {
+		return UNIT_TYPEID::INVALID;
+	}
+	return addOn->unit_type.ToType();
+}
+
+bool Structure::HasReactor(Bot & bot)
+{
+	UNIT_TYPEID u = GetAddonType(bot);
+	if (u == UNIT_TYPEID::TERRAN_BARRACKSREACTOR || u == UNIT_TYPEID::TERRAN_FACTORYREACTOR || u == UNIT_TYPEID::TERRAN_STARPORTREACTOR)
+		return true;
+	return false;
+}
+
+bool Structure::HasTechLab(Bot & bot)
+{
+	UNIT_TYPEID u = GetAddonType(bot);
+	if (u == UNIT_TYPEID::TERRAN_BARRACKSTECHLAB || u == UNIT_TYPEID::TERRAN_FACTORYTECHLAB || u == UNIT_TYPEID::TERRAN_STARPORTTECHLAB)
+		return true;
+	return false;
+}
