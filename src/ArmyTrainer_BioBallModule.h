@@ -36,4 +36,8 @@ private:
 	const uint32_t requiredStepLoopCount = 200;
 
 	CurrentBioArmyData GetCurrentData();
+	void TrainUnitToBuildQueue(sc2::ABILITY_ID, Structure s);
+
+	void OnBarracks_TechLab_Idle(Structure rax, ArmyTrainer_BioBallModule::CurrentBioArmyData & data);
+	void OnBarracks_Reactor_Idle(Structure rax);
 };

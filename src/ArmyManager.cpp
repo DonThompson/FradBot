@@ -218,13 +218,27 @@ void ArmyManager::OnBarracksIdle(const Unit* unit)
 	}
 }
 
-
 void ArmyManager::OnUnitIdle(const Unit* unit)
 {
 	switch (unit->unit_type.ToType()) {
 	case UNIT_TYPEID::TERRAN_BARRACKS:      OnBarracksIdle(unit);       break;
 	default:    break;
 	}
+}
+
+bool ArmyManager::TrainUnitFromBuilding(sc2::ABILITY_ID abilityID, const sc2::Unit* building)
+{
+	//Can it handle the request?  A factory requires a tech lab to build a siege tank, for example
+	Structure s(building);
+	if (s.HasAbilityAvailable(bot, abilityID)) {
+		//Is it doing something else?  We never want to queue anything, just wait until it clears
+		if (s.getOrderCount() == 0) {
+			//Yay, let's build here
+			Actions()->UnitCommand(building, abilityID);
+			return true;
+		}
+	}
+	return false;
 }
 
 bool ArmyManager::TrainUnit(sc2::ABILITY_ID abilityID)
@@ -246,15 +260,12 @@ bool ArmyManager::TrainUnit(sc2::ABILITY_ID abilityID)
 
 	//Iterate through all the producers of this unit type
 	for (const Unit* u : Utils::GetOwnUnits(Observation(), producer)) {
-		//Can it handle the request?  A factory requires a tech lab to build a siege tank, for example
-		Structure s(u);
-		if (s.HasAbilityAvailable(bot, abilityID)) {
-			//Is it doing something else?  We never want to queue anything, just wait until it clears
-			if (s.getOrderCount() == 0) {
-				//Yay, let's build here
-				Actions()->UnitCommand(u, abilityID);
-				return true;
-			}
+		if (TrainUnitFromBuilding(abilityID, u)) {
+			//Success!
+			return true;
+		}
+		else {
+			//Failed - could be many reasons.  Keep trying another producer.
 		}
 	}
 

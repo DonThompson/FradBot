@@ -146,9 +146,19 @@ void BuildQueueManager::TryHandleGameAbility(const std::shared_ptr<BuildQueueIte
 		buildQueue.erase(buildQueue.begin());
 	}
 	else if (IsUnit(item->abilityToTrain)) {
-		if (bot.Army().TrainUnit(item->abilityToTrain)) {
-			std::cout << item->GetDescription() << " queued" << std::endl;
-			buildQueue.erase(buildQueue.begin());
+		//If the queue has a producer building already attached, use it directly
+		if (item->fromBuilding != nullptr) {
+			if (bot.Army().TrainUnitFromBuilding(item->abilityToTrain, item->fromBuilding)) {
+				std::cout << item->GetDescription() << " queued" << std::endl;
+				buildQueue.erase(buildQueue.begin());
+			}
+		}
+		else {
+			//We need to find a building, then train it
+			if (bot.Army().TrainUnit(item->abilityToTrain)) {
+				std::cout << item->GetDescription() << " queued" << std::endl;
+				buildQueue.erase(buildQueue.begin());
+			}
 		}
 	}
 	else if (UpgradesManager::IsUpgrade(item->abilityToTrain)) {

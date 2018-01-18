@@ -31,6 +31,7 @@ public:
 	void OnBarracksSuccess(int64_t taskId);
 	void OnBarracksFailed(int64_t taskId);
 	bool TrainUnit(sc2::ABILITY_ID abilityID);
+	bool TrainUnitFromBuilding(sc2::ABILITY_ID abilityID, const sc2::Unit* building);
 	void ManageMilitary();
 	void AddUnitToPlatoon(const sc2::Unit* unit);
 	size_t GetTotalArmyUnitCount();
@@ -45,5 +46,4 @@ private:
 
 	//Unit management
 	std::vector<std::shared_ptr<Platoon>> armyPlatoons;
-
 };

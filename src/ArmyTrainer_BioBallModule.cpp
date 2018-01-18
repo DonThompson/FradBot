@@ -1,4 +1,5 @@
 #include "ArmyTrainer_BioBallModule.h"
+#include "BuildQueueItem.h"
 #include "bot.h"
 using namespace sc2;
 
@@ -58,6 +59,23 @@ void ArmyTrainer_BioBallModule::OnUnitIdle(const sc2::Unit* unit)
 	}
 }
 
+//Use the build system.  This ensures that we don't monopolize the buildings and keep others from doing
+//	useful things like flying, building addons, etc.  
+//TODO:  My initial thought was that we should have the build queue enforce "build now, don't queue" when the source is provided.  But
+//	I'm not sure if that's needed, and it's not in place right now.  Monitor.
+void ArmyTrainer_BioBallModule::TrainUnitToBuildQueue(sc2::ABILITY_ID abilityID, Structure s)
+{
+	//TODO:  This isn't quite working out as I'd hoped.  A few holes...
+	//	The build queue may already have items it's waiting on.  For example, an expansion.  In that case, our idle rax will just wait
+	// on that to finish.  Also, it doesn't 'get' reactors at the moment, so it queues 1 marine in it... then the other sits in the queue
+	//	blocking everything else.  The concept is there, but we're missing some work to make it function.  I'll keep the code, and the
+	//	slightly confusing name of this function, but we're just going to build straight up.
+	//TODO:  The whole point of this was so that the build queue could do addons and such.  We're pretty stuck with that at the moment.  Once
+	//	you enable this module, you can't really get another addon built.
+	GetBot().Actions()->UnitCommand(s.building, abilityID);
+	//GetBot().BuildQueue().Push(std::make_shared<BuildQueueItem>(abilityID, s.building));
+}
+
 ArmyTrainer_BioBallModule::CurrentBioArmyData ArmyTrainer_BioBallModule::GetCurrentData()
 {
 	ArmyTrainer_BioBallModule::CurrentBioArmyData data;
@@ -70,7 +88,42 @@ ArmyTrainer_BioBallModule::CurrentBioArmyData ArmyTrainer_BioBallModule::GetCurr
 	return data;
 }
 
-//TODO:  Ugly code, needs cleaned up
+void ArmyTrainer_BioBallModule::OnBarracks_Reactor_Idle(Structure rax)
+{
+	//Always train two marines from a reactored barracks
+	TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MARINE, rax);
+	TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MARINE, rax);
+}
+
+void ArmyTrainer_BioBallModule::OnBarracks_TechLab_Idle(Structure rax, ArmyTrainer_BioBallModule::CurrentBioArmyData & data)
+{
+	//Marauders first (3 to every 5 marines)
+	//Ghosts second (1 to every 5 marines)
+
+	//do we have too many marauders?  We want a rough ratio of 3 marauders for every 5 marines
+	float_t ratioMarauders = data.cntMarauders / 3.0f;
+	float_t ratioMarines = data.cntMarines / 5.0f;
+	if (ratioMarauders > ratioMarines) {
+		//We have enough marauders compared to marines.  Let's check out ghosts instead (also confirm we have ability to build ghosts)
+		float_t ghostRatio = static_cast<float_t>(data.cntMarines) / static_cast<float_t>(data.cntGhosts);
+		if (ghostRatio > 5.0f && rax.HasAbilityAvailable(GetBot(), ABILITY_ID::TRAIN_GHOST)) {
+			//We need more ghosts
+			TrainUnitToBuildQueue(ABILITY_ID::TRAIN_GHOST, rax);
+			return;
+		}
+		else {
+			//we have enough marauders and ghosts, make a marine instead, it's all we've got left.
+			TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MARINE, rax);
+			return;
+		}
+	}
+	else {
+		//More marauders are needed
+		TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MARAUDER, rax);
+		return;
+	}
+}
+
 void ArmyTrainer_BioBallModule::OnBarracksIdle(Structure rax)
 {
 	//See what we already have
@@ -82,48 +135,21 @@ void ArmyTrainer_BioBallModule::OnBarracksIdle(Structure rax)
 
 	//Is there an reactor?
 	if (rax.HasReactor(GetBot())) {
-		//Always train two marines from a reactored barracks
-		GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
-		GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
-		return;
+		OnBarracks_Reactor_Idle(rax);
 	}
-
 	//Is there a tech lab?
-	if (rax.HasTechLab(GetBot())) {
-		//Marauders first (3 to every 5 marines)
-		//Ghosts second (1 to every 5 marines)
-
-		//do we have too many marauders?  We want a rough ratio of 3 marauders for every 5 marines
-		float_t ratioMarauders = data.cntMarauders / 3.0f;
-		float_t ratioMarines = data.cntMarines / 5.0f;
-		if (ratioMarauders > ratioMarines) {
-			//Check to see if we should build ghosts (and if we can build ghosts)
-			float_t ghostRatio = static_cast<float_t>(data.cntMarines) / static_cast<float_t>(data.cntGhosts);
-			if (ghostRatio > 5.0f && rax.HasAbilityAvailable(GetBot(), ABILITY_ID::TRAIN_GHOST)) {
-				//We need more ghosts
-				GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_GHOST);
-				return;
-			}
-			else {
-				//we have enough marauders and ghosts, make a marine instead
-				GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
-				return;
-			}
-		}
-		else {
-			//More marauders
-			GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARAUDER);
-			return;
-		}
+	else if (rax.HasTechLab(GetBot())) {
+		OnBarracks_TechLab_Idle(rax, data);
 	}
-
-	//If neither, we can only train marines
-	GetBot().Actions()->UnitCommand(rax.building, ABILITY_ID::TRAIN_MARINE);
+	else {
+		//If there is no addon, we can only train marines.
+		TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MARINE, rax);
+	}
 }
 
 void ArmyTrainer_BioBallModule::OnFactoryIdle(Structure fact)
 {
-
+	//No factory units are used in the bio ball
 }
 
 void ArmyTrainer_BioBallModule::OnStarportIdle(Structure port)
@@ -139,10 +165,10 @@ void ArmyTrainer_BioBallModule::OnStarportIdle(Structure port)
 	float_t ratio = static_cast<float_t>(data.cntMarines) / static_cast<float_t>(data.cntMedivacs);
 	if (ratio > 5.0f) {
 		//Build a new medivac
-		GetBot().Actions()->UnitCommand(port.building, ABILITY_ID::TRAIN_MEDIVAC);
+		TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MEDIVAC, port);
 		if (port.HasReactor(GetBot())) {
 			//Train a second
-			GetBot().Actions()->UnitCommand(port.building, ABILITY_ID::TRAIN_MEDIVAC);
+			TrainUnitToBuildQueue(ABILITY_ID::TRAIN_MEDIVAC, port);
 		}
 	}
 }
