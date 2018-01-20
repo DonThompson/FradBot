@@ -138,10 +138,14 @@ void Squad::ClearOrders()
 }
 
 //TODO:  Define/manage this.  For now, we just grab the first member
+//	Improved:  The first alive member.  Will keep squads from giving up when Searge dies.
 sc2::Point3D Squad::GetCurrentPosition()
 {
-	if (squadUnits.size() > 0) {
-		return squadUnits.front()->unit->pos;
+	//Go until we find a breathing unit
+	for (shared_ptr<ArmyUnit> au : squadUnits) {
+		if (au->unit->is_alive) {
+			return au->unit->pos;
+		}
 	}
 
 	//TODO:  Not sure this is a good idea either
@@ -183,12 +187,13 @@ bool Squad::HasGathered()
 	Point3D centerPt = GetCurrentPosition();
 
 	for (shared_ptr<ArmyUnit> au : squadUnits) {
-		if (sc2::Distance3D(au->Position(), centerPt) > maxDistance) {
+		//Use 2D distance measurements, otherwise flying units will never be close enough, even right over the center.
+		if (sc2::Distance2D(au->Position(), centerPt) > maxDistance) {
 			//Safety check:  Someone is still outside gathering range.  Make sure he's got some kind of order.
 			//TODO:  Not sure this should live here
 			if (au->GetOrderCount() == 0) {
 				//Out of range, but not trying to get here!  Fix that
-				bot.Actions()->UnitCommand(au->unit, ABILITY_ID::ATTACK_ATTACK, centerPt);
+				bot.Actions()->UnitCommand(au->unit, au->GetIdealAttackMoveCommand(), centerPt);
 			}
 			return false;
 		}

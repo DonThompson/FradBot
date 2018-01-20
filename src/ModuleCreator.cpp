@@ -7,6 +7,8 @@
 #include "IdleWorkerModule.h"
 #include "AutoBuildWorkersModule.h"
 #include "ArmyTrainer_BioBallModule.h"
+#include "MilitaryManagerV1Module.h"
+#include "BaseBuildingScannerModule.h"
 using namespace std;
 
 
@@ -23,6 +25,8 @@ using namespace std;
 	//The following modules are always on, enabled from the beginning.
 	CSM_E(MODULE_ID::VESPENEWORKERBALANCEMODULE, VespeneWorkerBalanceModule);
 	CSM_E(MODULE_ID::IDLEWORKERMODULE, IdleWorkerModule);
+	CSM_E(MODULE_ID::MILITARYMANAGERV1MODULE, MilitaryManagerV1Module);
+	CSM_E(MODULE_ID::BASEBUILDINGSCANNERMODULE, BaseBuildingScannerModule);
 
 	//All other modules need to be enabled when ready
 	CSM(MODULE_ID::AUTOBUILDWORKERSMODULE, AutoBuildWorkersModule);

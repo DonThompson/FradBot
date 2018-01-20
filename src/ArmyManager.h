@@ -32,9 +32,13 @@ public:
 	void OnBarracksFailed(int64_t taskId);
 	bool TrainUnit(sc2::ABILITY_ID abilityID);
 	bool TrainUnitFromBuilding(sc2::ABILITY_ID abilityID, const sc2::Unit* building);
-	void ManageMilitary();
 	void AddUnitToPlatoon(const sc2::Unit* unit);
 	size_t GetTotalArmyUnitCount();
+
+public:
+	//Unit management
+	//TODO:  Made public when I ripped out the attack/defend logic.  Not ideal.
+	std::vector<std::shared_ptr<Platoon>> armyPlatoons;
 
 private:
 	clock_t lastBalanceClock;
@@ -44,6 +48,4 @@ private:
 	//TODO:  enum?
 	uint32_t currentStrategy;
 
-	//Unit management
-	std::vector<std::shared_ptr<Platoon>> armyPlatoons;
 };

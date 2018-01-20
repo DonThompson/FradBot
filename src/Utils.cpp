@@ -57,6 +57,11 @@ Units Utils::GetOwnUnits(const ObservationInterface* observation)
 	return observation->GetUnits(Unit::Alliance::Self, nullptr);
 }
 
+/*static*/Units Utils::GetEnemyUnits(const ObservationInterface* observation, sc2::Filter filter)
+{
+	return observation->GetUnits(Unit::Alliance::Enemy, filter);
+}
+
 Units Utils::GetIdleUnits(const ObservationInterface* observation, UNIT_TYPEID unitTypeID, UNIT_TYPEID unitTypeID2)
 {
 	//TODO:  Need to find some info on Filter, this should be simpler.
@@ -112,3 +117,4 @@ bool Utils::IsVespeneGeyser(sc2::UNIT_TYPEID unitTypeID)
 	}
 	return false;
 }
+

@@ -33,6 +33,7 @@ public:
 	bool IsEnemyBase();
 	size_t GetRegionId();
 	std::vector<sc2::Point2D> GetChokePoints();
+	std::vector<const sc2::Unit*> GetKnownEnemyBuildings();
 
 	//One of the starting positions on the map?  Player or enemy
 	bool IsStartingPosition();
@@ -49,6 +50,10 @@ public:
 	void SetRegionId(size_t _regionId);
 	//List of choke points in/out
 	void SetChokePoints(std::vector<sc2::Point2D> _points);
+	//Maintain a list of known enemy buildings
+	void AddKnownEnemyBuilding(const sc2::Unit* building);
+	//Remove too
+	void RemoveKnownEnemyBuilding(const sc2::Unit* building);
 
 	bool operator ==(BaseLocation rhs);
 	bool operator !=(BaseLocation rhs);
@@ -78,6 +83,8 @@ private:
 	size_t regionId;
 	//list of choke points in/out of the base
 	std::vector<sc2::Point2D> chokePoints;
+	//For enemy bases, the list of known enemy buildings in the base.
+	std::vector<const sc2::Unit*> enemyBuildings;
 
 
 	//TODO:  Temp for now.  We should maintain a radius ourselves.  Or maybe an actual complex shape?

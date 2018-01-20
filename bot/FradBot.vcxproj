@@ -133,6 +133,7 @@
     <ClCompile Include="..\src\ArmyTrainer_BioBallModule.cpp" />
     <ClCompile Include="..\src\ArmyUnit.cpp" />
     <ClCompile Include="..\src\AutoBuildWorkersModule.cpp" />
+    <ClCompile Include="..\src\BaseBuildingScannerModule.cpp" />
     <ClCompile Include="..\src\BaseLocation.cpp" />
     <ClCompile Include="..\src\BaseLocationInitializer.cpp" />
     <ClCompile Include="..\src\BaseLocationManager.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="..\src\IdleWorkerModule.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
     <ClCompile Include="..\src\MapManager.cpp" />
+    <ClCompile Include="..\src\MilitaryManagerV1Module.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\ModuleBase.cpp" />
     <ClCompile Include="..\src\ModuleCreator.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="..\src\ArmyTrainer_BioBallModule.h" />
     <ClInclude Include="..\src\ArmyUnit.h" />
     <ClInclude Include="..\src\AutoBuildWorkersModule.h" />
+    <ClInclude Include="..\src\BaseBuildingScannerModule.h" />
     <ClInclude Include="..\src\BaseLocation.h" />
     <ClInclude Include="..\src\BaseLocationInitializer.h" />
     <ClInclude Include="..\src\BaseLocationManager.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="..\src\IdleWorkerModule.h" />
     <ClInclude Include="..\src\ManagerBase.h" />
     <ClInclude Include="..\src\MapManager.h" />
+    <ClInclude Include="..\src\MilitaryManagerV1Module.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\ModuleBase.h" />
     <ClInclude Include="..\src\ModuleCreator.h" />

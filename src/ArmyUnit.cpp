@@ -29,3 +29,17 @@ size_t ArmyUnit::GetOrderCount()
 {
 	return unit->orders.size();
 }
+
+//Returns an ideal attack-move command for this unit.  Some units, like medivacs, can't attack and may need
+//	another command for movement.
+sc2::ABILITY_ID ArmyUnit::GetIdealAttackMoveCommand()
+{
+	//NOTE:  This is completely hardcoded by trial & error.  Medivacs are all I can think of right now.
+	if (unit->unit_type.ToType() == UNIT_TYPEID::TERRAN_MEDIVAC) {
+		//http://starcraft.wikia.com/wiki/Scan_Move
+		return ABILITY_ID::SCAN_MOVE;
+	}
+
+	//Everyone else should attack.  Still not 100% settled on the difference between ATTACK AND ATTACK_ATTACK
+	return ABILITY_ID::ATTACK_ATTACK;
+}

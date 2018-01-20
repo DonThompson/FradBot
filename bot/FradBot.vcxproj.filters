@@ -166,6 +166,12 @@
     <ClCompile Include="..\src\ArmyTrainer_BioBallModule.cpp">
       <Filter>Military</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MilitaryManagerV1Module.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BaseBuildingScannerModule.cpp">
+      <Filter>BaseManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -298,6 +304,12 @@
     </ClInclude>
     <ClInclude Include="..\src\ArmyTrainer_BioBallModule.h">
       <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MilitaryManagerV1Module.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BaseBuildingScannerModule.h">
+      <Filter>BaseManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

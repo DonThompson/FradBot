@@ -11,6 +11,7 @@ public:
 	
 	sc2::Point3D Position();
 	size_t GetOrderCount();
+	sc2::ABILITY_ID GetIdealAttackMoveCommand();
 
 //TODO:  Make private?
 public:

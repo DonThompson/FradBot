@@ -237,3 +237,39 @@ bool BaseLocation::operator !=(BaseLocation rhs)
 		return true;
 	return false;
 }
+
+//TODO:  Find a better option than position comparison.  I'm pretty sure if you were to fly a terran building somewhere
+//	we'd totally freak out.
+void BaseLocation::AddKnownEnemyBuilding(const sc2::Unit* building)
+{
+	//make sure it's not here already
+	for (const Unit* existingBuilding : enemyBuildings) {
+		//We have to compare by position -- units in fog of war get snapshots and don't compare correctly.
+		if (existingBuilding->pos.x == building->pos.x && existingBuilding->pos.y == building->pos.y) {
+			//Already known
+			return;
+		}
+	}
+
+	//Not found, add it new
+	enemyBuildings.push_back(building);
+}
+
+//TODO:  Find a better option than position comparison.  I'm pretty sure if you were to fly a terran building somewhere
+//	we'd totally freak out.
+void BaseLocation::RemoveKnownEnemyBuilding(const sc2::Unit* building)
+{
+	//Compare by position like in add
+	for (auto iterator = enemyBuildings.begin(); iterator != enemyBuildings.end();) {
+		if ((*iterator)->pos.x == building->pos.x && (*iterator)->pos.y == building->pos.y) {
+			iterator = enemyBuildings.erase(iterator);
+			return;
+		}
+		iterator++;
+	}
+}
+
+std::vector<const sc2::Unit*> BaseLocation::GetKnownEnemyBuildings()
+{
+	return enemyBuildings;
+}
