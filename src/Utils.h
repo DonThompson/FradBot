@@ -20,7 +20,7 @@ public:
 	//TODO:  From blizzard example code.  Get more of these implemented if they work
 	//	https://github.com/Blizzard/s2client-api/blob/master/examples/common/bot_examples.cc
 	struct IsStructure {
-		IsStructure(const sc2::ObservationInterface* obs) : observation_(obs) {};
+		explicit IsStructure(const sc2::ObservationInterface* obs) : observation_(obs) {};
 
 		bool operator()(const sc2::Unit& unit) {
 			auto& attributes = observation_->GetUnitTypeData().at(unit.unit_type).attributes;

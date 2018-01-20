@@ -23,7 +23,7 @@ private:
 
 
 public:
-	ArmyTrainer_BioBallModule(Bot & b);
+	explicit ArmyTrainer_BioBallModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
 	virtual void OnUnitIdle(const sc2::Unit* unit);

@@ -12,7 +12,7 @@ class ModuleBase;
 class ModuleManager : public ManagerBase
 {
 public:
-	ModuleManager(Bot & b);
+	explicit ModuleManager(Bot & b);
 
 	//Register your modules here
 	void RegisterModule(MODULE_ID moduleID, const std::shared_ptr<ModuleBase> & gameModule);

@@ -73,5 +73,4 @@ private:
 	bool DoesBuilderHaveNonHarvestOrders(const sc2::Unit* builder);
 	bool DoBuildingPositionsMatch(sc2::Point2D pt1, sc2::Point2D pt2);
 	void RemoveResourceReserve(ConstructionQueueTask  &task);
-	void OutputDetails();
 };

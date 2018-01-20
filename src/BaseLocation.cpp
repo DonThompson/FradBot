@@ -10,8 +10,8 @@ BaseLocation::BaseLocation(uint32_t _baseLocationId, Point3D _resourceDepotLocat
 	, isStartingPosition(false)
 	, naturalExpansionId(0)
 	, resourceDepot(nullptr)
+	, resourceDepotLocation(_resourceDepotLocation)
 {
-	resourceDepotLocation = _resourceDepotLocation;
 }
 
 bool BaseLocation::IsUnitInBase(const Unit* unit)

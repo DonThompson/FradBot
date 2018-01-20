@@ -6,7 +6,7 @@ class Bot;
 class BaseBuildingScannerModule : public ModuleBase
 {
 public:
-	BaseBuildingScannerModule(Bot & b);
+	explicit BaseBuildingScannerModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
 	virtual void OnUnitDestroyed(const sc2::Unit* unit);

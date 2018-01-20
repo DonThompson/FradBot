@@ -25,7 +25,6 @@ private:
 	bool IsWorker(sc2::ABILITY_ID abilityID);
 	bool IsBuilding(sc2::ABILITY_ID abilityID);
 	bool IsUnit(sc2::ABILITY_ID abilityID);
-	bool IsMorphOrAddOn(sc2::ABILITY_ID abilityID);
 	bool HasResourcesFor(sc2::ABILITY_ID abilityID);
 
 	void TryHandleModule(const std::shared_ptr<BuildQueueModuleItem> & item);

@@ -7,7 +7,7 @@ class Bot;
 class MilitaryManagerV1Module : public ModuleBase
 {
 public:
-	MilitaryManagerV1Module(Bot & b);
+	explicit MilitaryManagerV1Module(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
 
