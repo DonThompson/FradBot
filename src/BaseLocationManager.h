@@ -4,6 +4,7 @@
 #include "ManagerBase.h"
 #include "BaseLocation.h"
 
+//TODO:  SharedPtr usage
 class BaseLocationManager : public ManagerBase
 {
 public:
@@ -28,6 +29,8 @@ public:
 	BaseLocation* FindNearestAvailableExpansionLocation();
 	//Claims ownership of a base for the player by position
 	void ClaimBaseByPosition(sc2::Point2D resourceDepotLocation, Structure & resourceDepot);
+	//Returns a list of all enemy bases
+	std::vector<BaseLocation*> EnemyBases();
 
 private:
 	void InitializeKnownEnemyBase();

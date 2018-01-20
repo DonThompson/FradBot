@@ -15,6 +15,54 @@ ModuleNotificationRequirement MilitaryManagerV1Module::GetNotificationRequiremen
 
 void MilitaryManagerV1Module::OnStep()
 {
+	for (shared_ptr<Platoon> platoon : GetBot().Army().armyPlatoons) {
+		//Don't change orders at this point, let them keep working
+		if (platoon->HasOrders())
+			continue;
+
+		//TODO:  make sure we have at least a dozen units once we're happy with the logic
+
+		//If we know of an enemy base, start there.
+		BaseLocation* target = nullptr;
+		vector<BaseLocation*> enemyBases = GetBot().BaseLocations().EnemyBases();
+		if (enemyBases.size() > 0) {
+			//If there's just 1, well, attack there.
+			if (enemyBases.size() == 1) {
+				target = enemyBases[0];
+			}
+			else {
+				//Find the closest one.  Take the natural out before the main, etc.
+				//TODO:  Using max distance instance of pathing distance.  Always compare to our main.
+				BaseLocation* myMain = GetBot().BaseLocations().Main();
+				float_t maxDistance = numeric_limits<float_t>::max();
+				for (BaseLocation* base : enemyBases) {
+					float_t d = Distance2D(myMain->GetResourceDepotLocation(), base->GetResourceDepotLocation());
+					if (d < maxDistance) {
+						maxDistance = d;
+						target = base;
+					}
+				}
+
+				//Should be impossible to miss here.  Safety check
+				if (target == nullptr) {
+					std::cout << "Failed to find enemy base target" << std::endl;
+				}
+			}
+		}
+		else {
+			//No known bases, we'll have to guess.
+			//TODO
+		}
+
+		if (target != nullptr) {
+			//TODO: Still haven't solved our need - we're just attacking the resource depot differently.
+			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, target->GetResourceDepotLocation()));
+		}
+
+	}
+
+
+/* Army manager v2 HISTORY REFERENCE TODO DELETE
 	//V2:  Attack @ ~12 units in each platoon
 	for (shared_ptr<Platoon> platoon : GetBot().Army().armyPlatoons) {
 		//Attack if we're big enough
@@ -38,5 +86,5 @@ void MilitaryManagerV1Module::OnStep()
 			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
 		}
 	}
-
+*/
 }

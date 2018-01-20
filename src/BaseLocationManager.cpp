@@ -177,3 +177,14 @@ void BaseLocationManager::ClaimBaseByPosition(Point2D resourceDepotLocation, Str
 		loc->SetResourceDepot(resourceDepot);
 	}
 }
+
+std::vector<BaseLocation*> BaseLocationManager::EnemyBases()
+{
+	std::vector<BaseLocation*> enemyLocations;
+	for (BaseLocation& loc : mapBaseLocations) {
+		if (loc.IsEnemyBase()) {
+			enemyLocations.push_back(&loc);
+		}
+	}
+	return enemyLocations;
+}
