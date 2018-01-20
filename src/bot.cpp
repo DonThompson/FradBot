@@ -242,7 +242,7 @@ void Bot::OnUnitEnterVision(const Unit* unit)
 
 std::string Bot::GetVersion()
 {
-	return "0.1.0";
+	return "0.2.0";
 }
 
 // Returns a pointer to a class deriving from sc2::Agent
