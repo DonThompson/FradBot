@@ -80,6 +80,7 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_TECHLAB_BARRACKS));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REFINERY));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 37 supply
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_STIMPACK));
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::TRAIN_MARINE));
@@ -111,6 +112,8 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	//Turn on automatic army building - just keep making our bio ball.  Don't do this until we have the addons we want
 	bot.BuildQueue().Push(std::make_shared<BuildQueueModuleItem>(MODULE_ID::ARMYTRAINER_BIOBALLMODULE));
 
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR));
+
 	//TODO:  Mules should probably always be auto?
 	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_SUPPLYDEPOT));	//@ 66 supply
 	//TODO:  Mules should probably always be auto?
@@ -125,6 +128,17 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 	//Econ manager will auto handle moving SCVs to gas
 	//TODO:  Scanner sweep auto?
 	//END OF BUILD ORDER
+
+	//reactor that starport and add 2 more rax with reactors
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_BARRACKS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_BARRACKS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS));
+
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_STARPORT));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_ARMORY));		//for upgrades
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_BARRACKS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::BUILD_REACTOR_BARRACKS));
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR));
 
 }
 
