@@ -33,6 +33,7 @@ public:
 	bool IsEnemyBase();
 	size_t GetRegionId();
 	std::vector<sc2::Point2D> GetChokePoints();
+	std::vector<const sc2::Unit*> GetKnownEnemyBuildings();
 
 	//One of the starting positions on the map?  Player or enemy
 	bool IsStartingPosition();
@@ -51,6 +52,8 @@ public:
 	void SetChokePoints(std::vector<sc2::Point2D> _points);
 	//Maintain a list of known enemy buildings
 	void AddKnownEnemyBuilding(const sc2::Unit* building);
+	//Remove too
+	void RemoveKnownEnemyBuilding(const sc2::Unit* building);
 
 	bool operator ==(BaseLocation rhs);
 	bool operator !=(BaseLocation rhs);

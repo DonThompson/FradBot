@@ -20,7 +20,10 @@ void MilitaryManagerV1Module::OnStep()
 		if (platoon->HasOrders())
 			continue;
 
-		//TODO:  make sure we have at least a dozen units once we're happy with the logic
+		//Make sure we have at least 12 units to get started
+		//TODO:  Random made up number.  Improve.
+		if (platoon->GetTotalPlatoonUnitCount() < 12)
+			continue;
 
 		//If we know of an enemy base, start there.
 		BaseLocation* target = nullptr;
@@ -50,13 +53,19 @@ void MilitaryManagerV1Module::OnStep()
 			}
 		}
 		else {
-			//No known bases, we'll have to guess.
-			//TODO
+			//No known bases, we'll have to guess.  Pick a random base location
 		}
 
 		if (target != nullptr) {
-			//TODO: Still haven't solved our need - we're just attacking the resource depot differently.
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, target->GetResourceDepotLocation()));
+			std::vector<const Unit*> buildings = target->GetKnownEnemyBuildings();
+			if (buildings.size() > 0) {
+				//TODO:  Maybe find closest or something?  Pathing?  For now just grab one at random
+				platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, buildings[0]->pos));
+			}
+			else {
+				//No known buildings, maybe we haven't scouted the location yet.  Just aim at the resource depot.
+				platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, target->GetResourceDepotLocation()));
+			}
 		}
 
 	}

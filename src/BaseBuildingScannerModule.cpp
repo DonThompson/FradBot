@@ -11,7 +11,7 @@ BaseBuildingScannerModule::BaseBuildingScannerModule(Bot & b)
 
 ModuleNotificationRequirement BaseBuildingScannerModule::GetNotificationRequirements()
 {
-	return ModuleNotificationRequirement(false, stepLoopCount, false, false, false, false, false, false, false, false);
+	return ModuleNotificationRequirement(false, stepLoopCount, false, false, true, false, false, false, false, false);
 }
 
 void BaseBuildingScannerModule::OnStep()
@@ -20,10 +20,37 @@ void BaseBuildingScannerModule::OnStep()
 	for (const Unit* unit : enemyBuildings) {
 		//Put them in the appropriate base
 		BaseLocation* base = GetBot().BaseLocations().GetLocationByPosition(unit->pos);
-		if (!base->IsMyBase() && !base->IsEnemyBase()) {
-			//it's enemy's now!
-			base->SetEnemyBase();
+		if (base != nullptr) {
+			if (!base->IsMyBase() && !base->IsEnemyBase()) {
+				//it's enemy's now!
+				base->SetEnemyBase();
+			}
+			base->AddKnownEnemyBuilding(unit);
 		}
-		base->AddKnownEnemyBuilding(unit);
+		else {
+			//TODO:  What about buildings not in any base?
+		}
 	}
+}
+
+void BaseBuildingScannerModule::OnUnitDestroyed(const sc2::Unit* unit)
+{
+	//Is this an enemy unit?
+	if (unit->alliance != Unit::Alliance::Enemy)
+		return;
+
+	//Is it a structure?
+	if (Utils::IsStructure(GetBot().Observation()).operator()(*unit)) {
+		BaseLocation* base = GetBot().BaseLocations().GetLocationByPosition(unit->pos);
+		if (base != nullptr) {
+			base->RemoveKnownEnemyBuilding(unit);
+
+			//If this base now has no enemy buildings, reset it to neutral.
+			if (base->GetKnownEnemyBuildings().size() == 0) {
+				base->SetUnownedBase();
+			}
+		}
+	}
+
+
 }

@@ -9,6 +9,7 @@ public:
 	BaseBuildingScannerModule(Bot & b);
 	virtual ModuleNotificationRequirement GetNotificationRequirements();
 	virtual void OnStep();
+	virtual void OnUnitDestroyed(const sc2::Unit* unit);
 
 private:
 	//We only need to scan fairly infrequently

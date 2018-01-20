@@ -252,3 +252,20 @@ void BaseLocation::AddKnownEnemyBuilding(const sc2::Unit* building)
 	//Not found, add it new
 	enemyBuildings.push_back(building);
 }
+
+void BaseLocation::RemoveKnownEnemyBuilding(const sc2::Unit* building)
+{
+	//Compare by position like in add
+	for (auto iterator = enemyBuildings.begin(); iterator != enemyBuildings.end();) {
+		if ((*iterator)->pos.x == building->pos.x && (*iterator)->pos.y == building->pos.y) {
+			iterator = enemyBuildings.erase(iterator);
+			return;
+		}
+		iterator++;
+	}
+}
+
+std::vector<const sc2::Unit*> BaseLocation::GetKnownEnemyBuildings()
+{
+	return enemyBuildings;
+}
