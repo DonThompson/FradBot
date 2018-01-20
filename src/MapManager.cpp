@@ -58,6 +58,33 @@ std::vector<sc2::Point2D> MapManager::GetRegionChokePoints(size_t regionId)
 	return allChokePoints;
 }
 
+sc2::Point2D MapManager::GetRegionChokeClosestToMapCenter(size_t regionId)
+{
+	//Map center is just half the height/width
+	const GameInfo& info = bot.Observation()->GetGameInfo();
+	Point2D mapCenter(info.width / 2.0f, info.height / 2.0f);
+
+	Point2D closestPointToCenter(0, 0);
+	float_t maxDistance = numeric_limits<float_t>::max();
+
+	vector<ChokePoint> chokes = overseerMapImpl->getGraph().getChokePoints();
+	for (ChokePoint choke : chokes) {
+		const pair<const Region *, const Region *> regions = choke.getRegions();
+		if (regions.first->getId() == regionId || regions.second->getId() == regionId) {
+			//this choke is a way in/out of the current region
+			Point2D pt = choke.getMiddlePoint();
+
+			float_t distance = bot.Query()->PathingDistance(pt, mapCenter);
+			if (distance < maxDistance) {
+				maxDistance = distance;
+				closestPointToCenter = pt;
+			}
+		}
+	}
+
+	return closestPointToCenter;
+}
+
 bool MapManager::IsPointWalkable(Point2D ptToTest)
 {
 	/*overseerMapImpl->getGraph()

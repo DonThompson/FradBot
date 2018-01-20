@@ -13,6 +13,17 @@ ModuleNotificationRequirement MilitaryManagerV1Module::GetNotificationRequiremen
 	return ModuleNotificationRequirement(false, 50, false, false, false, false, false, false, false, false);
 }
 
+void MilitaryManagerV1Module::AssignPlatoonToBaseDefense(shared_ptr<Platoon> platoon)
+{
+	//Find the choke nearest the center of the map - that's most likely where units will path in from.  Defend there.
+	Point2D targetPoint = GetBot().Map().GetRegionChokeClosestToMapCenter(GetBot().BaseLocations().Natural()->GetRegionId());
+	if(targetPoint == Point2D(0, 0)) {
+		//If for some reason that fails, hang out near the natural.
+		targetPoint = GetBot().BaseLocations().Natural()->GetResourceDepotLocation();
+	}
+	platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
+}
+
 void MilitaryManagerV1Module::OnStep()
 {
 	for (shared_ptr<Platoon> platoon : GetBot().Army().armyPlatoons) {
@@ -25,17 +36,7 @@ void MilitaryManagerV1Module::OnStep()
 		if (platoon->GetTotalPlatoonUnitCount() < 12) {
 			//Setup defense
 
-			//TODO:  Position.  Picking the highest natural choke for now
-			Point2D targetPoint;
-			std::vector<Point2D> chokes = GetBot().Map().GetRegionChokePoints(GetBot().BaseLocations().Natural()->GetRegionId());
-			if (chokes.size() > 0) {
-				targetPoint = chokes[chokes.size() - 1];
-			}
-			else {
-				//TODO
-				std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
-			}
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
+			
 			continue;
 		}
 		

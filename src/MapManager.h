@@ -19,6 +19,8 @@ public:
 
 	size_t GetRegionIdFromPoint(sc2::Point2D pt);
 	std::vector<sc2::Point2D> GetRegionChokePoints(size_t regionId);
+	//Uses pathing distance.  May return Point2D(0,0) if no chokes exist.
+	sc2::Point2D GetRegionChokeClosestToMapCenter(size_t regionId);
 	float_t GetGroundHeightAtPoint(sc2::Point2D pt);
 	bool IsPointWalkable(sc2::Point2D ptToTest);
 	/*
