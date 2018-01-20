@@ -62,7 +62,6 @@ void ArmyManager::OnStep()
 		}
 
 		//Do these things whether autonomous or not, under timer
-		ManageMilitary();
 
 		lastBalanceClock = clock();
 	}
@@ -282,33 +281,6 @@ std::string ArmyManager::GetDebugSummaryString()
 	}
 
 	return oss.str();
-}
-
-void ArmyManager::ManageMilitary()
-{
-	//V2:  Attack @ ~12 units in each platoon
-	for (shared_ptr<Platoon> platoon : armyPlatoons) {
-		//Attack if we're big enough
-		if (platoon->GetTotalPlatoonUnitCount() >= 12 && !platoon->HasOrders()) {
-			//TODO:  Position.  Picking the enemy start for now
-			Point2D targetPoint = bot.Observation()->GetGameInfo().enemy_start_locations.front();
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
-		}
-		//defend otherwise
-		else if (platoon->GetTotalPlatoonUnitCount() >= 1 && !platoon->HasOrders()) {
-			//TODO:  Position.  Picking the highest natural choke for now
-			Point2D targetPoint;
-			std::vector<Point2D> chokes = bot.Map().GetRegionChokePoints(bot.BaseLocations().Natural()->GetRegionId());
-			if (chokes.size() > 0) {
-				targetPoint = chokes[chokes.size() - 1];
-			}
-			else {
-				//TODO
-				std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
-			}
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
-		}
-	}
 }
 
 size_t ArmyManager::GetTotalArmyUnitCount()

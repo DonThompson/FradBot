@@ -151,6 +151,7 @@
     <ClCompile Include="..\src\IdleWorkerModule.cpp" />
     <ClCompile Include="..\src\ManagerBase.cpp" />
     <ClCompile Include="..\src\MapManager.cpp" />
+    <ClCompile Include="..\src\MilitaryManagerV1Module.cpp" />
     <ClCompile Include="..\src\MineralLine.cpp" />
     <ClCompile Include="..\src\ModuleBase.cpp" />
     <ClCompile Include="..\src\ModuleCreator.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="..\src\IdleWorkerModule.h" />
     <ClInclude Include="..\src\ManagerBase.h" />
     <ClInclude Include="..\src\MapManager.h" />
+    <ClInclude Include="..\src\MilitaryManagerV1Module.h" />
     <ClInclude Include="..\src\MineralLine.h" />
     <ClInclude Include="..\src\ModuleBase.h" />
     <ClInclude Include="..\src\ModuleCreator.h" />

@@ -166,6 +166,9 @@
     <ClCompile Include="..\src\ArmyTrainer_BioBallModule.cpp">
       <Filter>Military</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MilitaryManagerV1Module.cpp">
+      <Filter>Military</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\DrawingManager.h">
@@ -297,6 +300,9 @@
       <Filter>BuildQueue</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ArmyTrainer_BioBallModule.h">
+      <Filter>Military</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MilitaryManagerV1Module.h">
       <Filter>Military</Filter>
     </ClInclude>
   </ItemGroup>
