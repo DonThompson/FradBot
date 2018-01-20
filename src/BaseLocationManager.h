@@ -31,6 +31,8 @@ public:
 	void ClaimBaseByPosition(sc2::Point2D resourceDepotLocation, Structure & resourceDepot);
 	//Returns a list of all enemy bases
 	std::vector<BaseLocation*> EnemyBases();
+	//Returns a list of all possible bases that aren't mine
+	std::vector<BaseLocation*> AllBasesNotMine();
 
 private:
 	void InitializeKnownEnemyBase();

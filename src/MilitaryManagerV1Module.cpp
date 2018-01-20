@@ -22,8 +22,24 @@ void MilitaryManagerV1Module::OnStep()
 
 		//Make sure we have at least 12 units to get started
 		//TODO:  Random made up number.  Improve.
-		if (platoon->GetTotalPlatoonUnitCount() < 12)
+		if (platoon->GetTotalPlatoonUnitCount() < 12) {
+			//Setup defense
+
+			//TODO:  Position.  Picking the highest natural choke for now
+			Point2D targetPoint;
+			std::vector<Point2D> chokes = GetBot().Map().GetRegionChokePoints(GetBot().BaseLocations().Natural()->GetRegionId());
+			if (chokes.size() > 0) {
+				targetPoint = chokes[chokes.size() - 1];
+			}
+			else {
+				//TODO
+				std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
+			}
+			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
 			continue;
+		}
+		
+		//Setup offense
 
 		//If we know of an enemy base, start there.
 		BaseLocation* target = nullptr;
@@ -53,7 +69,22 @@ void MilitaryManagerV1Module::OnStep()
 			}
 		}
 		else {
-			//No known bases, we'll have to guess.  Pick a random base location
+			//There are no known enemy bases.  We must have cleared them all out.  Ideally a future scouting module will clear our need
+			//	for this code.
+
+			//Check 1:  Can we find any buildings at all?  Maybe they built a supply depot in the middle of nowhere or it's in our base or something.
+			Units enemyBuildings = Utils::GetEnemyUnits(GetBot().Observation(), Utils::IsStructure(GetBot().Observation()));
+			if (enemyBuildings.size() > 0) {
+				//Screw it, just attack here directly - it's all we know.
+				platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, enemyBuildings[0]->pos));
+				return;
+			}
+
+			//Check 2:  Nothing, eh?  Well he must be hiding.  At this point just start spraying platoons to random base locations
+			vector<BaseLocation*> allBasesNotMine = GetBot().BaseLocations().AllBasesNotMine();
+			if (allBasesNotMine.size() > 0) {
+				target = allBasesNotMine[rand() % allBasesNotMine.size()];
+			}
 		}
 
 		if (target != nullptr) {
@@ -67,33 +98,5 @@ void MilitaryManagerV1Module::OnStep()
 				platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, target->GetResourceDepotLocation()));
 			}
 		}
-
 	}
-
-
-/* Army manager v2 HISTORY REFERENCE TODO DELETE
-	//V2:  Attack @ ~12 units in each platoon
-	for (shared_ptr<Platoon> platoon : GetBot().Army().armyPlatoons) {
-		//Attack if we're big enough
-		if (platoon->GetTotalPlatoonUnitCount() >= 12 && !platoon->HasOrders()) {
-			//TODO:  Position.  Picking the enemy start for now
-			Point2D targetPoint = GetBot().Observation()->GetGameInfo().enemy_start_locations.front();
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::ATTACK, targetPoint));
-		}
-		//defend otherwise
-		else if (platoon->GetTotalPlatoonUnitCount() >= 1 && !platoon->HasOrders()) {
-			//TODO:  Position.  Picking the highest natural choke for now
-			Point2D targetPoint;
-			std::vector<Point2D> chokes = GetBot().Map().GetRegionChokePoints(GetBot().BaseLocations().Natural()->GetRegionId());
-			if (chokes.size() > 0) {
-				targetPoint = chokes[chokes.size() - 1];
-			}
-			else {
-				//TODO
-				std::cout << "WARNING:  No choke points available to set defense target" << std::endl;
-			}
-			platoon->SetOrders(PlatoonOrders(PlatoonOrders::ORDER_TYPE::DEFEND, targetPoint));
-		}
-	}
-*/
 }

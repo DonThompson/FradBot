@@ -138,10 +138,14 @@ void Squad::ClearOrders()
 }
 
 //TODO:  Define/manage this.  For now, we just grab the first member
+//	Improved:  The first alive member.  Will keep squads from giving up when Searge dies.
 sc2::Point3D Squad::GetCurrentPosition()
 {
-	if (squadUnits.size() > 0) {
-		return squadUnits.front()->unit->pos;
+	//Go until we find a breathing unit
+	for (shared_ptr<ArmyUnit> au : squadUnits) {
+		if (au->unit->is_alive) {
+			return au->unit->pos;
+		}
 	}
 
 	//TODO:  Not sure this is a good idea either

@@ -188,3 +188,14 @@ std::vector<BaseLocation*> BaseLocationManager::EnemyBases()
 	}
 	return enemyLocations;
 }
+
+std::vector<BaseLocation*> BaseLocationManager::AllBasesNotMine()
+{
+	std::vector<BaseLocation*> notMyLocations;
+	for (BaseLocation& loc : mapBaseLocations) {
+		if (!loc.IsMyBase()) {
+			notMyLocations.push_back(&loc);
+		}
+	}
+	return notMyLocations;
+}

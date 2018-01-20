@@ -238,6 +238,8 @@ bool BaseLocation::operator !=(BaseLocation rhs)
 	return false;
 }
 
+//TODO:  Find a better option than position comparison.  I'm pretty sure if you were to fly a terran building somewhere
+//	we'd totally freak out.
 void BaseLocation::AddKnownEnemyBuilding(const sc2::Unit* building)
 {
 	//make sure it's not here already
@@ -253,6 +255,8 @@ void BaseLocation::AddKnownEnemyBuilding(const sc2::Unit* building)
 	enemyBuildings.push_back(building);
 }
 
+//TODO:  Find a better option than position comparison.  I'm pretty sure if you were to fly a terran building somewhere
+//	we'd totally freak out.
 void BaseLocation::RemoveKnownEnemyBuilding(const sc2::Unit* building)
 {
 	//Compare by position like in add
