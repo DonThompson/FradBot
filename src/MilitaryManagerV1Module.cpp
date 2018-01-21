@@ -35,8 +35,7 @@ void MilitaryManagerV1Module::OnStep()
 		//TODO:  Random made up number.  Improve.
 		if (platoon->GetTotalPlatoonUnitCount() < 12) {
 			//Setup defense
-
-			
+			AssignPlatoonToBaseDefense(platoon);
 			continue;
 		}
 		
