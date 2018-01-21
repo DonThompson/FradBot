@@ -65,7 +65,7 @@ sc2::Point2D MapManager::GetRegionChokeClosestToMapCenter(size_t regionId)
 	Point2D mapCenter(info.width / 2.0f, info.height / 2.0f);
 
 	Point2D closestPointToCenter(0, 0);
-	float_t maxDistance = numeric_limits<float_t>::max();
+	float_t minDistance = numeric_limits<float_t>::max();
 
 	vector<ChokePoint> chokes = overseerMapImpl->getGraph().getChokePoints();
 	for (ChokePoint choke : chokes) {
@@ -74,9 +74,11 @@ sc2::Point2D MapManager::GetRegionChokeClosestToMapCenter(size_t regionId)
 			//this choke is a way in/out of the current region
 			Point2D pt = choke.getMiddlePoint();
 
-			float_t distance = bot.Query()->PathingDistance(pt, mapCenter);
-			if (distance < maxDistance) {
-				maxDistance = distance;
+			//It's possible (and likely:  See Abyssal Reef) that the center point isn't pathable.  In that case, 
+			//	the pathing search returns 0 distance.  So we'll have to use raw distance to calculate.
+			float_t distance = Distance2D(pt, mapCenter);
+			if (distance < minDistance) {
+				minDistance = distance;
 				closestPointToCenter = pt;
 			}
 		}
