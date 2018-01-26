@@ -109,6 +109,7 @@ void Bot::OnGameStart()
 	struct tm timeinfo;
 	localtime_s(&timeinfo, &rawTime);
 	std::cout << "* Game begun @ " << std::put_time(&timeinfo, "%F %T") << " local time" << std::endl;
+	Actions()->SendChat("glhf!  FradBot " + GetVersion(), sc2::ChatChannel::All);
 	//TODO:  No data ever shows up.
 	//std::cout << "* Map:  " << GameSettings().map_name << std::endl;
 
