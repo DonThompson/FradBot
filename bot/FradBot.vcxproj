@@ -166,6 +166,7 @@
     <ClCompile Include="..\src\StrategyManager.cpp" />
     <ClCompile Include="..\src\Structure.cpp" />
     <ClCompile Include="..\src\StructuresManager.cpp" />
+    <ClCompile Include="..\src\SupplyDepotBuilderModule.cpp" />
     <ClCompile Include="..\src\SupplyManager.cpp" />
     <ClCompile Include="..\src\Timer.cpp" />
     <ClCompile Include="..\src\UnitData.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="..\src\StrategyManager.h" />
     <ClInclude Include="..\src\Structure.h" />
     <ClInclude Include="..\src\StructuresManager.h" />
+    <ClInclude Include="..\src\SupplyDepotBuilderModule.h" />
     <ClInclude Include="..\src\SupplyManager.h" />
     <ClInclude Include="..\src\Timer.h" />
     <ClInclude Include="..\src\UnitData.h" />

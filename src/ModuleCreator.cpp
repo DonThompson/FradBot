@@ -9,6 +9,7 @@
 #include "ArmyTrainer_BioBallModule.h"
 #include "MilitaryManagerV1Module.h"
 #include "BaseBuildingScannerModule.h"
+#include "SupplyDepotBuilderModule.h"
 using namespace std;
 
 
@@ -31,6 +32,7 @@ using namespace std;
 	//All other modules need to be enabled when ready
 	CSM(MODULE_ID::AUTOBUILDWORKERSMODULE, AutoBuildWorkersModule);
 	CSM(MODULE_ID::ARMYTRAINER_BIOBALLMODULE, ArmyTrainer_BioBallModule);
+	CSM(MODULE_ID::SUPPLYDEPOTBUILDERMODULE, SupplyDepotBuilderModule);
 }
 
 /*static*/void ModuleCreator::CreateSingleModule(Bot & bot, MODULE_ID moduleID, shared_ptr<ModuleBase> gameModule, bool enabled/*= false*/)

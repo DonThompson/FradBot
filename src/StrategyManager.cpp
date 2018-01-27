@@ -74,7 +74,8 @@ void StrategyManager::BO_RFE_AllRaceMatchup_BioBall()
 	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REFINERY);
 	AddAbilityToBuildOrder(ABILITY_ID::BUILD_STARPORT);
 	AddAbilityToBuildOrder(ABILITY_ID::BUILD_SUPPLYDEPOT);
-
+	//Auto supply
+	AddModuleToBuildOrder(MODULE_ID::SUPPLYDEPOTBUILDERMODULE);
 
 	//END PHASE 1.
 
@@ -83,6 +84,12 @@ void StrategyManager::BO_RFE_AllRaceMatchup_BioBall()
 	//bot.BuildQueue().EnableTimeout();
 
 	//TODO:  PHASE 2+
+
+	//TODO:  HACK TO GET SOME BUILDING GOING
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_BARRACKS);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REACTOR_BARRACKS);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_BARRACKS);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REACTOR_BARRACKS);
 }
 
 //Deprecated.  This was v2 build order.  Works really well if we have time to macro up.  Fails hard in tournament because everyone is cheesy.  Need to slow down the expansion in v3.
