@@ -21,9 +21,9 @@ void StrategyManager::OnGameStart()
 	*/
 
 	//New strategy leaves them all reliant on the strategy manager to coordinate!
-	BO_ExpandFirstIntoBioBall();
-
 	//BO_SimpleBio();
+	//BO_ExpandFirstIntoBioBall();
+	BO_RFE_AllRaceMatchup_BioBall();
 	
 
 }
@@ -33,6 +33,59 @@ void StrategyManager::OnStep()
 	//Not needed at this point
 }
 
+void StrategyManager::AddAbilityToBuildOrder(sc2::ABILITY_ID abilityID)
+{
+	bot.BuildQueue().Push(std::make_shared<BuildQueueItem>(abilityID));
+}
+
+void StrategyManager::AddModuleToBuildOrder(MODULE_ID moduleID)
+{
+	bot.BuildQueue().Push(std::make_shared<BuildQueueModuleItem>(moduleID));
+}
+
+//Built based on the information from this article:
+//	https://terrancraft.com/2017/10/06/one-build-for-three-match-ups/
+void StrategyManager::BO_RFE_AllRaceMatchup_BioBall()
+{
+	//TODO:  I've had to roughly guess by inserting scv training to hit the build points.  This is trial and error and not great.  I'd be better off
+	//	enabling auto-scvs and just letting the build order run.  Maybe things shouldn't time out until we reach a certain point in the BO?
+
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//13th
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//14th
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_SUPPLYDEPOT);
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//15th
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REFINERY);
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//16th
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_BARRACKS);
+	//TODO:  Some delays or guarantees would be handy to make sure these build in order
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//17th
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//18th
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_SCV);	//19th
+	AddAbilityToBuildOrder(ABILITY_ID::TRAIN_REAPER);	//20th
+	AddAbilityToBuildOrder(ABILITY_ID::MORPH_ORBITALCOMMAND);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_COMMANDCENTER);	//expand @ 100% orbital/400 mins
+	//auto build workers from here out
+	AddModuleToBuildOrder(MODULE_ID::AUTOBUILDWORKERSMODULE);
+	//auto army
+	AddModuleToBuildOrder(MODULE_ID::ARMYTRAINER_BIOBALLMODULE);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_FACTORY);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REACTOR_BARRACKS);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_SUPPLYDEPOT);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_REFINERY);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_STARPORT);
+	AddAbilityToBuildOrder(ABILITY_ID::BUILD_SUPPLYDEPOT);
+
+
+	//END PHASE 1.
+
+	//After the core of our build order, we should enable timeouts for safety.  Avoids the entire manager getting stuck if it can never build.
+	//TODO:  This code is just for queue.  Do we need a module to enable timeout?  Bleh.
+	//bot.BuildQueue().EnableTimeout();
+
+	//TODO:  PHASE 2+
+}
+
+//Deprecated.  This was v2 build order.  Works really well if we have time to macro up.  Fails hard in tournament because everyone is cheesy.  Need to slow down the expansion in v3.
 void StrategyManager::BO_ExpandFirstIntoBioBall()
 {
 	//Attempt to follow a build order.  We'll start with this one which has enough complexity to push us along
@@ -142,7 +195,7 @@ void StrategyManager::BO_ExpandFirstIntoBioBall()
 
 }
 
-//Simple just for testing - gets us units fast to test attacking
+//v1 build order.  Simple just for testing - gets us units fast to test attacking
 void StrategyManager::BO_SimpleBio()
 {
 	/*

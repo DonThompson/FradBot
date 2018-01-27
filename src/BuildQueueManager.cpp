@@ -7,6 +7,7 @@ using namespace std;
 
 BuildQueueManager::BuildQueueManager(Bot & b)
 	: ManagerBase(b)
+	, timeoutEnabled(false)
 {
 }
 
@@ -41,7 +42,7 @@ void BuildQueueManager::OnStep()
 	//	build for some reason.  Early in dev, this handles unforeseen situations and things not yet build into the
 	//	manager.  Later, this should be a catch against edge cases... for exampleyou lose all your gas workers and 
 	//	the upgrade queued for 200 gas keeps anything else from building.
-	if (item->CheckTimeout(gameLoop)) {
+	if (timeoutEnabled && item->CheckTimeout(gameLoop)) {
 		//It timed out, dequeue this request
 		std::cout << "WARNING:  ITEM TIMED OUT.  REMOVING FROM QUEUE.  (" << item->GetDescription() << ")" << std::endl;
 		buildQueue.erase(buildQueue.begin());
@@ -59,8 +60,6 @@ void BuildQueueManager::OnStep()
 		std::cout << "ERROR:  Unknown build queue item type" << std::endl;
 		break;
 	}
-
-
 }
 
 void BuildQueueManager::OnConstructionSuccess(int64_t taskId)
@@ -178,4 +177,13 @@ void BuildQueueManager::TryHandleGameAbility(const std::shared_ptr<BuildQueueIte
 		std::cout << "ERROR:  Unknown build queue item:  " << item->GetDescription() << ".  DEQUEUEING" << std::endl;
 		buildQueue.erase(buildQueue.begin());
 	}
+}
+void BuildQueueManager::EnableTimeout()
+{
+	timeoutEnabled = true;
+}
+
+void BuildQueueManager::DisableTimeout()
+{
+	timeoutEnabled = false;
 }

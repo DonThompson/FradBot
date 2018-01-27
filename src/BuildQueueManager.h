@@ -19,6 +19,11 @@ public:
 	void OnConstructionSuccess(int64_t taskId);
 	void OnConstructionFailed(int64_t taskId);
 
+	//Enables timeout on build orders.  Build orders are disabled by default.
+	void EnableTimeout();
+	//Removes the timeout on build orders - will happily wait forever for something.  May get stuck forever.  Build orders are disabled by default.
+	void DisableTimeout();
+
 private:
 	std::vector<std::shared_ptr<BuildQueueItemBase>> buildQueue;
 
@@ -29,4 +34,7 @@ private:
 
 	void TryHandleModule(const std::shared_ptr<BuildQueueModuleItem> & item);
 	void TryHandleGameAbility(const std::shared_ptr<BuildQueueItem> & item);
+
+	//Disabled by default
+	bool timeoutEnabled;
 };
